@@ -8,8 +8,6 @@ namespace ContactTracing15.DBAPI
     public class TracerAPI : ITracerAPI
     {
 
-        public TracerAPI()
-
         public Task<bool> AddNewContact()
         {
             throw new NotImplementedException();
