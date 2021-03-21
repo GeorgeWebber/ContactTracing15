@@ -11,7 +11,7 @@ namespace ContactTracing15.DBAPI
     /// </summary>
     interface ITesterAPI
     {
-
+        //TODO: add type parameter to the return type, specifying the model returned
         /// <summary>
         /// Add data on a positive case to the database
         /// *Should take a parameter - this parameter will be a model type I believe - George*
