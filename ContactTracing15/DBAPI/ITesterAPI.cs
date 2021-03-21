@@ -14,7 +14,6 @@ namespace ContactTracing15.DBAPI
         //TODO: add type parameter to the return type, specifying the model returned
         /// <summary>
         /// Add data on a positive case to the database
-        /// *Should take a parameter - this parameter will be a model type I believe - George*
         /// </summary>
         /// <returns>Task object specifying the result of the operation</returns>
         public Task AddCase();
