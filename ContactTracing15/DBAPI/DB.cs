@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ContactTracing15.DBAPI
 {
+    /// <summary>
+    /// A first implementation of the IDB interface
+    /// </summary>
     public class DB : IDB
     {
         public DB(string connectionString)
