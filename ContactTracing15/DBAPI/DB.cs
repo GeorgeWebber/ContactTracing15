@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,9 +8,10 @@ namespace ContactTracing15.DBAPI
 {
     public class DB : IDB
     {
-        public Task<bool> ExecuteCommand(string commandString)
+        public DB(string connectionString)
         {
-            throw new NotImplementedException();
+            Connection = new SqlConnection(connectionString);
         }
+        public SqlConnection Connection { get; }
     }
 }
