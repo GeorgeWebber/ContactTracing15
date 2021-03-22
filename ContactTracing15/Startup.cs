@@ -1,4 +1,4 @@
-﻿using ContactTracing15.Data;
+using ContactTracing15.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,9 +33,6 @@ namespace ContactTracing15
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
-
-            services.AddDbContext<CovidTestingContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("CovidTestingContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
