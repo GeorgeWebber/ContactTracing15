@@ -1,0 +1,83 @@
+﻿@page
+@model ContactTracing15.Pages.Cases.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Case</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Case.CaseID" class="control-label"></label>
+                <input asp-for="Case.CaseID" class="form-control" />
+                <span asp-validation-for="Case.CaseID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.Forename" class="control-label"></label>
+                <input asp-for="Case.Forename" class="form-control" />
+                <span asp-validation-for="Case.Forename" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.Surname" class="control-label"></label>
+                <input asp-for="Case.Surname" class="form-control" />
+                <span asp-validation-for="Case.Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.Email" class="control-label"></label>
+                <input asp-for="Case.Email" class="form-control" />
+                <span asp-validation-for="Case.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.Postcode" class="control-label"></label>
+                <input asp-for="Case.Postcode" class="form-control" />
+                <span asp-validation-for="Case.Postcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.Phone" class="control-label"></label>
+                <input asp-for="Case.Phone" class="form-control" />
+                <span asp-validation-for="Case.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.Phone2" class="control-label"></label>
+                <input asp-for="Case.Phone2" class="form-control" />
+                <span asp-validation-for="Case.Phone2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.TesterID" class="control-label"></label>
+                <select asp-for="Case.TesterID" class ="form-control" asp-items="ViewBag.TesterID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.TestDate" class="control-label"></label>
+                <input asp-for="Case.TestDate" class="form-control" />
+                <span asp-validation-for="Case.TestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.AddedDate" class="control-label"></label>
+                <input asp-for="Case.AddedDate" class="form-control" />
+                <span asp-validation-for="Case.AddedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.RemovedDate" class="control-label"></label>
+                <input asp-for="Case.RemovedDate" class="form-control" />
+                <span asp-validation-for="Case.RemovedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
