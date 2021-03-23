@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using ContactTracing15.Data;
 using ContactTracing15.Models;
 
-namespace ContactTracing15.Pages.Cases
+namespace ContactTracing15.Pages.Contacts
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace ContactTracing15.Pages.Cases
         }
 
         [BindProperty]
-        public Case Case { get; set; }
+        public Contact Contact { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,14 +30,16 @@ namespace ContactTracing15.Pages.Cases
                 return NotFound();
             }
 
-            Case = await _context.Cases
-                .Include(_ => _.Tester).FirstOrDefaultAsync(m => m.CaseID == id);
+            Contact = await _context.Contacts
+                .Include(c => c.Case)
+                .Include(c => c.Tracer).FirstOrDefaultAsync(m => m.ContactID == id);
 
-            if (Case == null)
+            if (Contact == null)
             {
                 return NotFound();
             }
-           ViewData["TesterID"] = new SelectList(_context.Testers, "TesterID", "TesterID");
+           ViewData["CaseID"] = new SelectList(_context.Cases, "CaseID", "CaseID");
+           ViewData["TracerID"] = new SelectList(_context.Tracers, "TracerID", "TracerID");
             return Page();
         }
 
@@ -50,7 +52,7 @@ namespace ContactTracing15.Pages.Cases
                 return Page();
             }
 
-            _context.Attach(Case).State = EntityState.Modified;
+            _context.Attach(Contact).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +60,7 @@ namespace ContactTracing15.Pages.Cases
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CaseExists(Case.CaseID))
+                if (!ContactExists(Contact.ContactID))
                 {
                     return NotFound();
                 }
@@ -71,9 +73,9 @@ namespace ContactTracing15.Pages.Cases
             return RedirectToPage("./Index");
         }
 
-        private bool CaseExists(int id)
+        private bool ContactExists(int id)
         {
-            return _context.Cases.Any(e => e.CaseID == id);
+            return _context.Contacts.Any(e => e.ContactID == id);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace ContactTracing15.Models
 {
   public class Contact
   {
-    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int ContactID { get; set; }
     public string Forename { get; set; }
     public string Surname { get; set; }

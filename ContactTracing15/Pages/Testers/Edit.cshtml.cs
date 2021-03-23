@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using ContactTracing15.Data;
 using ContactTracing15.Models;
 
-namespace ContactTracing15.Pages.Cases
+namespace ContactTracing15.Pages.Testers
 {
     public class EditModel : PageModel
     {
@@ -21,7 +21,7 @@ namespace ContactTracing15.Pages.Cases
         }
 
         [BindProperty]
-        public Case Case { get; set; }
+        public Tester Tester { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,14 +30,12 @@ namespace ContactTracing15.Pages.Cases
                 return NotFound();
             }
 
-            Case = await _context.Cases
-                .Include(_ => _.Tester).FirstOrDefaultAsync(m => m.CaseID == id);
+            Tester = await _context.Testers.FirstOrDefaultAsync(m => m.TesterID == id);
 
-            if (Case == null)
+            if (Tester == null)
             {
                 return NotFound();
             }
-           ViewData["TesterID"] = new SelectList(_context.Testers, "TesterID", "TesterID");
             return Page();
         }
 
@@ -50,7 +48,7 @@ namespace ContactTracing15.Pages.Cases
                 return Page();
             }
 
-            _context.Attach(Case).State = EntityState.Modified;
+            _context.Attach(Tester).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +56,7 @@ namespace ContactTracing15.Pages.Cases
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CaseExists(Case.CaseID))
+                if (!TesterExists(Tester.TesterID))
                 {
                     return NotFound();
                 }
@@ -71,9 +69,9 @@ namespace ContactTracing15.Pages.Cases
             return RedirectToPage("./Index");
         }
 
-        private bool CaseExists(int id)
+        private bool TesterExists(int id)
         {
-            return _context.Cases.Any(e => e.CaseID == id);
+            return _context.Testers.Any(e => e.TesterID == id);
         }
     }
 }

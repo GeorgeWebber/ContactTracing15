@@ -8,7 +8,6 @@ namespace ContactTracing15.Models
 {
   public class Case
   {
-    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int CaseID { get; set; }
     public string Forename { get; set; }
     public string Surname { get; set; }

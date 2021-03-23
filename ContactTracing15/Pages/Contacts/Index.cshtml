@@ -1,0 +1,96 @@
+﻿@page
+@model ContactTracing15.Pages.Contacts.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].Forename)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].Postcode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].Phone2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].TestDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].AddedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].RemovedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].Tracer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact[0].Case)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Contact) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Forename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Postcode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TestDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RemovedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tracer.TracerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Case.CaseID)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ContactID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ContactID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ContactID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,85 @@
+﻿@page
+@model ContactTracing15.Pages.Contacts.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Contact</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Contact.ContactID" />
+            <div class="form-group">
+                <label asp-for="Contact.Forename" class="control-label"></label>
+                <input asp-for="Contact.Forename" class="form-control" />
+                <span asp-validation-for="Contact.Forename" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.Surname" class="control-label"></label>
+                <input asp-for="Contact.Surname" class="form-control" />
+                <span asp-validation-for="Contact.Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.Email" class="control-label"></label>
+                <input asp-for="Contact.Email" class="form-control" />
+                <span asp-validation-for="Contact.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.Postcode" class="control-label"></label>
+                <input asp-for="Contact.Postcode" class="form-control" />
+                <span asp-validation-for="Contact.Postcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.Phone" class="control-label"></label>
+                <input asp-for="Contact.Phone" class="form-control" />
+                <span asp-validation-for="Contact.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.Phone2" class="control-label"></label>
+                <input asp-for="Contact.Phone2" class="form-control" />
+                <span asp-validation-for="Contact.Phone2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.TracerID" class="control-label"></label>
+                <select asp-for="Contact.TracerID" class="form-control" asp-items="ViewBag.TracerID"></select>
+                <span asp-validation-for="Contact.TracerID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.CaseID" class="control-label"></label>
+                <select asp-for="Contact.CaseID" class="form-control" asp-items="ViewBag.CaseID"></select>
+                <span asp-validation-for="Contact.CaseID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.TestDate" class="control-label"></label>
+                <input asp-for="Contact.TestDate" class="form-control" />
+                <span asp-validation-for="Contact.TestDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.AddedDate" class="control-label"></label>
+                <input asp-for="Contact.AddedDate" class="form-control" />
+                <span asp-validation-for="Contact.AddedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contact.RemovedDate" class="control-label"></label>
+                <input asp-for="Contact.RemovedDate" class="form-control" />
+                <span asp-validation-for="Contact.RemovedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

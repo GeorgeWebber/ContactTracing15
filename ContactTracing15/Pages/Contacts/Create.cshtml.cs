@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ContactTracing15.Data;
 using ContactTracing15.Models;
 
-namespace ContactTracing15.Pages.Cases
+namespace ContactTracing15.Pages.Contacts
 {
     public class CreateModel : PageModel
     {
@@ -21,12 +21,13 @@ namespace ContactTracing15.Pages.Cases
 
         public IActionResult OnGet()
         {
-        ViewData["TesterID"] = new SelectList(_context.Testers, "TesterID", "TesterID");
+        ViewData["CaseID"] = new SelectList(_context.Cases, "CaseID", "CaseID");
+        ViewData["TracerID"] = new SelectList(_context.Tracers, "TracerID", "TracerID");
             return Page();
         }
 
         [BindProperty]
-        public Case Case { get; set; }
+        public Contact Contact { get; set; }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://aka.ms/RazorPagesCRUD.
@@ -37,7 +38,7 @@ namespace ContactTracing15.Pages.Cases
                 return Page();
             }
 
-            _context.Cases.Add(Case);
+            _context.Contacts.Add(Contact);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
