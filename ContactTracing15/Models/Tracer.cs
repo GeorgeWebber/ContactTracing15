@@ -10,6 +10,5 @@ namespace ContactTracing15.Models
     public int TracerID { get; set; }
 
     public ICollection<Contact> Contacts { get; set; }
-    public ICollection<Call>? Calls { get; set; }
     }
 }

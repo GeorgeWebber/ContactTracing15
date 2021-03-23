@@ -16,7 +16,6 @@ namespace ContactTracing15.Data
 
         public DbSet<ContactTracing15.Models.Case> Cases { get; set; }
         public DbSet<ContactTracing15.Models.Contact> Contacts { get; set; }
-        public DbSet<ContactTracing15.Models.Call> Calls { get; set; }
         public DbSet<ContactTracing15.Models.Tester> Testers { get; set; }
         public DbSet<ContactTracing15.Models.Tracer> Tracers { get; set; }
 
@@ -24,7 +23,6 @@ namespace ContactTracing15.Data
         {
             modelBuilder.Entity<Case>().ToTable("Case");
             modelBuilder.Entity<Contact>().ToTable("Contact");
-            modelBuilder.Entity<Call>().ToTable("Call");
             modelBuilder.Entity<Tester>().ToTable("Tester");
             modelBuilder.Entity<Tracer>().ToTable("Tracer");
         }

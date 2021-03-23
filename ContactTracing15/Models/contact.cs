@@ -24,7 +24,6 @@ namespace ContactTracing15.Models
 
     public Tracer Tracer { get; set; }
     public Case Case { get; set; }
-    public ICollection<Call>? Calls { get; set; }
 
     }
 }
