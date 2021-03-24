@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ContactTracing15.Data;
 using ContactTracing15.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ContactTracing15.Pages.Cases
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly ContactTracing15.Data.MainDBContext _context;
