@@ -7,6 +7,10 @@
     "mssql2": {
       "type": "mssql.local",
       "connectionId": "MainDBContext"
+    },
+    "mssql3": {
+      "type": "mssql.local",
+      "connectionId": "ContactTracing15ContextConnection"
     }
   }
 }
