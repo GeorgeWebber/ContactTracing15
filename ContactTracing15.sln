@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactTracing15", "ContactTracing15\ContactTracing15.csproj", "{3ABE804D-890F-4F1C-A036-24E22E56121E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactTracing15.Models", "ContactTracing15.Models\ContactTracing15.Models.csproj", "{49BB0A7D-6AEB-418D-992E-E8D51BE73FFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactTracing15.Models", "ContactTracing15.Models\ContactTracing15.Models.csproj", "{49BB0A7D-6AEB-418D-992E-E8D51BE73FFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactTracing15.Services", "ContactTracing15.Services\ContactTracing15.Services.csproj", "{5A66D0FF-541C-4E82-BB25-90E8DC540A52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactTracing15.Services", "ContactTracing15.Services\ContactTracing15.Services.csproj", "{5A66D0FF-541C-4E82-BB25-90E8DC540A52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
