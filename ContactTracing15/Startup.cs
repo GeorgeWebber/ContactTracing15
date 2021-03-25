@@ -38,8 +38,13 @@ namespace ContactTracing15
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
-            services.AddSingleton<ICaseRepository, SQLCaseRepository>();
-            
+            services.AddScoped<ICaseRepository, SQLCaseRepository>();
+            services.AddScoped<IContactRepository, SQLContactRepository>();
+            services.AddScoped<ITracerRepository, SQLTracerRepository>();
+            services.AddScoped<ITesterRepository, SQLTesterRepository>();
+            services.AddScoped<ITestingCentreRepository, SQLTestingCentreRepository>();
+            services.AddScoped<ITracingCentreRepository, SQLTracingCentreRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
