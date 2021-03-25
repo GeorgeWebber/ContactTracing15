@@ -1,0 +1,49 @@
+﻿@page
+@model ContactTracing15.Pages.Tracing.ContactFormModel
+@{
+    ViewData["Title"] = "Contact Form";
+}
+
+<form method="post">
+    <div class="row">
+        <div class="col-9">
+            <ul class="PositiveFormList" data-role="listview">
+                <li class="forename">
+                    <div class="form-group">
+                        <label asp-for="ContactForm.Forename"></label>
+                        <input asp-for="ContactForm.Forename" class="form-control form-control-sm" />
+                        <span asp-validation-for="ContactForm.Forename"></span>
+                    </div>
+                </li>
+                <li class="last-name">
+                    <div class="form-group">
+                        <label asp-for="ContactForm.Surname"></label>
+                        <input asp-for="ContactForm.Surname" class="form-control form-control-sm" />
+                        <span asp-validation-for="ContactForm.Surname"></span>
+                    </div>
+                </li>
+                <li class="email">
+                    <div class="form-group">
+                        <label asp-for="ContactForm.Email"></label>
+                        <input asp-for="ContactForm.Email" class="form-control form-control-sm" />
+                        <span asp-validation-for="ContactForm.Email"></span>
+                    </div>
+                </li>
+                <li class="phone-number">
+                    <div class="form-group">
+                        <label asp-for="ContactForm.Phone"></label>
+                        <input asp-for="ContactForm.Phone" class="form-control form-control-sm" />
+                        <span asp-validation-for="ContactForm.Phone"></span>
+                    </div>
+                </li>
+            </ul>
+            <p class="actions">
+                <button class="btn btn-danger submit-button">Submit</button>
+            </p>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial"></partial>
+}

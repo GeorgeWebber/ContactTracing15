@@ -1,4 +1,5 @@
 using ContactTracing15.Data;
+using ContactTracing15.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +28,10 @@ namespace ContactTracing15
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<AppDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("AppDB"));
+            });
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -34,8 +39,12 @@ namespace ContactTracing15
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
 
-            services.AddDbContext<MainDBContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("MainDBContext")));
+            services.AddScoped<ICaseRepository, SQLCaseRepository>();
+            services.AddScoped<IContactRepository, SQLContactRepository>();
+            services.AddScoped<ITracerRepository, SQLTracerRepository>();
+            services.AddScoped<ITesterRepository, SQLTesterRepository>();
+            services.AddScoped<ITestingCentreRepository, SQLTestingCentreRepository>();
+            services.AddScoped<ITracingCentreRepository, SQLTracingCentreRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +53,6 @@ namespace ContactTracing15
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
