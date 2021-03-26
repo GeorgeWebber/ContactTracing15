@@ -35,6 +35,7 @@ namespace ContactTracing15.Pages.Tracing
                 (new SQLTracingCentreRepository(_context)).Add(new TracingCentre { Name = "temp" });
                 (new SQLTracerRepository(_context)).Add(new Tracer { Username = "Also Tyler", TracingCentreID = (new SQLTracingCentreRepository(_context)).GetAllTracingCentres().First(x => x.Name == "temp").TracingCentreID });
                 ParentCase = SQLCaseRepository.GetAllCases().First();
+                // TODO: Needs a test to catch no cases
             }
         }
 
