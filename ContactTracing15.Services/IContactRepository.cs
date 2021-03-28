@@ -5,6 +5,9 @@ using System.Text;
 
 namespace ContactTracing15.Services
 {
+    /// <summary>
+    /// Interface specifying how the Contact database table is to be interacted with.
+    /// </summary>
     public interface IContactRepository
     {
         IEnumerable<Contact> GetAllContacts();
