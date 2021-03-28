@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace ContactTracing15.Services
 {
+    /// <summary>
+    /// Interface specifying how the Case database table is to be interacted with.
+    /// </summary>
     public interface ICaseRepository
     {
         IEnumerable<Case> GetAllCases();

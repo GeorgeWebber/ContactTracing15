@@ -12,6 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ContactTracing15
 {
+    /// <summary>
+    /// Program class that is instantiated run by the server to execute our system
+    /// </summary>
     public class Program
     {
         public static void Main(string[] args)
