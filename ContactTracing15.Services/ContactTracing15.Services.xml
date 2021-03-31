@@ -4,5 +4,41 @@
         <name>ContactTracing15.Services</name>
     </assembly>
     <members>
+        <member name="T:ContactTracing15.Services.AppDbContext">
+            <summary>
+            "DbContext instance represents a combination of the Unit Of Work and Repository patterns such that it can be used to query from a database and group together changes that will then be written back to the store as a unit" 
+            AppDbContext is a subclass of DbContext that facilitates database access from within other classes.
+            </summary>
+        </member>
+        <member name="T:ContactTracing15.Services.ICaseRepository">
+            <summary>
+            Interface specifying how the Case database table is to be interacted with.
+            </summary>
+        </member>
+        <member name="T:ContactTracing15.Services.IContactRepository">
+            <summary>
+            Interface specifying how the Contact database table is to be interacted with.
+            </summary>
+        </member>
+        <member name="T:ContactTracing15.Services.ITesterRepository">
+            <summary>
+            Interface specifying how the Tester database table is to be interacted with.
+            </summary>
+        </member>
+        <member name="T:ContactTracing15.Services.ITestingCentreRepository">
+            <summary>
+            Interface specifying how the TestingCentre database table is to be interacted with.
+            </summary>
+        </member>
+        <member name="T:ContactTracing15.Services.ITracerRepository">
+            <summary>
+            Interface specifying how the Tracer database table is to be interacted with.
+            </summary>
+        </member>
+        <member name="T:ContactTracing15.Services.ITracingCentreRepository">
+            <summary>
+            Interface specifying how the TracingCentre database table is to be interacted with.
+            </summary>
+        </member>
     </members>
 </doc>
