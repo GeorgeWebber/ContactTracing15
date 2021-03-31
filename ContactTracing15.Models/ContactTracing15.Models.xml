@@ -100,10 +100,80 @@
             Object representing a NHS tester who processed covid tests and reports the positive ones in this system.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:ContactTracing15.Models.Tester.TesterID" -->
-        <!-- Badly formed XML comment ignored for member "P:ContactTracing15.Models.Tester.Username" -->
-        <!-- Badly formed XML comment ignored for member "P:ContactTracing15.Models.Tester.TestingCentreID" -->
-        <!-- Badly formed XML comment ignored for member "P:ContactTracing15.Models.Tester.TestingCentre" -->
-        <!-- Badly formed XML comment ignored for member "P:ContactTracing15.Models.Tester.Cases" -->
+        <member name="P:ContactTracing15.Models.Tester.TesterID">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.Tester.Username">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.Tester.TestingCentreID">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.Tester.TestingCentre">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.Tester.Cases">
+            <value></value>
+        </member>
+        <member name="T:ContactTracing15.Models.TestingCentre">
+            <summary>
+            Class to represent a testing centre.
+            </summary>
+        </member>
+        <member name="P:ContactTracing15.Models.TestingCentre.TestingCentreID">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.TestingCentre.Name">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.TestingCentre.RegistrationCode">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.TestingCentre.Postcode">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.TestingCentre.Testers">
+            <value></value>
+        </member>
+        <member name="T:ContactTracing15.Models.Tracer">
+            <summary>
+            Class to represent a contact tracer.
+            </summary>
+        </member>
+        <member name="P:ContactTracing15.Models.Tracer.TracerID">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.Tracer.Username">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.Tracer.TracingCentreID">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.Tracer.TracingCentre">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.Tracer.Cases">
+            <value></value>
+        </member>
+        <member name="T:ContactTracing15.Models.TracingCentre">
+            <summary>
+            Class to represent a contact tracing organisation.
+            </summary>
+        </member>
+        <member name="P:ContactTracing15.Models.TracingCentre.TracingCentreID">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.TracingCentre.Name">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.TracingCentre.RegistrationCode">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.TracingCentre.Postcode">
+            <value></value>
+        </member>
+        <member name="P:ContactTracing15.Models.TracingCentre.Tracers">
+            <value></value>
+        </member>
     </members>
 </doc>

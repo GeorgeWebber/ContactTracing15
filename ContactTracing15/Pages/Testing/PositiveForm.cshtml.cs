@@ -50,6 +50,7 @@ namespace ContactTracing15.Pages.Testing
             try
             {
                 testerId = (int)HttpContext.Session.GetInt32("ID");
+                Console.WriteLine("Session ID is: " + testerId);
                 tester = _testerRepository.GetTester(testerId);
                 testingCentre = tester.TestingCentre;
             }
