@@ -15,20 +15,22 @@ namespace ContactTracing15.Pages.Testing
     public class PositiveFormModel : PageModel
     {
         private readonly AppDbContext _context;
+        private readonly ICaseRepository _caseRepository;
+        private readonly ITesterRepository _testerRepository;
 
-        public PositiveFormModel(AppDbContext context)
+        public PositiveFormModel(AppDbContext context, ICaseRepository caseRepository, ITesterRepository testerRepository)
         {
             _context = context;
+            _caseRepository = caseRepository;
+            _testerRepository = testerRepository;
         }
 
         public void OnGetAsync()  //here sessions variables are probably appropriate, however everything else happening is not
         {
-            SQLCaseRepository = new SQLCaseRepository(_context);
-            SQLTesterRepository = new SQLTesterRepository(_context);
             try
             {
                 testerId = (int)HttpContext.Session.GetInt32("ID");
-                tester = SQLTesterRepository.GetTester(testerId);
+                tester = _testerRepository.GetTester(testerId);
                 testingCentre = tester.TestingCentre;
             }
             catch
@@ -36,19 +38,19 @@ namespace ContactTracing15.Pages.Testing
                 (new SQLTestingCentreRepository(_context)).Add(new TestingCentre { Name = "temp", Postcode = "OX28" });
                 testingCentre = (new SQLTestingCentreRepository(_context)).GetAllTestingCentres().First(x => x.Name == "temp");
                 Console.WriteLine(testingCentre.Name);
-                SQLTesterRepository.Add(new Tester { Username = "Tyler" , TestingCentreID = testingCentre.TestingCentreID});
-                tester = SQLTesterRepository.GetAllTesters().First(x => x.Username == "Tyler");
+                _testerRepository.Add(new Tester { Username = "Tyler" , TestingCentreID = testingCentre.TestingCentreID});
+                tester = _testerRepository.GetAllTesters().First(x => x.Username == "Tyler");
             }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            SQLCaseRepository = new SQLCaseRepository(_context);
-            SQLTesterRepository = new SQLTesterRepository(_context);
+            //_caseRepository = new SQLCaseRepository(_context);
+            //_testerRepository = new SQLTesterRepository(_context);
             try
             {
                 testerId = (int)HttpContext.Session.GetInt32("ID");
-                tester = SQLTesterRepository.GetTester(testerId);
+                tester = _testerRepository.GetTester(testerId);
                 testingCentre = tester.TestingCentre;
             }
             catch
@@ -56,19 +58,18 @@ namespace ContactTracing15.Pages.Testing
                 (new SQLTestingCentreRepository(_context)).Add(new TestingCentre { Name = "temp", Postcode = "OX28" });
                 testingCentre = (new SQLTestingCentreRepository(_context)).GetAllTestingCentres().First(x => x.Name == "temp");
                 Console.WriteLine(testingCentre.Name);
-                SQLTesterRepository.Add(new Tester { Username = "Tyler", TestingCentreID = testingCentre.TestingCentreID });
-                tester = SQLTesterRepository.GetAllTesters().First(x => x.Username == "Tyler");
+                _testerRepository.Add(new Tester { Username = "Tyler", TestingCentreID = testingCentre.TestingCentreID });
+                tester = _testerRepository.GetAllTesters().First(x => x.Username == "Tyler");
             }
             //Product = await db.Products.FindAsync(Id);  some sort of await command here, so this runs when a command succeeds
             if (ModelState.IsValid)
             {
-                SQLCaseRepository.Add(CaseForm.getCase(testingCentre,tester));
+                _caseRepository.Add(CaseForm.getCase(testingCentre,tester));
                 return RedirectToPage("../Index");
             }
             return Page();
         }
-        SQLCaseRepository SQLCaseRepository;
-        SQLTesterRepository SQLTesterRepository;
+        
 
         public int testerId { get; set; }
         public Tester tester { get; set; }
