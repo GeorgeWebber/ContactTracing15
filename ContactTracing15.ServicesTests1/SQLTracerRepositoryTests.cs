@@ -48,7 +48,7 @@ namespace ContactTracing15.Services.Tests
 
             foreach (Tracer tracerFromDb in allTracers)
             {
-                int id = tracerFromDb.TracingCentreID;
+                int id = tracerFromDb.TracerID;
                 idList.Add(id);
             }
             foreach (int id in idList)
@@ -63,8 +63,8 @@ namespace ContactTracing15.Services.Tests
         public void A20_GetAllTracersTest()
         {
             IEnumerable<Tracer> allTracers = tracerRepository.GetAllTracers();
-            Assert.IsTrue(allTracers.Count() > 0, "Non-zero number of centres in the table");
-            //Assert.AreEqual(allCentres.First().Name, tracer1.Name);
+            Assert.IsTrue(allTracers.Count() > 0, "Non-zero number of tracers in the table");
+            //Assert.AreEqual(allTesters.First().Name, tracer1.Name);
         }
 
         [TestMethod()]
@@ -77,12 +77,6 @@ namespace ContactTracing15.Services.Tests
 
             Tracer tracerFromDb = tracerRepository.GetTracer(baseTracer.TracerID);
             Assert.AreEqual(baseTracer.Username, tracerFromDb.Username);
-        }
-
-        [TestMethod()]
-        public void A50_SearchTest()
-        {
-            Assert.Fail();
         }
 
         [TestMethod()]
