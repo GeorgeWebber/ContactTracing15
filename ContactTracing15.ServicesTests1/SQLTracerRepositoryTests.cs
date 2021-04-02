@@ -10,11 +10,6 @@ namespace ContactTracing15.Services.Tests
     [TestClass()]
     public class SQLTracerRepositoryTests : IntegrationTestBase
     {
-        [TestMethod()]
-        public void SQLTracerRepositoryTest()
-        {
-            Assert.Fail();
-        }
 
         [TestMethod()]
         public void AddTest()

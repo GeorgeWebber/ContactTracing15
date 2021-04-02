@@ -11,36 +11,15 @@ namespace ContactTracing15.Services.Tests
     [TestClass()]
     public class SQLCaseRepositoryTests : IntegrationTestBase
     {
-
-        [TestMethod()]
-        public void SQLCaseRepositoryTest()
-        {
-
-            Assert.Fail();
-        }
-
         [TestMethod()]
         public void AddTest()
         {
-            TestingCentre testCentre = new TestingCentre();
-            testCentre.Name = "Centre #1";
-            testingCentreRepository.Add(testCentre);
- 
 
-            Tester tester = new Tester();
-            tester.Username = "testing_user1";
-            tester.TestingCentre = testCentre;
-            testerRepository.Add(tester);
+            testingCentreRepository.Add(testingCentre1);
 
-            Case case1 = new Case();
-            case1.AddedDate = new DateTime(3, 3, 3, 3, 3, 3, 3);
-            case1.TestDate = new DateTime(4, 4, 4, 4, 4, 4, 4);
-            case1.Forename = "John";
-            case1.Surname = "Doe";
-            case1.Phone = "+0123456789";
-            case1.Postcode = "AB12";
-            case1.Traced = false;
-            case1.TracerID = 1;
+            testerRepository.Add(tester1);
+
+            
 
             caseRepository.Add(case1);
 

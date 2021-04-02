@@ -12,56 +12,77 @@ namespace ContactTracing15.Services.Tests
     [TestClass()]
     public class SQLTestingCentreRepositoryTests : IntegrationTestBase
     {
+
         [TestMethod()]
-        public void SQLTestingCentreRepositoryTest()
+        public void A10_AddTest()
         {
-            Assert.Fail();
+            testingCentreRepository.Add(testingCentre1);
+            IEnumerable<TestingCentre> allCentres = testingCentreRepository.GetAllTestingCentres();
+            Boolean centreFound = false;
+
+            foreach (TestingCentre centreFromDb in allCentres)
+            {
+                if (centreFromDb.Name == testingCentre1.Name)
+                {
+                    centreFound = true;
+                }
+            }
+            Assert.IsTrue(centreFound, "Testing centre not found in the database after supposed addition");
+
         }
-
         [TestMethod()]
-        public void AddTest()
+        public void A20_GetAllTestingCentresTest()
         {
-
-            TestingCentre testCentre = new TestingCentre();
-            testCentre.Name = "Centre #1";
-            testingCentreRepository.Add(testCentre);
-
 
             IEnumerable<TestingCentre> allCentres = testingCentreRepository.GetAllTestingCentres();
-
-            TestingCentre centreFromDb = allCentres.First();
-            Assert.AreEqual(testCentre.Name, centreFromDb.Name);
+            Assert.IsTrue(allCentres.Count() > 0, "Non-zero number of centres in the table");
+            //Assert.AreEqual(allCentres.First().Name, testingCentre1.Name);
 
         }
 
         [TestMethod()]
-        public void DeleteTest()
+        public void A30_GetTestingCentreTest()
         {
-            Assert.Fail();
+            IEnumerable<TestingCentre> allCentres = testingCentreRepository.GetAllTestingCentres();
+            TestingCentre baseCentre = allCentres.First();
+
+            TestingCentre centreFromDb = testingCentreRepository.GetTestingCentre(baseCentre.TestingCentreID);
+            Assert.AreEqual(baseCentre.Name, centreFromDb.Name);
+
+        }        
+
+        [TestMethod()]
+        public void A40_UpdateTest()
+        {
+            IEnumerable<TestingCentre> allCentres = testingCentreRepository.GetAllTestingCentres();
+            TestingCentre baseCentre = allCentres.First();
+            baseCentre.Name = "Updated Name";
+            testingCentreRepository.Update(baseCentre);
+
+            TestingCentre centreFromDb2 = testingCentreRepository.GetTestingCentre(baseCentre.TestingCentreID);
+
+            Assert.AreEqual(baseCentre.Name, centreFromDb2.Name);
         }
 
         [TestMethod()]
-        public void GetAllTestingCentresTest()
+        public void A50_DeleteTest()
         {
-            Assert.Fail();
-        }
+            IEnumerable<TestingCentre> allCentres = testingCentreRepository.GetAllTestingCentres();
 
-        [TestMethod()]
-        public void GetTestingCentreTest()
-        {
-            Assert.Fail();
-        }
+            List<int> idList = new List<int>();
 
-        [TestMethod()]
-        public void UpdateTest()
-        {
-            Assert.Fail();
-        }
+            foreach (TestingCentre centreFromDb in allCentres)
+            {
+                int id = centreFromDb.TestingCentreID;
+                idList.Add(id);
+            }
+            foreach (int id in idList)
+            {
+                testingCentreRepository.Delete(id);
+            }
+       
+            Assert.AreEqual(testingCentreRepository.GetAllTestingCentres().Count(), 0);
 
-        [TestMethod()]
-        public void SaveTest()
-        {
-            Assert.Fail();
         }
     }
 }
