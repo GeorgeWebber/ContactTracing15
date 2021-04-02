@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactTracing15.Models", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactTracing15.Services", "ContactTracing15.Services\ContactTracing15.Services.csproj", "{5A66D0FF-541C-4E82-BB25-90E8DC540A52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactTracing15.ServicesTests1", "ContactTracing15.ServicesTests1\ContactTracing15.ServicesTests1.csproj", "{6ECD77C8-A4D9-46AE-8CED-4613E9C4B0B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5A66D0FF-541C-4E82-BB25-90E8DC540A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A66D0FF-541C-4E82-BB25-90E8DC540A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A66D0FF-541C-4E82-BB25-90E8DC540A52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ECD77C8-A4D9-46AE-8CED-4613E9C4B0B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ECD77C8-A4D9-46AE-8CED-4613E9C4B0B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ECD77C8-A4D9-46AE-8CED-4613E9C4B0B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ECD77C8-A4D9-46AE-8CED-4613E9C4B0B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
