@@ -5,66 +5,100 @@ using System.Collections.Generic;
 using System.Text;
 using ContactTracing15.ServicesTests1;
 using ContactTracing15.Models;
+using System.Linq;
 
 namespace ContactTracing15.Services.Tests
 {
     [TestClass()]
     public class SQLCaseRepositoryTests : IntegrationTestBase
     {
-        [TestMethod()]
-        public void AddTest()
-        {
 
+        [TestInitialize()]
+        public void SetUpTests()
+        {
             testingCentreRepository.Add(testingCentre1);
 
+            int testingCentreID = testingCentreRepository.GetAllTestingCentres().First().TestingCentreID;
+            tester1.TestingCentreID = testingCentreID;
             testerRepository.Add(tester1);
 
-            
+            int testerID = testerRepository.GetAllTesters().First().TesterID;
+            case1.TesterID = testerID;
+
+        }
+
+
+        [TestMethod()]
+        public void A10_AddTest()
+        {
 
             caseRepository.Add(case1);
+            IEnumerable<Case> allCases = caseRepository.GetAllCases();
+            Boolean caseFound = false;
 
-            Case caseFromDb = caseRepository.GetCase(1);
-
-            Assert.AreEqual(caseFromDb.Forename, case1.Forename);
-            Assert.AreEqual(caseFromDb.Surname, case1.Surname);
-            Assert.AreEqual(caseFromDb.Traced , case1.Traced);
-
+            foreach (Case caseFromDb in allCases)
+            {
+                if (caseFromDb.Forename == case1.Forename && caseFromDb.Surname == case1.Surname)
+                {
+                    caseFound = true;
+                }
+            }
+            Assert.IsTrue(caseFound, "Case not found in the database after supposed addition");
         }
 
         [TestMethod()]
-        public void DeleteTest()
+        public void A50_DeleteTest()
         {
-            Assert.Fail();
+            IEnumerable<Case> allCases = caseRepository.GetAllCases();
+
+            List<int> idList = new List<int>();
+
+            foreach (Case caseFromDb in allCases)
+            {
+                int id = caseFromDb.CaseID;
+                idList.Add(id);
+            }
+            foreach (int id in idList)
+            {
+                caseRepository.Delete(id);
+            }
+
+            Assert.AreEqual(caseRepository.GetAllCases().Count(), 0);
         }
 
         [TestMethod()]
-        public void GetAllCasesTest()
+        public void A20_GetAllCasesTest()
         {
-            Assert.Fail();
+            IEnumerable<Case> allCases = caseRepository.GetAllCases();
+            Assert.IsTrue(allCases.Count() > 0, "Non-zero number of cases in the table");
+            //Assert.AreEqual(allTesters.First().Name, case1.Name);
         }
 
         [TestMethod()]
-        public void GetCaseTest()
+        public void A30_GetCaseTest()
         {
-            Assert.Fail();
+            IEnumerable<Case> allCases = caseRepository.GetAllCases();
+            Case baseCase = allCases.First();
+
+            Console.WriteLine(baseCase.CaseID);
+
+            Case caseFromDb = caseRepository.GetCase(baseCase.CaseID);
+            Assert.AreEqual(baseCase.Forename, caseFromDb.Forename);
+            Assert.AreEqual(baseCase.Surname, caseFromDb.Surname);
+            Assert.AreEqual(baseCase.AddedDate, caseFromDb.AddedDate);
         }
 
         [TestMethod()]
-        public void SearchTest()
+        public void A40_UpdateTest()
         {
-            Assert.Fail();
-        }
+            IEnumerable<Case> allCases = caseRepository.GetAllCases();
+            Case baseCase = allCases.First();
+            baseCase.Forename = "Updated Jane";
+            caseRepository.Update(baseCase);
 
-        [TestMethod()]
-        public void UpdateTest()
-        {
-            Assert.Fail();
-        }
+            Case caseFromDb2 = caseRepository.GetCase(baseCase.CaseID);
 
-        [TestMethod()]
-        public void SaveTest()
-        {
-            Assert.Fail();
+            Assert.AreEqual(baseCase.Forename, caseFromDb2.Forename);
         }
     }
 }

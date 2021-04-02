@@ -57,8 +57,7 @@ namespace ContactTracing15.ServicesTests1
                 Surname = "Doe",
                 Phone = "+0123456789",
                 Postcode = "AB12",
-                Traced = false,
-                TracerID = 1
+                Traced = false
             };
         }
 
