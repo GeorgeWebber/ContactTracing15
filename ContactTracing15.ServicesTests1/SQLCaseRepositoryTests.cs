@@ -22,21 +22,15 @@ namespace ContactTracing15.Services.Tests
         [TestMethod()]
         public void AddTest()
         {
-            SQLTestingCentreRepository testingCentreRepository = new SQLTestingCentreRepository(dbContext);
             TestingCentre testCentre = new TestingCentre();
             testCentre.Name = "Centre #1";
-
             testingCentreRepository.Add(testCentre);
+ 
 
-
-
-            SQLTesterRepository testerRepository = new SQLTesterRepository(dbContext);
             Tester tester = new Tester();
             tester.Username = "testing_user1";
             tester.TestingCentre = testCentre;
             testerRepository.Add(tester);
-
-            SQLCaseRepository caseRepository = new SQLCaseRepository(dbContext); 
 
             Case case1 = new Case();
             case1.AddedDate = new DateTime(3, 3, 3, 3, 3, 3, 3);

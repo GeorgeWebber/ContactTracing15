@@ -13,6 +13,8 @@ namespace ContactTracing15.ServicesTests1
         public async Task SetUp()
         {
             var dbContextFactory = new AppDbContextFactory();
+            
+
             using (var dbContext = dbContextFactory.CreateDbContext(new string[] { }))
             {
                 await dbContext.Database.EnsureDeletedAsync();
