@@ -27,7 +27,7 @@ namespace ContactTracing15.Services.Tests
                     centreFound = true;
                 }
             }
-            Assert.IsTrue(centreFound, "Testing centre not found in the database after supposed addition");
+            Assert.IsTrue(centreFound, "Tracing centre not found in the database after supposed addition");
         }
 
         [TestMethod()]
