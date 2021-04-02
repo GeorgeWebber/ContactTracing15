@@ -64,8 +64,6 @@ namespace ContactTracing15.Services.Tests
             IEnumerable<TracingCentre> allCentres = tracingCentreRepository.GetAllTracingCentres();
             TracingCentre baseCentre = allCentres.First();
 
-            Console.WriteLine(baseCentre.TracingCentreID);
-
             TracingCentre centreFromDb = tracingCentreRepository.GetTracingCentre(baseCentre.TracingCentreID);
             Assert.AreEqual(baseCentre.Name, centreFromDb.Name);
         }
