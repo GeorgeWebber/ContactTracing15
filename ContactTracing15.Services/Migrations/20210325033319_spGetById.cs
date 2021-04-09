@@ -50,7 +50,7 @@ namespace ContactTracing15.Services.Migrations
                                     @TracingCentreId int
                                     as
                                     Begin
-                                        Select * from TracingCentress
+                                        Select * from TracingCentres
                                         where TracingCentreId = @TracingCentreId
                                     End";
             migrationBuilder.Sql(procedureTracingCentres);
