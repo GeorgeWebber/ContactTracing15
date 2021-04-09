@@ -4,8 +4,5 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\George\source\repos\ContactTracing15\ContactTracing15.Models\ContactTracing15.Models.xml</DocumentationFile>
-  </PropertyGroup>
 
 </Project>
