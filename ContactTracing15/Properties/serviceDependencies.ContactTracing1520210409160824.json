@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/contacttracing15dbserver/databases/ContactTracing15_db",
+      "type": "mssql.azure",
+      "connectionId": "AppDB",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

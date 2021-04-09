@@ -29,6 +29,7 @@ namespace ContactTracing15
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*:80", "http://*:443");
                 });
     }
 }

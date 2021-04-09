@@ -39,6 +39,13 @@ namespace ContactTracing15
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AppDB"));
             });
+
+
+            // Get the database context and apply the migrations
+            var context = services.BuildServiceProvider().GetService<AppDbContext>();
+            context.Database.Migrate();
+
+
             // Identity Database server context
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
