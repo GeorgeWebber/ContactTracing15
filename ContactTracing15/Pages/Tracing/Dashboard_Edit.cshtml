@@ -1,0 +1,14 @@
+﻿@page
+@model ContactTracing15.Pages.Tracing.DashboardModel
+
+<div class="lhs" style="float:left;width:50%">
+    @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
+</div>
+<div class="rhs">
+    <p>
+        Other Page
+    </p>
+    <p>
+        <a asp-page="./Dashboard">See main page </a>
+    </p>
+</div>

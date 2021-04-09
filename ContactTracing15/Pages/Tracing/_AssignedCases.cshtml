@@ -1,0 +1,13 @@
+﻿@model CaseListItems
+
+@if (Model.HasAssignedCases)
+{
+    <ul>
+        @foreach (var assignedCase in Model.AssignedCases.OrderByDescending(x => x.CaseRaised))
+        {
+            <li @if (assignedCase.IsActive) { <text> style="background-color:red" </text> }>
+                <a asp-page="./Dashboard" , asp-route-caseid="@assignedCase.CaseID">@Html.DisplayFor(m => assignedCase.Name)</a>
+            </li>
+        }
+    </ul>
+}
