@@ -1,3 +1,3 @@
-﻿To make database run locally, open Package Manager Console, make sure that "default project" is set to
-services and run command
+﻿To make database run locally & to create/maintain a testing database, open Package Manager Console, make sure that "default project" is set to
+services and run command. (Note: default project is a button to press, not a parameter to pass (sorry Dima!).)
 > Update-Database -Context AppDbContext
