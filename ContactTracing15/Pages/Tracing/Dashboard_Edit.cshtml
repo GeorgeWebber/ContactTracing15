@@ -1,14 +1,59 @@
 ﻿@page
-@model ContactTracing15.Pages.Tracing.DashboardModel
+@model ContactTracing15.Pages.Tracing.DashboardEditModel
 
 <div class="lhs" style="float:left;width:50%">
     @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
 </div>
 <div class="rhs">
     <p>
-        Other Page
-    </p>
-    <p>
-        <a asp-page="./Dashboard">See main page </a>
+        <form method="post">
+            <input asp-for="AddContactForm.CaseId" value="@Model.AddContactForm.CaseId" />
+            <div class="row">
+                <div class="col-9">
+                    <ul class="PositiveFormList" data-role="listview">
+                        <li class="forename">
+                            <div class="form-group">
+                                <label asp-for="AddContactForm.Forename"></label>
+                                <input asp-for="AddContactForm.Forename" class="form-control form-control-sm" />
+                                <span asp-validation-for="AddContactForm.Forename"></span>
+                            </div>
+                        </li>
+                        <li class="last-name">
+                            <div class="form-group">
+                                <label asp-for="AddContactForm.Surname"></label>
+                                <input asp-for="AddContactForm.Surname" class="form-control form-control-sm" />
+                                <span asp-validation-for="AddContactForm.Surname"></span>
+                            </div>
+                        </li>
+                        <li class="email">
+                            <div class="form-group">
+                                <label asp-for="AddContactForm.Email"></label>
+                                <input asp-for="AddContactForm.Email" class="form-control form-control-sm" />
+                                <span asp-validation-for="AddContactForm.Email"></span>
+                            </div>
+                        </li>
+                        <li class="phone-number">
+                            <div class="form-group">
+                                <label asp-for="AddContactForm.Phone"></label>
+                                <input asp-for="AddContactForm.Phone" class="form-control form-control-sm" />
+                                <span asp-validation-for="AddContactForm.Phone"></span>
+                            </div>
+                        </li>
+                    </ul>
+    <p class="actions">
+        <button class="btn btn-danger submit-button">Submit</button>
     </p>
 </div>
+    </div>
+</form>
+    </p>
+<p>
+    <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID">Back to details </a>
+</p>
+</div>
+
+
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial"></partial>
+}

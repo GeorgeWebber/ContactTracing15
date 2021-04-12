@@ -13,14 +13,17 @@ namespace ContactTracing15.Pages.Tracing
     {
         public BaseDashboardModel(
             ITracerRepository tracerRepository,
-            IUserService userService)
+            IUserService userService,
+            ICaseRepository caseRepository)
         {
+            this.caseRepository = caseRepository;
             this.tracerRepository = tracerRepository;
             this.userService = userService;
         }
 
         private CaseListItems _caseListItems;
         private readonly ITracerRepository tracerRepository;
+        private readonly ICaseRepository caseRepository;
         private readonly IUserService userService;
 
         public CaseListItems CaseListItems
@@ -32,13 +35,15 @@ namespace ContactTracing15.Pages.Tracing
                     var assignedCases = Enumerable.Empty<CaseListItem>();
                     if (User != null)
                     {
-                        var currentUser = userService.GetUserByUserName(User.Identity.Name);
-                        var cases = tracerRepository?.GetTracer(currentUser.UserId)?.Cases
-                            ?? Enumerable.Empty<Case>();
+                        var claims = HttpContext.User.Claims;
+                        var currentUser = userService.GetUserByUserName(claims.Single(x => x.Type == "preferred_username").Value,int.Parse(claims.Single(x => x.Type=="usrtype").Value));
+                        //var cases = tracerRepository?.GetTracer(currentUser.UserId)?.Cases
+                        //    ?? Enumerable.Empty<Case>();
+                        var cases = caseRepository.GetAllCases().Where(x => x.TracerID == currentUser.UserId);
                         assignedCases = cases.Select(MapToCaseListItem);
                     }
 
-                    assignedCases = new[] {
+                    /*assignedCases = new[] {
                         new CaseListItem
                         {
                             CaseRaised = DateTime.Now.AddDays(-7),
@@ -51,7 +56,7 @@ namespace ContactTracing15.Pages.Tracing
                             CaseID = 2,
                             Name = "Test name 2"
                         }
-                    };
+                    };*/
 
                     _caseListItems = new CaseListItems
                     {
