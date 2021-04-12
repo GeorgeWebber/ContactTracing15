@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Okta.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ContactTracing15
 {
@@ -58,6 +60,24 @@ namespace ContactTracing15
             services.AddScoped<ITesterRepository, SQLTesterRepository>();
             services.AddScoped<ITestingCentreRepository, SQLTestingCentreRepository>();
             services.AddScoped<IUserService, UserService>();
+
+            //Add Okta middleware configuration(Authentication)
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OktaDefaults.MvcAuthenticationScheme;
+            })
+            .AddCookie()
+            .AddOktaMvc(new OktaMvcOptions
+            {
+                // Replace these values with your Okta configuration
+                OktaDomain = "https://dev-9464250.okta.com",
+                ClientId = "0oajui6wuGYVC8WP95d6",
+                ClientSecret = "7AeX4qoyVRn0cO4btEGGxV6XqWFzNWOnXyaFvPp8"
+            });
+
+            services.AddControllersWithViews();
         }
 
         /// <summary>
@@ -89,6 +109,9 @@ namespace ContactTracing15
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

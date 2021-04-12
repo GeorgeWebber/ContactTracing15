@@ -1,0 +1,27 @@
+﻿Authentication guide:
+1. click sign in at the top right corner
+jump to okta page
+2. input user name and password. Now there's three dummy users
+Tester2@123.com dummypassword
+Tracer2@123.com dummypassword
+Gov2@123.com dummypassword
+
+3. Okta will redirect back to home page. On top right hand side user name and user type will be shown
+0: Tracers 1: Testers 2: Government officials
+
+After sign in, info about user will be stored in HttpContext.User.Claims
+Claims content exampe:
+
+sub					00ukl1bzkgEJyurCy5d6
+name				Tester2 Dummy
+jti					ID.vGEbxsfpTMTc2hz3di4ogTYsdl0mwR6ya1LTuY7PalA
+amr					pwd
+idp					00ojos44qcuX4d4a45d6
+preferred_username	tester2@123.com
+auth_time			1618186325
+usrtype				1
+given_name			Tester2
+family_name			Dummy
+locale				en-US
+zoneinfo			America/Los_Angeles
+updated_at			1618178832
