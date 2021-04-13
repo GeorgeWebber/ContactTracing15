@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
 
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
+
 namespace ContactTracing15.Pages.Tracing
 {
     public class DashboardModel : BaseDashboardModel // TODO create table of all cases assigned to a tracer with routing to details pages for each case (and form for adding contacts)
@@ -18,6 +23,7 @@ namespace ContactTracing15.Pages.Tracing
             IUserService userService,
             IContactRepository contactRepository)
             :base(tracerRepository, userService, caseRepository)
+
         {
             this.caseRepository = caseRepository;
             this.contactRepository = contactRepository;
