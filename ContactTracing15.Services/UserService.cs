@@ -34,13 +34,7 @@ namespace ContactTracing15.Services
                 }
                 catch(InvalidOperationException e)
                 {
-                    //return null;
-                    return new User
-                    {
-                        Type = UserType.Tracer,
-                        UserId = 561,
-                        UserName = "failed"
-                    };
+                    return null;
                 }
                 
 

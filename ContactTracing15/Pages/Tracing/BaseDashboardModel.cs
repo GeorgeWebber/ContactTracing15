@@ -39,7 +39,8 @@ namespace ContactTracing15.Pages.Tracing
                         var currentUser = userService.GetUserByUserName(claims.Single(x => x.Type == "preferred_username").Value,int.Parse(claims.Single(x => x.Type=="usrtype").Value));
                         //var cases = tracerRepository?.GetTracer(currentUser.UserId)?.Cases
                         //    ?? Enumerable.Empty<Case>();
-                        var cases = caseRepository.GetAllCases().Where(x => x.TracerID == currentUser.UserId);
+                        var cases = currentUser!=null ? caseRepository.GetAllCases().Where(x => x.TracerID == currentUser.UserId) : Enumerable.Empty<Case>();
+                        
                         assignedCases = cases.Select(MapToCaseListItem);
                     }
 

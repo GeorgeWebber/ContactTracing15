@@ -74,7 +74,7 @@ namespace ContactTracing15.Pages.Tracing
             if (ModelState.IsValid)
             {
                 contactRepository.Add(AddContactForm.getContact(AddContactForm.CaseId));
-                return new RedirectToPageResult($"Dashboard");  
+                return new RedirectToPageResult("Dashboard", new { caseId = AddContactForm.CaseId });  
             }
             return Page();
         }
