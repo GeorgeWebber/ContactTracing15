@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Okta.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ContactTracing15
 {
@@ -78,6 +79,17 @@ namespace ContactTracing15
             });
 
             services.AddControllersWithViews();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("TracersOnly", policy => policy.Requirements.Add(new UserTypeRequirement(0)));
+                options.AddPolicy("TestersOnly", policy => policy.Requirements.Add(new UserTypeRequirement(1)));
+                options.AddPolicy("GovAgentOnly", policy => policy.Requirements.Add(new UserTypeRequirement(2)));
+            });
+
+
+            services.AddSingleton<IAuthorizationHandler, UserTypeHandler>();
+
         }
 
         /// <summary>
