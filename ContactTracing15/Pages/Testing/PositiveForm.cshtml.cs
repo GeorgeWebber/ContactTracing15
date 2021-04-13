@@ -29,6 +29,13 @@ namespace ContactTracing15.Pages.Testing
         {
             try
             {
+                var userClaims = HttpContext.User.Claims;
+                foreach (var claim in userClaims)
+                {
+                    Console.WriteLine(claim.Type);
+                    Console.WriteLine(claim.Value);
+                }
+
                 testerId = (int)HttpContext.Session.GetInt32("ID");
                 tester = _testerRepository.GetTester(testerId);
                 testingCentre = tester.TestingCentre;

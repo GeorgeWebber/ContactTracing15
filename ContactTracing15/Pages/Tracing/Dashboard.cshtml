@@ -1,5 +1,36 @@
 ﻿@page
 @model ContactTracing15.Pages.Tracing.DashboardModel
+
+<div class="lhs" style="float:left;width:50%">
+    @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
+</div>
+<div class="rhs">
+    @if (Model.HasCurrentAssignedCase)
+    {
+        <p>
+            Case Name: @Html.DisplayFor(m => m.CurrentAssignedCase.Name)
+        </p>
+        <p> Added Contacts: </p>
+        <u1>
+            @foreach (var contact in Model.CurrentAssignedCase.contacts)
+            {
+                <li>
+                    @contact.Forename
+                </li>
+            }
+        </u1>
+        <p>
+            <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID">Add a Contact </a>
+        </p>
+    }
+    else
+    {
+        <p>
+            Click a case for details.
+        </p>
+    }
+</div>
+=======
 @{
 }
 
@@ -92,3 +123,4 @@
                 </div>
         </div>
     </div>
+

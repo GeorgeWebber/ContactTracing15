@@ -1,107 +1,74 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ContactTracing15.Helper.Extensions;
+using ContactTracing15.Models;
+using ContactTracing15.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Collections.Generic;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ContactTracing15.Models;
-using ContactTracing15.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace ContactTracing15.Pages.Tracing
 {
-    public class DashboardModel : PageModel // TODO create table of all cases assigned to a tracer with routing to details pages for each case (and form for adding contacts)
+    public class DashboardModel : BaseDashboardModel // TODO create table of all cases assigned to a tracer with routing to details pages for each case (and form for adding contacts)
     {
-        private readonly AppDbContext _context;
+        private readonly ICaseRepository caseRepository;
+        private readonly IContactRepository contactRepository;
 
-        public DashboardModel(AppDbContext context)
+        public DashboardModel(
+            ICaseRepository caseRepository,
+            ITracerRepository tracerRepository,
+            IUserService userService,
+            IContactRepository contactRepository)
+            :base(tracerRepository, userService, caseRepository)
+
         {
-            _context = context;
+            this.caseRepository = caseRepository;
+            this.contactRepository = contactRepository;
         }
 
-        public void OnGetAsync(int? pcID)  //Need to Dejank this and switch to routing parameters instead of session variables
-        {
-            SQLContactRepository = new SQLContactRepository(_context);
-            SQLCaseRepository = new SQLCaseRepository(_context);
-            try
-            {
-                ParentCaseId = (int)HttpContext.Session.GetInt32("ID");
-                ParentCase = SQLCaseRepository.GetCase(ParentCaseId);
-            }
-            catch
-            {
-                (new SQLTracingCentreRepository(_context)).Add(new TracingCentre { Name = "temp" });
-                (new SQLTracerRepository(_context)).Add(new Tracer { Username = "Also Tyler", TracingCentreID = (new SQLTracingCentreRepository(_context)).GetAllTracingCentres().First(x => x.Name == "temp").TracingCentreID });
-                ParentCase = SQLCaseRepository.GetAllCases().First();
-                // TODO: Needs a test to catch no cases
-            }
-        }
+        public CaseDetail CurrentAssignedCase { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
+        public bool HasCurrentAssignedCase => CurrentAssignedCase != null;
+
+        public IActionResult OnGet(int? caseId)
         {
-            SQLContactRepository = new SQLContactRepository(_context);
-            SQLCaseRepository = new SQLCaseRepository(_context);
-            try
+            //if(User == null || User.Identity == null || !User.Identity.IsAuthenticated)
+            //{
+            //    return Unauthorized();
+            //}
+
+            if (caseId.HasValue && !CaseListItems.AssignedCases.Any(x => x.CaseID == caseId))
             {
-                ParentCaseId = (int)HttpContext.Session.GetInt32("ID");
-                ParentCase = SQLCaseRepository.GetCase(ParentCaseId);
+                return Unauthorized();
             }
-            catch
+
+            if (caseId.HasValue)
             {
-                ParentCase = SQLCaseRepository.GetAllCases().First();
+                CaseListItems.AssignedCases.FirstOrDefault(x => x.CaseID == caseId).IsActive = true;
+
+                var currentCase = caseRepository.GetCase(caseId.Value);
+                if (currentCase != null)
+                {
+                    CurrentAssignedCase = new CaseDetail
+                    {
+                        Name = currentCase.GetFullName(),
+                        CaseID = currentCase.CaseID,
+                        contacts = contactRepository.GetAllContacts().Where(x => x.CaseID == currentCase.CaseID)
+                    };
+                }
             }
-            //Product = await db.Products.FindAsync(Id);  some sort of await command here, so this runs when a command succeeds
-            if (ModelState.IsValid)
-            {
-                SQLContactRepository.Add(Dashboard.getContact(ParentCase));
-                return RedirectToPage("../Index");
-            }
+
             return Page();
         }
-        SQLContactRepository SQLContactRepository;
-        SQLCaseRepository SQLCaseRepository;
-
-        public int ParentCaseId { get; set; }
-        public Case ParentCase { get; set; }
-
-        [BindProperty]
-        public Dashboard Dashboard { get; set; }
-
     }
 
-    public class Dashboard
+    public class CaseDetail
     {
-        [Required(ErrorMessage = "Please enter contact's forename"), Display(Name = "Forename")]
-        public string Forename { get; set; }
-        [Required(ErrorMessage = "Please enter contact's Surname"), Display(Name = "Surname")]
-        public string Surname { get; set; }
-
-        [EmailAddress, Required(ErrorMessage = "Please enter email address for contact"), Display(Name = "Email Address")]
-        public string Email { get; set; }
-
-#nullable enable
-        [Phone, Display(Name = "Phone Number")]
-        public string? Phone { get; set; }
-
-        public Contact getContact(Case parent)
-        {
-            Contact _contact = new Contact();
-            _contact.Forename = this.Forename;
-            _contact.Surname = this.Surname;
-            _contact.Phone = this.Phone;
-            _contact.Email = this.Email;
-
-            _contact.AddedDate = DateTime.Now;
-            _contact.TracedDate = DateTime.Now;
-            _contact.CaseID = parent.CaseID;
-            _contact.AddedDate = DateTime.Now;
-            return _contact;
-        }
-
-        public void OnGet()
-        {
-        }
+        public string Name { get; set; }
+        public int CaseID { get; set; }
+        public IEnumerable<Contact> contacts { get; set; }
     }
 }
