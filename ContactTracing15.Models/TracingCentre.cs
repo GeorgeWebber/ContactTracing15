@@ -9,6 +9,7 @@ namespace ContactTracing15.Models
     /// </summary>
     public class TracingCentre
     {
+
         ///<value></value>
         public int TracingCentreID { get; set; }
 
@@ -22,6 +23,6 @@ namespace ContactTracing15.Models
         public string Postcode { get; set; }
 
         ///<value></value>
-        public ICollection<Tracer> Tracers { get; set; }
+        public virtual ICollection<Tracer> Tracers { get; set; }
     }
 }
