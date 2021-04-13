@@ -25,3 +25,11 @@ family_name			Dummy
 locale				en-US
 zoneinfo			America/Los_Angeles
 updated_at			1618178832
+
+
+To add authorization to a page, add the decorator [Authorize(Policy = "policy here")]
+
+
+See Dashboard.cshtml.cs for a working example. The policy strings are currently 
+
+"TracersOnly", "TestersOnly", and "GovAgentOnly.

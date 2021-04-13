@@ -8,11 +8,11 @@ namespace ContactTracing15
 {
     public class UserTypeRequirement : IAuthorizationRequirement
     {
-        public UserTypeRequirement(int _userType)
+        public UserTypeRequirement(string _userType)
         {
             UserType = _userType;
         }
 
-        public int UserType { get; set; }
+        public string UserType { get; set; }
     }
 }

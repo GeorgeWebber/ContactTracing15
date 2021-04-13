@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace ContactTracing15.Pages.GovAgent
 {
 
-    [Authorize(Policy = "TracersOnly")]
+    [Authorize(Policy = "GovAgentOnly")]
     public class GovHomeModel : PageModel
     {
         public void OnGet()

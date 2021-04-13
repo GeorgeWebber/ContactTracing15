@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ContactTracing15.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace ContactTracing15
 {
@@ -11,8 +13,13 @@ namespace ContactTracing15
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, UserTypeRequirement requirement)
         {
- 
-            var userType = 0;
+
+            if (!context.User.HasClaim(c => c.Type == "usrtype"))
+            {
+                return Task.CompletedTask;
+            }
+
+            string userType = (context.User.FindFirst(c => c.Type == "usrtype").Value);
 
             if (userType == requirement.UserType)
             {

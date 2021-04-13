@@ -82,9 +82,9 @@ namespace ContactTracing15
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("TracersOnly", policy => policy.Requirements.Add(new UserTypeRequirement(0)));
-                options.AddPolicy("TestersOnly", policy => policy.Requirements.Add(new UserTypeRequirement(1)));
-                options.AddPolicy("GovAgentOnly", policy => policy.Requirements.Add(new UserTypeRequirement(2)));
+                options.AddPolicy("TracersOnly", policy => policy.Requirements.Add(new UserTypeRequirement("0")));
+                options.AddPolicy("TestersOnly", policy => policy.Requirements.Add(new UserTypeRequirement("1")));
+                options.AddPolicy("GovAgentOnly", policy => policy.Requirements.Add(new UserTypeRequirement("2")));
             });
 
 
