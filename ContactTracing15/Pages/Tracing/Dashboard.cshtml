@@ -1,94 +1,34 @@
 ﻿@page
 @model ContactTracing15.Pages.Tracing.DashboardModel
-@{
-}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <table class="table table-sm table-striped table-hover border-bottom">
-                    <thead>
-                        <tr>
-                            <th>
-                                First Name
-                            </th>
-                            <th>
-                                Last Name
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr onclick="location.href = '#top'">
-                            <th>
-                                John
-                            </th>
-                            <th>
-                                Doe
-                            </th>
-                        </tr>
-                        <tr onclick="location.href = '#top'">
-                            <th>
-                                John
-                            </th>
-                            <th>
-                                Doe
-                            </th>
-                        </tr>
-                        <tr onclick="location.href = '#top'">
-                            <th>
-                                John
-                            </th>
-                            <th>
-                                Doe
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+<div class="lhs" style="float:left;width:50%">
+    @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
+</div>
+<div class="rhs">
+    @if (Model.HasCurrentAssignedCase)
+    {
+        <p>
+            Case Name: @Html.DisplayFor(m => m.CurrentAssignedCase.Name)
+        </p>
+        <p> Added Contacts: </p>
+        <u1>
+            @foreach (var contact in Model.CurrentAssignedCase.contacts)
+            {
+                <li>
+                    @contact.Forename
+                </li>
+            }
+        </u1>
+        <p>
+            <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID">Add a Contact </a>
+        </p>
+    }
+    else
+    {
+        <p>
+            Click a case for details.
+        </p>
+    }
+</div>
 
-                <div class="col-6">
-                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Form</button>
-                    <div id="demo" class="collapse">
-                        <form method="post">
-                            <div class="row">
-                                <div class="col-6">
-                                    <ul class="PositiveFormList" data-role="listview">
-                                        <li class="forename">
-                                            <div class="form-group">
-                                                <label asp-for="Dashboard.Forename"></label>
-                                                <input asp-for="Dashboard.Forename" class="form-control form-control-sm" />
-                                                <span asp-validation-for="Dashboard.Forename"></span>
-                                            </div>
-                                        </li>
-                                        <li class="last-name">
-                                            <div class="form-group">
-                                                <label asp-for="Dashboard.Surname"></label>
-                                                <input asp-for="Dashboard.Surname" class="form-control form-control-sm" />
-                                                <span asp-validation-for="Dashboard.Surname"></span>
-                                            </div>
-                                        </li>
-                                        <li class="email">
-                                            <div class="form-group">
-                                                <label asp-for="Dashboard.Email"></label>
-                                                <input asp-for="Dashboard.Email" class="form-control form-control-sm" />
-                                                <span asp-validation-for="Dashboard.Email"></span>
-                                            </div>
-                                        </li>
-                                        <li class="phone-number">
-                                            <div class="form-group">
-                                                <label asp-for="Dashboard.Phone"></label>
-                                                <input asp-for="Dashboard.Phone" class="form-control form-control-sm" />
-                                                <span asp-validation-for="Dashboard.Phone"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <p class="actions">
-                                        <button class="btn btn-danger submit-button">Submit</button>
-                                    </p>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-        </div>
-    </div>
+@{ }}
