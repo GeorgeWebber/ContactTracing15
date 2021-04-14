@@ -16,7 +16,7 @@ namespace ContactTracing15.Pages.GovAgent
     {
         public void OnGet()
         {
-            var Postcodes = new string[] {"OX1", "OX2"};
+            var Postcodes = new string[] {"OX1", "OX16"};
 
             Lats = new double[Postcodes.Count()];
             Longs = new double[Postcodes.Count()];
