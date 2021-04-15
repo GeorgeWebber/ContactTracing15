@@ -50,7 +50,7 @@ namespace ContactTracing15.Services
         {
             return _caseRepository.Update(updatedCase);
         }
-        IEnumerable<Contact> ICaseService.GetTracedContacts(int id)
+        IEnumerable<Contact> ICaseService.GetTracedContacts(int id)  //TODO reimplement this
         {
             return _contactService.GetAllContacts().Where(x => x.CaseID == id);
         }
