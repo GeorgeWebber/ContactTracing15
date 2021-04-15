@@ -9,6 +9,7 @@ namespace ContactTracing15.Models
     /// </summary>
     public class Contact
     {
+
         /// <value>Unique id for the contact</value>
         public int ContactID { get; set; }
 

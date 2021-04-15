@@ -60,6 +60,6 @@ namespace ContactTracing15.Models
         public Tester Tester { get; set; }
 
         /// <value>A collection of contacts of this case</value>
-        public ICollection<Contact> Contacts { get; set; }
+        public virtual ICollection<Contact> Contacts { get; set; }
     }
 }
