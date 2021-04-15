@@ -106,7 +106,6 @@ namespace ContactTracing15.Pages.Tracing
             _contact.AddedDate = DateTime.Now;
             _contact.TracedDate = DateTime.Now;
             _contact.CaseID = parentCaseId;
-            _contact.AddedDate = DateTime.Now;
             return _contact;
         }
 
