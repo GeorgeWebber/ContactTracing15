@@ -12,18 +12,15 @@ namespace ContactTracing15.Pages.Tracing
     public class BaseDashboardModel :  PageModel   
     {
         public BaseDashboardModel(
-            ITracerRepository tracerRepository,
-            IUserService userService,
-            ICaseRepository caseRepository)
+            ITracerService tracerService,
+            IUserService userService)
         {
-            this.caseRepository = caseRepository;
-            this.tracerRepository = tracerRepository;
+            this.tracerService = tracerService;
             this.userService = userService;
         }
 
         private CaseListItems _caseListItems;
-        private readonly ITracerRepository tracerRepository;
-        private readonly ICaseRepository caseRepository;
+        private readonly ITracerService tracerService;
         private readonly IUserService userService;
 
         public CaseListItems CaseListItems
@@ -39,7 +36,7 @@ namespace ContactTracing15.Pages.Tracing
                         var currentUser = userService.GetUserByUserName(claims.Single(x => x.Type == "preferred_username").Value,int.Parse(claims.Single(x => x.Type=="usrtype").Value));
                         //var cases = tracerRepository?.GetTracer(currentUser.UserId)?.Cases
                         //    ?? Enumerable.Empty<Case>();
-                        var cases = currentUser!=null ? caseRepository.GetAllCases().Where(x => x.TracerID == currentUser.UserId) : Enumerable.Empty<Case>();
+                        var cases = currentUser!=null ? tracerService.GetAssignedCases(currentUser.UserId) : Enumerable.Empty<Case>();
                         
                         assignedCases = cases.Select(MapToCaseListItem);
                     }

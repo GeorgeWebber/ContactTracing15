@@ -8,22 +8,22 @@ using ContactTracing15.Helper.Extensions;
 
 namespace ContactTracing15.Pages.Tracing
 {
-    public class DashboardEditModel : BaseDashboardModel // TODO create table of all cases assigned to a tracer with routing to details pages for each case (and form for adding contacts)
+    public class DashboardEditModel : BaseDashboardModel 
     { 
         public DashboardEditModel(
-            ITracerRepository tracerRepository,
+            ITracerService tracerService,
             IUserService userService,
-            ICaseRepository caseRepository,
-            IContactRepository contactRepository)
-            :base(tracerRepository, userService, caseRepository)
+            IContactRepository contactService,
+            ICaseService caseService)
+            :base(tracerService, userService)
         {
-            this.caseRepository = caseRepository;
-            this.contactRepository = contactRepository;
+            _contactService = contactService;
+            _caseService = caseService;
             AddContactForm = new AddContactForm();
         }
 
-        private readonly ICaseRepository caseRepository;
-        private readonly IContactRepository contactRepository;
+        private readonly ICaseService _caseService;
+        private readonly IContactRepository _contactService;
 
         [BindProperty]
         public AddContactForm AddContactForm { get; set; }
@@ -47,7 +47,7 @@ namespace ContactTracing15.Pages.Tracing
             {
                 CaseListItems.AssignedCases.FirstOrDefault(x => x.CaseID == caseId).IsActive = true;
 
-                var currentCase = caseRepository.GetCase(caseId.Value);
+                var currentCase = _caseService.GetCase(caseId.Value);
                 if (currentCase != null)
                 {
                     CurrentAssignedCase = new CaseDetail
@@ -59,7 +59,7 @@ namespace ContactTracing15.Pages.Tracing
             }
 
             
-            var parentCase = caseRepository.GetCase(caseId.Value);
+            var parentCase = _caseService.GetCase(caseId.Value);
             if (parentCase == null)
             {
                 return NotFound();
@@ -73,7 +73,7 @@ namespace ContactTracing15.Pages.Tracing
         {
             if (ModelState.IsValid)
             {
-                contactRepository.Add(AddContactForm.getContact(AddContactForm.CaseId));
+                _contactService.Add(AddContactForm.getContact(AddContactForm.CaseId));
                 return new RedirectToPageResult("Dashboard", new { caseId = AddContactForm.CaseId });  
             }
             return Page();
