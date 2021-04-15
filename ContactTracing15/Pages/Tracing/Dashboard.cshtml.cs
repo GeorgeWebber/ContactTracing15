@@ -16,20 +16,16 @@ namespace ContactTracing15.Pages.Tracing
     [Authorize(Policy = "TracersOnly")]
     public class DashboardModel : BaseDashboardModel // TODO create table of all cases assigned to a tracer with routing to details pages for each case (and form for adding contacts)
     {
-        private readonly ICaseRepository caseRepository;
-        private readonly IContactRepository contactRepository;
+        private readonly ICaseService caseService;
 
         
         public DashboardModel(
-            ICaseRepository caseRepository,
-            ITracerRepository tracerRepository,
-            IUserService userService,
-            IContactRepository contactRepository)
-            :base(tracerRepository, userService, caseRepository)
-
+            ICaseService caseService,
+            ITracerService tracerService,
+            IUserService userService)
+            :base(tracerService, userService)
         {
-            this.caseRepository = caseRepository;
-            this.contactRepository = contactRepository;
+            this.caseService = caseService;
         }
 
         public CaseDetail CurrentAssignedCase { get; set; }
@@ -52,14 +48,14 @@ namespace ContactTracing15.Pages.Tracing
             {
                 CaseListItems.AssignedCases.FirstOrDefault(x => x.CaseID == caseId).IsActive = true;
 
-                var currentCase = caseRepository.GetCase(caseId.Value);
+                var currentCase = caseService.GetCase(caseId.Value);
                 if (currentCase != null)
                 {
                     CurrentAssignedCase = new CaseDetail
                     {
                         Name = currentCase.GetFullName(),
                         CaseID = currentCase.CaseID,
-                        contacts = contactRepository.GetAllContacts().Where(x => x.CaseID == currentCase.CaseID)
+                        contacts = caseService.GetTracedContacts(currentCase.CaseID)
                     };
                 }
             }

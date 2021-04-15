@@ -65,6 +65,9 @@ namespace ContactTracing15
             services.AddScoped<ITesterRepository, SQLTesterRepository>();
             services.AddScoped<ITestingCentreRepository, SQLTestingCentreRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITracerService, TracerService>();
+            services.AddScoped<ICaseService, CaseService>();
+            services.AddScoped<IContactService, ContactService>();
 
             //Add Okta middleware configuration(Authentication)
             services.AddAuthentication(options =>
