@@ -9,6 +9,7 @@ namespace ContactTracing15.Models
     /// </summary>
     public class Tracer
     {
+
         ///<value></value>
         public int TracerID { get; set; }
 
@@ -22,6 +23,6 @@ namespace ContactTracing15.Models
         public TracingCentre TracingCentre { get; set; }
 
         ///<value></value>
-        public ICollection<Case> Cases { get; set; }
+        public virtual ICollection<Case> Cases { get; set; }
     }
 }

@@ -5,12 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
 
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+
 namespace ContactTracing15.Pages.Tracing
 {
+    [Authorize(Policy = "TracersOnly")]
     public class DashboardModel : BaseDashboardModel // TODO create table of all cases assigned to a tracer with routing to details pages for each case (and form for adding contacts)
     {
         private readonly ICaseService caseService;
 
+        
         public DashboardModel(
             ICaseService caseService,
             ITracerService tracerService,
