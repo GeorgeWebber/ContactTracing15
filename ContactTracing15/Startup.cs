@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Okta.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace ContactTracing15
 {
@@ -24,6 +25,9 @@ namespace ContactTracing15
     /// </summary>
     public class Startup
     {
+
+        private string _googleApiKey = null;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -90,6 +94,8 @@ namespace ContactTracing15
 
             services.AddSingleton<IAuthorizationHandler, UserTypeHandler>();
 
+            _googleApiKey = Configuration["googleApiKey"];
+
         }
 
         /// <summary>
@@ -124,6 +130,13 @@ namespace ContactTracing15
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+
+            app.Run(async (context) =>
+            {
+                var result = string.IsNullOrEmpty(_googleApiKey) ? "Null" : "Not Null";
+                await context.Response.WriteAsync($"Secret is {result}");
             });
         }
     }

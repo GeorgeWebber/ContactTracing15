@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 
 namespace ContactTracing15.Pages.GovAgent
 {
@@ -14,6 +15,15 @@ namespace ContactTracing15.Pages.GovAgent
     [Authorize(Policy = "GovAgentOnly")]
     public class GovHomeModel : PageModel
     {
+
+
+        private readonly IConfiguration _config;
+
+        public GovHomeModel(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public void OnGet()
         {
             var Postcodes = new string[] {"OX1", "OX16"};
@@ -34,8 +44,10 @@ namespace ContactTracing15.Pages.GovAgent
 
         public Tuple<double, double> GetLocation(string postcode)
         {
-            string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key={1}&address={0}&sensor=false", Uri.EscapeDataString(postcode), "AIzaSyAtclzZCimV0CJog5ReUNG3rsL3fXL-o_8");
-            
+            string requestUri = string.Format("https://maps.googleapis.com/maps/api/geocode/xml?key={1}&address={0}&sensor=false", Uri.EscapeDataString(postcode), _config["googleApiKey"]);
+
+            Console.WriteLine(_config["googleApiKey"]);
+
             WebRequest request = WebRequest.Create(requestUri);
             WebResponse response = request.GetResponse();
             XDocument xdoc = XDocument.Load(response.GetResponseStream());
