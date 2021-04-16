@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace ContactTracing15.Pages.Tracing
 {
@@ -32,12 +33,22 @@ namespace ContactTracing15.Pages.Tracing
 
         public bool HasCurrentAssignedCase => CurrentAssignedCase != null;
 
-        public IActionResult OnGet(int? caseId)
+        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId)
         {
-            //if(User == null || User.Identity == null || !User.Identity.IsAuthenticated)
-            //{
-            //    return Unauthorized();
-            //}
+            if (dropCaseId != null && CaseListItems.AssignedCases.Any(x => x.CaseID == dropCaseId))
+            {
+                var caseToDrop = caseService.GetCase(dropCaseId.Value);
+                caseToDrop.TracerID = null;
+                caseService.Save();
+                return new RedirectToPageResult("Dashboard");
+            }
+            if (completeCaseId != null && CaseListItems.AssignedCases.Any(x => x.CaseID == completeCaseId))
+            {
+                var caseToComplete = caseService.GetCase(completeCaseId.Value);
+                caseToComplete.Traced = true;
+                caseService.Save();
+                return new RedirectToPageResult("Dashboard");
+            }
 
             if (caseId.HasValue && !CaseListItems.AssignedCases.Any(x => x.CaseID == caseId))
             {
@@ -55,19 +66,39 @@ namespace ContactTracing15.Pages.Tracing
                     {
                         Name = currentCase.GetFullName(),
                         CaseID = currentCase.CaseID,
-                        contacts = caseService.GetTracedContacts(currentCase.CaseID)
+                        contacts = caseService.GetTracedContacts(currentCase.CaseID).Select(MapToContactDetail).OrderBy(x => x.DateTraced),
+                        EmailAddress = currentCase.Email,
+                        PhoneNumber = currentCase.Phone,
+                        PhoneNumber2 = currentCase.Phone2
                     };
                 }
             }
 
             return Page();
         }
+        private static ContactDetail MapToContactDetail(Contact contact) => new ContactDetail
+        {
+            Name = contact.GetFullName(),
+            EmailAddress = contact.Email,
+            PhoneNumber = contact.Phone,
+            DateTraced = contact.AddedDate
+        };
     }
+    public class ContactDetail
+    {
+        public string Name { get; set; }
+        public string EmailAddress { get; set; }
+        public string? PhoneNumber { get; set; }
+        public DateTime DateTraced { get; set; }
 
+    }
     public class CaseDetail
     {
         public string Name { get; set; }
         public int CaseID { get; set; }
-        public IEnumerable<Contact> contacts { get; set; }
+        public IEnumerable<ContactDetail> contacts { get; set; }
+        public string? EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
+        public string PhoneNumber2 { get; set; }
     }
 }
