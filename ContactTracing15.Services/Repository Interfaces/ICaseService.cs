@@ -8,6 +8,7 @@ namespace ContactTracing15.Services
 {
     public interface ICaseService
     {
+
         IEnumerable<Case> GetAllCases();
         Case GetCase(int id);
         Case Add(Case newCase);
@@ -16,5 +17,8 @@ namespace ContactTracing15.Services
         IEnumerable<Case> Search(string searchTerm);
         void Save();
         IEnumerable<Contact> GetTracedContacts(int id);
+
+        // Returns an enumerable of postcodes of cases registered in the past certain # of days
+        IEnumerable<string> GetRecentPostcodes(int days);
     }
 }
