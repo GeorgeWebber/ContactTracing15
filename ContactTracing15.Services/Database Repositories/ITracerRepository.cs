@@ -12,9 +12,11 @@ namespace ContactTracing15.Services
     {
         IEnumerable<Tracer> GetAllTracers();
         Tracer GetTracer(int id);
+        Tracer GetTracer(string username);
         Tracer Add(Tracer newTracer);
         Tracer Update(Tracer updatedTracer);
         Tracer Delete(int id);
+        Tracer GetTracerWithLeastCases();
         IEnumerable<Tracer> Search(string searchTerm);
         void Save();
     }

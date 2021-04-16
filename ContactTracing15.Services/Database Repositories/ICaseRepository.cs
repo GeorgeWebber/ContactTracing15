@@ -10,6 +10,7 @@ namespace ContactTracing15.Services
     public interface ICaseRepository
     {
         IEnumerable<Case> GetAllCases();
+        IEnumerable<Case> GetCasesByDate(DateTime from_, DateTime to_);
         Case GetCase(int id);
         Case Add(Case newCase);
         Case Update(Case updatedCase);

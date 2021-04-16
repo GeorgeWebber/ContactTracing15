@@ -46,6 +46,32 @@ namespace ContactTracing15.Services
               .FirstOrDefault();
         }
 
+        public Tracer GetTracer(string name)
+        {
+            return context.Tracers
+              .FromSqlRaw<Tracer>(@"@TracerName int
+                                    as
+                                    Begin
+                                        Select * from Tracers
+                                        where Username = @Tracername
+                                    End", name)
+              .ToList()
+              .FirstOrDefault();
+        }
+        
+        public Tracer GetTracerWithLeastCases()
+        {
+            return context.Tracers
+              .FromSqlRaw<Tracer>(@"select top (1) t.TracerID
+                                    from Tracers t left join
+                                        Cases c
+                                        on c.TracerID = t.TracerID
+                                    group by t.TracerID
+                                    order by count(c.TracerID) asc;")
+              .ToList()
+              .FirstOrDefault();
+        }
+        
         public IEnumerable<Tracer> Search(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm))

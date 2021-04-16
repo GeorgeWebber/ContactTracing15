@@ -34,7 +34,7 @@ namespace ContactTracing15.Services
 
         Tracer ITracerService.GetNextTracer()  //TODO, do this with SQL commands in the repository
         {
-            return _tracerResitory.GetAllTracers().OrderBy(x => x.Cases.Count()).First();
+            return _tracerResitory.GetTracerWithLeastCases();
         }
 
         Tracer ITracerService.GetTracer(int id)
@@ -42,12 +42,12 @@ namespace ContactTracing15.Services
             return _tracerResitory.GetTracer(id);
         }
 
-        Tracer ITracerService.GetTracer(string username) //TODO, do this with SQL
+        Tracer ITracerService.GetTracer(string username) 
         {
-            return _tracerResitory.GetAllTracers().Single(x => x.Username == username);
+            return _tracerResitory.GetTracer(username);
         }
 
-        void ITracerService.Save() //I don't actually know what this does but ok
+        void ITracerService.Save() 
         {
             _tracerResitory.Save();
         }
