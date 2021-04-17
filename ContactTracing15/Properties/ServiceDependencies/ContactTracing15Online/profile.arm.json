@@ -7,21 +7,21 @@
   "parameters": {
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "DefaultResourceGroup-SUK",
+      "defaultValue": "ContactTracing15OnlineRG",
       "metadata": {
         "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
       }
     },
     "resourceGroupLocation": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "uksouth",
       "metadata": {
         "description": "Location of the resource group. Resource groups could have different location than resources, however by default we use API versions from latest hybrid profile which support all locations for resource types we support."
       }
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "ContactTracing1520210409160824",
+      "defaultValue": "ContactTracing15Online",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }
