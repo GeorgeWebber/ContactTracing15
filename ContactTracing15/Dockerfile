@@ -8,6 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
 COPY ["ContactTracing15/ContactTracing15.csproj", "ContactTracing15/"]
+COPY ["ContactTracing15.Models/ContactTracing15.Models.csproj", "ContactTracing15.Models/"]
+COPY ["ContactTracing15.Services/ContactTracing15.Services.csproj", "ContactTracing15.Services/"]
 RUN dotnet restore "ContactTracing15/ContactTracing15.csproj"
 COPY . .
 WORKDIR "/src/ContactTracing15"

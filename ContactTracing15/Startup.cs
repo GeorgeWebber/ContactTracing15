@@ -1,4 +1,3 @@
-using ContactTracing15.Data;
 using ContactTracing15.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,14 +45,10 @@ namespace ContactTracing15
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AppDB"));
             });
-            // Identity Database server context
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add default identity service
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            // Get the database context and apply the migrations
+            var context = services.BuildServiceProvider().GetService<AppDbContext>();
+            context.Database.Migrate();
 
 
             services.AddRazorPages();
