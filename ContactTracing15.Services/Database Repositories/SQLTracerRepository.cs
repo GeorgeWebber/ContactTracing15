@@ -62,12 +62,13 @@ namespace ContactTracing15.Services
         public Tracer GetTracerWithLeastCases()
         {
             return context.Tracers
-              .FromSqlRaw<Tracer>(@"select top (1) t
-                                    from Tracers t left join
-                                        Cases c
-                                        on c.TracerID = t.TracerID
-                                    group by t.TracerID
-                                    order by count(c.TracerID) asc;")
+              .FromSqlRaw<Tracer>(@"select row from tracers where  id = (
+                                        select top (1) t.tracerid
+                                        from tracers t left join
+                                             cases c
+                                             on c.tracerid = t.tracerid
+                                        group by t.tracerid
+                                        order by count(c.tracerid) asc)")
               .ToList()
               .FirstOrDefault();
         }
