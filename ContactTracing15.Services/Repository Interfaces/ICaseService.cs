@@ -22,5 +22,7 @@ namespace ContactTracing15.Services
         IEnumerable<string> GetRecentPostcodes(int days);
 
         Case AssignAndAdd(Case newCase);
+        Case Drop(int caseId);
+        Case Complete(int caseId);
     }
 }

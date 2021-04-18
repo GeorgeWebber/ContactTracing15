@@ -34,8 +34,8 @@ namespace ContactTracing15.Services
 
         Tracer ITracerService.GetNextTracer()  //TODO, do this with SQL commands in the repository
         {
-            //return _tracerResitory.GetTracerWithLeastCases();
-            return _tracerResitory.GetTracer(1);
+            return _tracerResitory.GetTracerWithLeastCases();
+            //return _tracerResitory.GetTracer(1);
         }
 
         Tracer ITracerService.GetTracer(int id)

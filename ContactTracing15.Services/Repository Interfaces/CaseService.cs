@@ -67,5 +67,19 @@ namespace ContactTracing15.Services
             newCase.TracerID = _tracerService.GetNextTracer().TracerID;
             return _caseRepository.Add(newCase);
         }
+
+        Case ICaseService.Drop(int caseId)
+        {
+            var dropCase = _caseRepository.GetCase(caseId);
+            dropCase.TracerID = _tracerService.GetNextTracer().TracerID;
+            return _caseRepository.Update(dropCase);
+        }
+
+        Case ICaseService.Complete(int caseId)
+        {
+            var completeCase = _caseRepository.GetCase(caseId);
+            completeCase.Traced = true;
+            return _caseRepository.Update(completeCase);
+        }
     }
 }
