@@ -43,6 +43,11 @@ namespace ContactTracing15.Services
             return context.Cases.FromSqlRaw<Case>(@"SELECT FROM Cases WHERE AddedDate between @from_date AND @to_date", from_, to_).ToList();
         }
 
+        public IEnumerable<String> GetpostcodesByDate(DateTime from_, DateTime to_)
+        {
+            return (IEnumerable<string>)context.Cases.FromSqlRaw(@"SELECT Postcode FROM Cases WHERE AddedDate between @from_date AND @to_date", from_, to_).ToList();
+        }
+
         public Case GetCase(int id)
         {
             return context.Cases

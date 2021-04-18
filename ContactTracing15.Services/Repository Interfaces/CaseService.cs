@@ -57,7 +57,7 @@ namespace ContactTracing15.Services
 
         IEnumerable<string> ICaseService.GetRecentPostcodes(int days) //TODO reimplement this
         {
-            return new string[] { "OX1", "OX16", "OX1", "OX2", "OX3", "OX4", "OX5", "OX14", "SS11", "SW7", "W11", "W14", "BS1", "BS5"  };
+            return _caseRepository.GetpostcodesByDate(DateTime.Now.AddDays(-days), DateTime.Now);
         }
     }
 }
