@@ -64,7 +64,7 @@ namespace ContactTracing15.Services
                     select top (1) t.tracerid
                     from tracers t 
                     left join (select * from cases where (Traced = 0)) c
-                    on c.tracerid = tracers.tracerID
+                    on c.tracerid = t.tracerID
                     group by t.tracerid
                     order by count(c.tracerid) asc)")
               .ToList()
