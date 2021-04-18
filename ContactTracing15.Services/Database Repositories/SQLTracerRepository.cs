@@ -62,7 +62,7 @@ namespace ContactTracing15.Services
         public Tracer GetTracerWithLeastCases()
         {
             return context.Tracers
-              .FromSqlRaw<Tracer>(@"select top (1) t.TracerID
+              .FromSqlRaw<Tracer>(@"select top (1) t
                                     from Tracers t left join
                                         Cases c
                                         on c.TracerID = t.TracerID
