@@ -91,6 +91,7 @@ namespace ContactTracing15.Pages.Testing
             _case.Phone2 = this.Phone2;
             _case.TestDate = this.TestDate == null ? DateTime.Now :(DateTime) this.TestDate;
             _case.Postcode = this.Postcode != null ? this.Postcode : TestingCentrePostcode;
+            _case.Email = this.Email;
             _case.SymptomDate = this.SymptomDate;
 
             _case.TesterID = this.TesterId;
@@ -98,7 +99,5 @@ namespace ContactTracing15.Pages.Testing
             _case.Traced = false;
             return _case;
         }
-        
-
     }
 }

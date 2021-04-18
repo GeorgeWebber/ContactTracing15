@@ -64,11 +64,8 @@ namespace ContactTracing15.Services
 
         Case ICaseService.AssignAndAdd(Case newCase)
         {
-            var tempCase = _caseRepository.Add(newCase);
-            var nextTracer = _tracerService.GetNextTracer();
-            tempCase.TracerID = nextTracer.TracerID;
-            nextTracer.Cases.Add(tempCase);
-            return tempCase;
+            newCase.TracerID = _tracerService.GetNextTracer().TracerID;
+            return _caseRepository.Add(newCase);
         }
     }
 }
