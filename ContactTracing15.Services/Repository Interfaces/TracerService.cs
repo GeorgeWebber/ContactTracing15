@@ -11,11 +11,9 @@ namespace ContactTracing15.Services
     public class TracerService : ITracerService
     {
         private readonly ITracerRepository _tracerResitory;
-        private readonly ICaseService _caseService;
-        public TracerService(ITracerRepository tracerRepository, ICaseService caseService)
+        public TracerService(ITracerRepository tracerRepository)
         {
             _tracerResitory = tracerRepository;
-            _caseService = caseService;
         }
         Tracer ITracerService.Add(Tracer newTracer)
         {
@@ -34,7 +32,8 @@ namespace ContactTracing15.Services
 
         Tracer ITracerService.GetNextTracer()  //TODO, do this with SQL commands in the repository
         {
-            return _tracerResitory.GetTracerWithLeastCases();
+            //return _tracerResitory.GetTracerWithLeastCases();
+            return _tracerResitory.GetTracer(1);
         }
 
         Tracer ITracerService.GetTracer(int id)
@@ -64,7 +63,8 @@ namespace ContactTracing15.Services
 
         IEnumerable<Case> ITracerService.GetAssignedCases(int id)  //TODO reimplement this
         {
-            return _caseService.GetAllCases().Where(x => x.TracerID == id);
+            var tracer = _tracerResitory.GetTracer(id);
+            return tracer.Cases.Where(x => x.Traced == false);
         }
     }
 }
