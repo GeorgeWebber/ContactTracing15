@@ -16,6 +16,7 @@ namespace ContactTracing15.Services
         Case Update(Case updatedCase);
         Case Delete(int id);
         IEnumerable<Case> Search(string searchTerm);
+        IEnumerable<String> GetpostcodesByDate(DateTime from_, DateTime to_);
         void Save();
     }
 }

@@ -1,4 +1,3 @@
-using ContactTracing15.Data;
 using ContactTracing15.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +16,7 @@ using Okta.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace ContactTracing15
 {
@@ -46,14 +46,10 @@ namespace ContactTracing15
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AppDB"));
             });
-            // Identity Database server context
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
 
-            // Add default identity service
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            // Get the database context and apply the migrations
+            var context = services.BuildServiceProvider().GetService<AppDbContext>();
+            context.Database.Migrate();
 
 
             services.AddRazorPages();
@@ -77,9 +73,10 @@ namespace ContactTracing15
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OktaDefaults.MvcAuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOktaMvc(new OktaMvcOptions
+            }).AddCookie(options =>
+            {
+                options.AccessDeniedPath = "/Denied";
+            }).AddOktaMvc(new OktaMvcOptions
             {
                 // Replace these values with your Okta configuration
                 OktaDomain = "https://dev-9464250.okta.com",
@@ -100,6 +97,23 @@ namespace ContactTracing15
             services.AddSingleton<IAuthorizationHandler, UserTypeHandler>();
 
             _googleApiKey = Configuration["googleApiKey"];
+
+
+            if (string.Equals(
+                Environment.GetEnvironmentVariable("ASPNETCORE_FORWARDEDHEADERS_ENABLED"),
+                "true", StringComparison.OrdinalIgnoreCase))
+            {
+                services.Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                        ForwardedHeaders.XForwardedProto;
+                    // Only loopback proxies are allowed by default.
+                    // Clear that restriction because forwarders are enabled by explicit 
+                    // configuration.
+                    options.KnownNetworks.Clear();
+                    options.KnownProxies.Clear();
+                });
+            }
 
         }
 
@@ -123,6 +137,11 @@ namespace ContactTracing15
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedProto
+            });
 
             app.UseRouting();
 
