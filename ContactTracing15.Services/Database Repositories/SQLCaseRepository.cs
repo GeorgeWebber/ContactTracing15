@@ -45,9 +45,7 @@ namespace ContactTracing15.Services
 
         public IEnumerable<String> GetpostcodesByDate(DateTime from_, DateTime to_)
         {
-         return context.Cases.Where(u => u.AddedDate > from_ && u.AddedDate < to_).Select(u => u.Postcode).ToList();
-
-          //return (IEnumerable<string>)context.Cases.FromSqlRaw(@"SELECT Postcode FROM Cases WHERE AddedDate between {0} and {1}", from_, to_).ToList();
+            return (IEnumerable<string>)context.Cases.FromSqlRaw(@"SELECT * FROM Cases WHERE AddedDate between {0} and {1}", from_, to_).ToList();
         }
 
         public Case GetCase(int id)

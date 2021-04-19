@@ -59,7 +59,13 @@ namespace ContactTracing15.Services
 
         IEnumerable<string> ICaseService.GetRecentPostcodes(int days) //TODO reimplement this
         {
-            return _caseRepository.GetpostcodesByDate(DateTime.Now.AddDays(-days), DateTime.Now);
+
+            DateTime from_ = DateTime.Now.AddDays(-days);
+            DateTime to_ = DateTime.Now;
+
+            return _caseRepository.GetAllCases().Where(u => u.AddedDate > from_ && u.AddedDate < to_).Select(u => u.Postcode).ToList();
+
+            //return _caseRepository.GetpostcodesByDate(DateTime.Now.AddDays(-days), DateTime.Now);
         }
 
         Case ICaseService.AssignAndAdd(Case newCase)
