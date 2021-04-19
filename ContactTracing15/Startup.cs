@@ -78,9 +78,10 @@ namespace ContactTracing15
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OktaDefaults.MvcAuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOktaMvc(new OktaMvcOptions
+            }).AddCookie(options =>
+            {
+                options.AccessDeniedPath = "/Denied";
+            }).AddOktaMvc(new OktaMvcOptions
             {
                 // Replace these values with your Okta configuration
                 OktaDomain = "https://dev-9464250.okta.com",

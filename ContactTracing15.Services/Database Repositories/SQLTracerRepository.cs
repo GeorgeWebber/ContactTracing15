@@ -67,6 +67,7 @@ namespace ContactTracing15.Services
                     on c.tracerid = t.tracerID
                     group by t.tracerid
                     order by count(c.tracerid) asc)")
+
               .ToList()
               .FirstOrDefault();
         }
