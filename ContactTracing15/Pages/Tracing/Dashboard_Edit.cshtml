@@ -1,10 +1,10 @@
 ﻿@page
 @model ContactTracing15.Pages.Tracing.DashboardEditModel
 
-<div class="lhs" style="float:left;width:50%">
+<div class="lhs" style="background: #F2F2F2; border: 1px solid #cecece; float: left; width: 30%">
     @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
 </div>
-<div class="rhs">
+<div class="rhs" style = "background: #F2F2F2; border: 1px solid #cecece; float: right; width: 60%">
     <p>
         <form method="post">
             <input asp-for="AddContactForm.CaseId" value="@Model.AddContactForm.CaseId" />
@@ -40,15 +40,15 @@
                             </div>
                         </li>
                     </ul>
-    <p class="actions">
-        <button class="btn btn-danger submit-button">Submit</button>
+    <p class="actions text-center">
+        <button class="btn btn-danger submit-button rounded-0">Submit</button>
     </p>
 </div>
     </div>
 </form>
     </p>
 <p>
-    <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID">Back to details </a>
+    <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-outline-secondary rounded-0" role="button">Back to details </a>
 </p>
 </div>
 
