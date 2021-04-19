@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ContactTracing15.Models;
 using ContactTracing15.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ContactTracing15.Pages.Testing
 {
+    [Authorize(Policy="TestersOnly")]
     public class PositiveFormModel : PageModel
     {
         private readonly ICaseService _CaseService;
