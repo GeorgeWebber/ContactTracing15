@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ContactTracing15.Data;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -29,6 +28,7 @@ namespace ContactTracing15
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*:80", "http://*:443");
                 });
     }
 }
