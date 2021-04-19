@@ -20,5 +20,9 @@ namespace ContactTracing15.Services
 
         // Returns an enumerable of postcodes of cases registered in the past certain # of days
         IEnumerable<string> GetRecentPostcodes(int days);
+
+        Case AssignAndAdd(Case newCase);
+        Case Drop(int caseId);
+        Case Complete(int caseId);
     }
 }

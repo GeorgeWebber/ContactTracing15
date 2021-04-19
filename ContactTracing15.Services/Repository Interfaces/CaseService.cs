@@ -10,10 +10,12 @@ namespace ContactTracing15.Services
     {
         private readonly ICaseRepository _caseRepository;
         private readonly IContactService _contactService;
-        public CaseService(ICaseRepository caseRepository, IContactService contactService)
+        private readonly ITracerService _tracerService;
+        public CaseService(ICaseRepository caseRepository, IContactService contactService, ITracerService tracerService)
         {
             _caseRepository = caseRepository;
             _contactService = contactService;
+            _tracerService = tracerService;
         }
 
         Case ICaseService.Add(Case newCase)
@@ -58,6 +60,26 @@ namespace ContactTracing15.Services
         IEnumerable<string> ICaseService.GetRecentPostcodes(int days) //TODO reimplement this
         {
             return _caseRepository.GetpostcodesByDate(DateTime.Now.AddDays(-days), DateTime.Now);
+        }
+
+        Case ICaseService.AssignAndAdd(Case newCase)
+        {
+            newCase.TracerID = _tracerService.GetNextTracer().TracerID;
+            return _caseRepository.Add(newCase);
+        }
+
+        Case ICaseService.Drop(int caseId)
+        {
+            var dropCase = _caseRepository.GetCase(caseId);
+            dropCase.TracerID = _tracerService.GetNextTracer().TracerID;
+            return _caseRepository.Update(dropCase);
+        }
+
+        Case ICaseService.Complete(int caseId)
+        {
+            var completeCase = _caseRepository.GetCase(caseId);
+            completeCase.Traced = true;
+            return _caseRepository.Update(completeCase);
         }
     }
 }

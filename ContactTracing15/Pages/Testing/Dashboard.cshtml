@@ -1,0 +1,12 @@
+﻿@page
+@model ContactTracing15.Pages.Testing.TesterDashboardModel
+@{
+}
+<p> Hello, @Model.Details.Username</p>
+@if(Model.Details.lastCaseName != null)
+            {
+                <p>Successfully added @Model.Details.lastCaseName</p>
+            }
+<p>
+    <a asp-page="./PositiveForm"> Add Positive Test Result</a>
+</p>
