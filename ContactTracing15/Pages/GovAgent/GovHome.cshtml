@@ -92,6 +92,14 @@
         setTimeout(function () {
             google.maps.event.trigger(map, "resize");
         }, 3000);
+
+        google.maps.event.addListener(map, 'zoom_changed', autoSetRadius);
+    }
+
+    function autoSetRadius() {
+        zoomLevel = map.getZoom();
+        radius = 2**(zoomLevel-4); 
+        heatmap.set('radius', radius);
     }
 
     function toggleHeatmap() {
@@ -119,7 +127,7 @@
     }
 
     function changeRadius() {
-        heatmap.set('radius', heatmap.get('radius') ? null : 20);
+        heatmap.set('radius', heatmap.get('radius') ? null : 20);  
     }
 
     function changeOpacity() {
@@ -128,6 +136,7 @@
 
 
     google.maps.event.addDomListener(window, 'load', initialize);
+    
 
 
 </script>
