@@ -94,6 +94,7 @@
         }, 3000);
 
         google.maps.event.addListener(map, 'zoom_changed', autoSetRadius);
+        autoSetRadius();
     }
 
     function autoSetRadius() {
