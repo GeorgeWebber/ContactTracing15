@@ -59,18 +59,17 @@ namespace ContactTracing15.Services
               .FirstOrDefault();
         }
         
-        public Tracer GetTracerWithLeastCases()
+        public IEnumerable<Tracer> GetTracerWithLeastCases()
         {
             return context.Tracers
               .FromSqlRaw<Tracer>(@"select * from tracers where  TracerID = (
-                                    select top (1) t.tracerid
+                                    select top (2) t.tracerid
                                     from tracers t 
                                     left join (select * from cases where (Traced = 0)) c
                                     on c.tracerid = t.tracerID
                                     group by t.tracerid
                                     order by count(c.tracerid) asc)")
-              .ToList()
-              .FirstOrDefault();
+              .ToList();
         }
         
         public IEnumerable<Tracer> Search(string searchTerm)
