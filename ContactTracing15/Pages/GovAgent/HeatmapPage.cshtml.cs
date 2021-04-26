@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ContactTracing15.Pages.GovAgent
 {
+    [Authorize(Policy = "GovAgentOnly")]
     public class HeatmapPageModel : PageModel
     {
         private readonly IConfiguration _config;
