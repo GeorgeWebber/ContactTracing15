@@ -10,6 +10,8 @@ using ContactTracing15.Models;
 using ContactTracing15.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
+using ContactTracing15.Helper;
+using Microsoft.Extensions.Configuration;
 
 namespace ContactTracing15.Pages.Testing
 {
@@ -20,13 +22,17 @@ namespace ContactTracing15.Pages.Testing
         private readonly ITesterService _TesterService;
         private readonly IUserService _UserService;
         private readonly ITestingCentreService _TestingCentreService;
+        private readonly IConfiguration _config;
 
-        public PositiveFormModel(AppDbContext context, ICaseService caseService, ITesterService testerService, IUserService userService, ITestingCentreService testingCentreService)
+
+
+        public PositiveFormModel(AppDbContext context, IConfiguration config, ICaseService caseService, ITesterService testerService, IUserService userService, ITestingCentreService testingCentreService)
         {
             _CaseService = caseService;
             _TesterService = testerService;
             _UserService = userService;
             _TestingCentreService = testingCentreService;
+            _config = config;
             CaseForm = new CaseForm();
         }
 
@@ -41,15 +47,20 @@ namespace ContactTracing15.Pages.Testing
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
             if (ModelState.IsValid)
             {
-                var lastCase = _CaseService.AssignAndAdd(CaseForm.getCase());
-                return RedirectToPage("Dashboard", new { lastCaseId = lastCase.CaseID });
+                if (!PostcodeValidator.IsValid(CaseForm.Postcode, _config["googleApiKey"]))
+                {
+                    ModelState.AddModelError("CaseForm.Postcode", PostcodeValidator.FormatErrorMessage());
+                }
+                else
+                {
+                    var lastCase = _CaseService.AssignAndAdd(CaseForm.getCase());
+                    return RedirectToPage("Dashboard", new { lastCaseId = lastCase.CaseID });
+                }
             }
             return Page();
         }
-        
 
 
         [BindProperty]
@@ -58,7 +69,8 @@ namespace ContactTracing15.Pages.Testing
     }
 
     public class CaseForm
-    {
+    { 
+
         [HiddenInput]
         public int TesterId { get; set; }
         [HiddenInput]
@@ -76,7 +88,8 @@ namespace ContactTracing15.Pages.Testing
         public string? Phone2 { get; set; }
         [Required(ErrorMessage = "Please enter date when test was taken"), Display(Name = "Date of Test")]
         public DateTime? TestDate { get; set; }
-        [RegularExpression(@"([a-z]|[A-Z]){1,2}[0-9]{1,2}", ErrorMessage = "Please enter first half of Patient's Postcode, e.g AA01"), Display(Name = "Start of Postcode")]
+
+        [Required(ErrorMessage = "Please enter first half of Patient's Postcode, e.g AA01"), Display(Name = "Start of Postcode")]
         public string? Postcode { get; set; }
 
         [EmailAddress, Display(Name = "Email Address")]
