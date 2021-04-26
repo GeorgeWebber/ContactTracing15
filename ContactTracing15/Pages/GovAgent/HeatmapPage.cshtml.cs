@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using ContactTracing15.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;

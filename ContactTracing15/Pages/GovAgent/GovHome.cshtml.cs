@@ -31,5 +31,10 @@ namespace ContactTracing15.Pages.GovAgent
             
         }
 
+        public void DownloadDatabase()
+        {
+            Console.WriteLine("downloading database");
+        }
+
     }
 }
