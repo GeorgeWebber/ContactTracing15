@@ -57,14 +57,10 @@ namespace ContactTracing15.Services
             return _contactService.GetAllContacts().Where(x => x.CaseID == id);
         }
 
-        IEnumerable<string> ICaseService.GetRecentPostcodes(int days) //TODO reimplement this
+        IEnumerable<string> ICaseService.GetPostcodesByRecentDays(DateTime from_, DateTime to_) //TODO reimplement this
         {
 
-            DateTime from_ = DateTime.Now.AddDays(-days);
-            DateTime to_ = DateTime.Now;
-
             return _caseRepository.GetAllCases().Where(u => u.AddedDate > from_ && u.AddedDate < to_).Select(u => u.Postcode).ToList();
-
             //return _caseRepository.GetpostcodesByDate(DateTime.Now.AddDays(-days), DateTime.Now);
         }
 
