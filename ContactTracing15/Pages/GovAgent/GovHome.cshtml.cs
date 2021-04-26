@@ -28,7 +28,7 @@ namespace ContactTracing15.Pages.GovAgent
 
         public void OnGet()
         {
-            RedirectToPage("HeatmapPage");
+            
         }
 
     }
