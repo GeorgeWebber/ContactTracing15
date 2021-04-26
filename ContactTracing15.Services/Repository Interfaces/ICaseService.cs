@@ -24,5 +24,13 @@ namespace ContactTracing15.Services
         Case AssignAndAdd(Case newCase);
         Case Drop(int caseId);
         Case Complete(int caseId);
+
+        TimeSpan AverageTraceTimeLast28Days();
+
+        double PercentageCasesReachedLast28Days();
+
+        int TotalCasesReached();
+
+        int TotalCasesEver();
     }
 }

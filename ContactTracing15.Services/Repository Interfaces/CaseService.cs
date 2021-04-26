@@ -87,5 +87,32 @@ namespace ContactTracing15.Services
             completeCase.Traced = true;
             return _caseRepository.Update(completeCase);
         }
+
+        //TODO:  Returns the average time taken to contact trace a case in the last 28 days
+        TimeSpan ICaseService.AverageTraceTimeLast28Days()
+        {
+            return DateTime.Now - DateTime.Now.AddDays(-1);
+        }
+
+        //TODO:  Returns the percentage of cases successfully traced in the last 28 days (perhaps factoring in dropped cases?)
+        double ICaseService.PercentageCasesReachedLast28Days()
+        {
+            return 50;
+        }
+
+
+
+        //TODO: return the total number of cases that have been successfully traced
+        int ICaseService.TotalCasesReached()
+        {
+            return 0;
+        }
+
+        //TODO: return the total number of positive cases that have been reached ever
+        int ICaseService.TotalCasesEver()
+        {
+            return 0;
+        }
+
     }
 }
