@@ -47,17 +47,46 @@ namespace ContactTracing15.Pages.Testing
 
         public async Task<IActionResult> OnPostAsync()
         {
+
+            bool extraValid = true;
             if (ModelState.IsValid)
             {
                 if (!PostcodeValidator.IsValid(CaseForm.Postcode, _config["googleApiKey"]))
                 {
                     ModelState.AddModelError("CaseForm.Postcode", PostcodeValidator.FormatErrorMessage());
+                    extraValid = false;
                 }
-                else
+
+                if (CaseForm.Email == null && CaseForm.Phone == null) {
+                    ModelState.AddModelError("CaseForm.Email", "You must supply either an email address or primary phone number");
+                    ModelState.AddModelError("CaseForm.Phone", "You must supply either an email address or primary phone number");
+                    extraValid = false;
+                }
+                else if (CaseForm.Phone2 != null && CaseForm.Phone == null)
+                {
+                    ModelState.AddModelError("CaseForm.Phone", "You should supply a primary phone number before entering a secondary phone number");
+                    extraValid = false;
+                }
+
+                if (CaseForm.TestDate > DateTime.Now.AddDays(1))
+                {
+                    ModelState.AddModelError("CaseForm.TestDate", "Test date is too far in the future");
+                    extraValid = false;
+                }
+
+                if (CaseForm.SymptomDate > DateTime.Now.AddDays(1))
+                {
+                    ModelState.AddModelError("CaseForm.Phone", "Symptom date is too far in the future");
+                    extraValid = false;
+                }
+
+                if (extraValid)
                 {
                     var lastCase = _CaseService.AssignAndAdd(CaseForm.getCase());
                     return RedirectToPage("Dashboard", new { lastCaseId = lastCase.CaseID });
                 }
+
+
             }
             return Page();
         }
@@ -80,7 +109,7 @@ namespace ContactTracing15.Pages.Testing
         public string Forename { get; set; }
         [Required(ErrorMessage = "Please enter patient's Surname"), Display(Name = "Surname")]
         public string Surname { get; set; }
-        [Phone, Required(ErrorMessage = "Please enter patient's preferred phone number"), Display(Name = "Phone Number")]
+        [Phone, Display(Name = "Phone Number")]
         public string Phone { get; set; }
 
 #nullable enable
