@@ -5,9 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System;
 using System.Linq;
 using ContactTracing15.Helper.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ContactTracing15.Pages.Tracing
 {
+    [Authorize(Policy = "TracersOnly")]
     public class DashboardEditModel : BaseDashboardModel 
     { 
         public DashboardEditModel(

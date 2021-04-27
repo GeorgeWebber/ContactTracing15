@@ -1,133 +1,153 @@
 ﻿@page
 @model ContactTracing15.Pages.GovAgent.GovHomeModel
 @{
+    ViewData["Title"] = "Government Agent Dashboard";
 }
 
 <style>
-    #map-canvas {
-        height: 500px;
+
+    #statCardDeck {
+        margin: 0px;
+        padding: 20px;
+    }
+
+    #tracingCentreTable {
+        height: 50%;
+        width: 100%;
         margin: 0px;
         padding: 0px;
     }
 
-    #panel {
-        position: relative;
-        top: 5px;
-        left: 50%;
-        margin-left: -180px;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
+    #statCard {
+        display: table;
+        overflow: hidden;
+        width: 18rem;
+        height: 10rem;
+        
     }
+
+    .pressableCard {
+        display: table;
+        overflow: hidden;
+        width: 18rem;
+        height: 10rem;
+    }
+
+    .nonPressCard {
+        background: C1D1D7;
+    }
+
+    .card-body {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .card-body:after {
+        content: "";
+        height: 80%;
+        width: 100%;
+    }
+
+    #subtitle {
+        display: table-cell;
+        vertical-align: sub;
+        border: 1px solid #f00;
+        text-align: center;
+    }
+
+    .row {
+        display: grid;
+        grid-auto-flow: column;
+        gap: 5%;
+    }
+
+    .col {
+        border: solid;
+    }
+    
+
+
 </style>
 
-<div id="panel">
-    <button onclick="toggleHeatmap()">
-        Toggle Heatmap
-    </button>
-    <button onclick="changeGradient()">
-        Change gradient
-    </button>
-    <button onclick="changeRadius()">
-        Change radius
-    </button>
-    <button onclick="changeOpacity()">
-        Change opacity
-    </button>
-</div>
-<div id="map-canvas">
-    Map canvas goes here
-</div>
 
-<script  src="@Model.googleUrl"></script>
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    // Adding 500 Data Points
-    var map, pointarray, heatmap;
-
-
-    function setUpData() {
-
-        var lats = @Html.Raw(Json.Serialize(Model.Lats));
-        var longs = @Html.Raw(Json.Serialize(Model.Longs));
-
-        console.log(lats);
-        console.log(longs);
-
-        var heatData = [];
-
-        for (i = 0; i < lats.length; i++) {
-            heatData.push(new google.maps.LatLng(lats[i], longs[i]));
-        }
-
-        return heatData;
-
-    }
-
-
-
-
-    function initialize() {
-
-        var heatData = setUpData();
-
-        var mapOptions = {
-            zoom: 13,
-            center: new google.maps.LatLng(51.761597721166794, - 1.262324189654609),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-
-        map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
-
-        var pointArray = new google.maps.MVCArray(heatData);
-
-        heatmap = new google.maps.visualization.HeatmapLayer({
-            data: pointArray
-        });
-
-        heatmap.setMap(map);
-
-        setTimeout(function () {
-            google.maps.event.trigger(map, "resize");
-        }, 3000);
-    }
-
-    function toggleHeatmap() {
-        heatmap.setMap(heatmap.getMap() ? null : map);
-    }
-
-    function changeGradient() {
-        var gradient = [
-            'rgba(0, 255, 255, 0)',
-            'rgba(0, 255, 255, 1)',
-            'rgba(0, 191, 255, 1)',
-            'rgba(0, 127, 255, 1)',
-            'rgba(0, 63, 255, 1)',
-            'rgba(0, 0, 255, 1)',
-            'rgba(0, 0, 223, 1)',
-            'rgba(0, 0, 191, 1)',
-            'rgba(0, 0, 159, 1)',
-            'rgba(0, 0, 127, 1)',
-            'rgba(63, 0, 91, 1)',
-            'rgba(127, 0, 63, 1)',
-            'rgba(191, 0, 31, 1)',
-            'rgba(255, 0, 0, 1)'
-        ]
-        heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-    }
-
-    function changeRadius() {
-        heatmap.set('radius', heatmap.get('radius') ? null : 20);
-    }
-
-    function changeOpacity() {
-        heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-    }
-
-
-    google.maps.event.addDomListener(window, 'load', initialize);
-
-
+    $(document).ready(function () {
+        $(".pressableCard").hover(
+            function () {
+                $(this).addClass('shadow-lg').css('cursor', 'pointer');
+            }, function () {
+                $(this).removeClass('shadow-lg');
+            }
+        );
+    });
 </script>
+
+<h1>Dashboard</h1>
+
+<div class="row" id="statCardDeck">
+    <div class="card-deck">
+        <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
+            <div class="card-body">
+                <h3>View Heatmap</h3>
+                <p class="subtitle"></p>View a geographical heatmap of cases by time</p>
+                <a asp-page="/GovAgent/HeatmapPage" class="stretched-link"></a>
+            </div>
+        </div>
+        <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
+            <div class="card-body">
+                <h3>Centre Breakdown</h3>
+                <p class="subtitle">View summary stats for each tracing centre</p>
+                <a asp-page="/GovAgent/TracingCentreSummary" class="stretched-link"></a>
+            </div>
+        </div>
+        <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
+            <div class="card-body">
+                <h3>Download Data</h3>
+                <p class="subtitle">Download a csv file of contact tracing data</p>
+                <a asp-page="/GovAgent/GovHome" class="stretched-link"></a>
+            </div>
+        </div>
+
+
+        <div class="card nonPressCard" id="statCard" style="background:#e0e8eb">
+            <div class="card-body">
+                <h1>@Model.PercentageCasesReachedLast28Days %</h1>
+                <p class="subtitle">Percentage of cases traced (last 28 days)</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.AverageTraceTimeLast28DaysString</h1>
+                <p class="subtitle">Average time taken to trace a case (last 28 days)</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.AverageContactsPerCaseLast28Days</h1>
+                <p class="subtitle">Average # contacts per case (last 28 days)</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.TotalCasesEver</h1>
+                <p class="subtitle">Total positive tests recorded</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.TotalCasesReached</h1>
+                <p class="subtitle">Total cases successfully traced ever</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.TotalContactsReached</h1>
+                <p class="subtitle">Total contacts reached</p>
+            </div>
+        </div>
+
+    </div>
+    
+</div>

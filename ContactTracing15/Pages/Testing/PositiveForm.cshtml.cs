@@ -9,79 +9,88 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ContactTracing15.Models;
 using ContactTracing15.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using ContactTracing15.Helper;
+using Microsoft.Extensions.Configuration;
 
 namespace ContactTracing15.Pages.Testing
 {
+    [Authorize(Policy="TestersOnly")]
     public class PositiveFormModel : PageModel
     {
-        private readonly AppDbContext _context;
-        private readonly ICaseRepository _caseRepository;
-        private readonly ITesterRepository _testerRepository;
+        private readonly ICaseService _CaseService;
+        private readonly ITesterService _TesterService;
+        private readonly IUserService _UserService;
+        private readonly ITestingCentreService _TestingCentreService;
+        private readonly IConfiguration _config;
 
-        public PositiveFormModel(AppDbContext context, ICaseRepository caseRepository, ITesterRepository testerRepository)
+
+
+        public PositiveFormModel(AppDbContext context, IConfiguration config, ICaseService caseService, ITesterService testerService, IUserService userService, ITestingCentreService testingCentreService)
         {
-            _context = context;
-            _caseRepository = caseRepository;
-            _testerRepository = testerRepository;
+            _CaseService = caseService;
+            _TesterService = testerService;
+            _UserService = userService;
+            _TestingCentreService = testingCentreService;
+            _config = config;
+            CaseForm = new CaseForm();
         }
 
-        public void OnGetAsync()  //here sessions variables are probably appropriate, however everything else happening is not
+        public void OnGetAsync()  
         {
-            try
-            {
-                var userClaims = HttpContext.User.Claims;
-                foreach (var claim in userClaims)
-                {
-                    Console.WriteLine(claim.Type);
-                    Console.WriteLine(claim.Value);
-                }
-
-                testerId = (int)HttpContext.Session.GetInt32("ID");
-                tester = _testerRepository.GetTester(testerId);
-                testingCentre = tester.TestingCentre;
-            }
-            catch
-            {
-                (new SQLTestingCentreRepository(_context)).Add(new TestingCentre { Name = "temp", Postcode = "OX28" });
-                testingCentre = (new SQLTestingCentreRepository(_context)).GetAllTestingCentres().First(x => x.Name == "temp");
-                Console.WriteLine(testingCentre.Name);
-                _testerRepository.Add(new Tester { Username = "Tyler" , TestingCentreID = testingCentre.TestingCentreID});
-                tester = _testerRepository.GetAllTesters().First(x => x.Username == "Tyler");
-            }
+            var claims = HttpContext.User.Claims;
+            var CurrentUser = _UserService.GetUserByUserName(claims.Single(x => x.Type == "preferred_username").Value, int.Parse(claims.Single(x => x.Type == "usrtype").Value));
+            var Tester = _TesterService.GetTester(CurrentUser.UserId);
+            CaseForm.TesterId = Tester.TesterID;
+            CaseForm.TestingCentrePostcode = _TestingCentreService.GetTestingCentre(Tester.TestingCentreID).Postcode;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //_caseRepository = new SQLCaseRepository(_context);
-            //_testerRepository = new SQLTesterRepository(_context);
-            try
-            {
-                testerId = (int)HttpContext.Session.GetInt32("ID");
-                Console.WriteLine("Session ID is: " + testerId);
-                tester = _testerRepository.GetTester(testerId);
-                testingCentre = tester.TestingCentre;
-            }
-            catch
-            {
-                (new SQLTestingCentreRepository(_context)).Add(new TestingCentre { Name = "temp", Postcode = "OX28" });
-                testingCentre = (new SQLTestingCentreRepository(_context)).GetAllTestingCentres().First(x => x.Name == "temp");
-                Console.WriteLine(testingCentre.Name);
-                _testerRepository.Add(new Tester { Username = "Tyler", TestingCentreID = testingCentre.TestingCentreID });
-                tester = _testerRepository.GetAllTesters().First(x => x.Username == "Tyler");
-            }
-            //Product = await db.Products.FindAsync(Id);  some sort of await command here, so this runs when a command succeeds
+
+            bool extraValid = true;
             if (ModelState.IsValid)
             {
-                _caseRepository.Add(CaseForm.getCase(testingCentre,tester));
-                return RedirectToPage("../Index");
+                if (!PostcodeValidator.IsValid(CaseForm.Postcode, _config["googleApiKey"]))
+                {
+                    ModelState.AddModelError("CaseForm.Postcode", PostcodeValidator.FormatErrorMessage());
+                    extraValid = false;
+                }
+
+                if (CaseForm.Email == null && CaseForm.Phone == null) {
+                    ModelState.AddModelError("CaseForm.Email", "You must supply either an email address or primary phone number");
+                    ModelState.AddModelError("CaseForm.Phone", "You must supply either an email address or primary phone number");
+                    extraValid = false;
+                }
+                else if (CaseForm.Phone2 != null && CaseForm.Phone == null)
+                {
+                    ModelState.AddModelError("CaseForm.Phone", "You should supply a primary phone number before entering a secondary phone number");
+                    extraValid = false;
+                }
+
+                if (CaseForm.TestDate > DateTime.Now.AddDays(1))
+                {
+                    ModelState.AddModelError("CaseForm.TestDate", "Test date is too far in the future");
+                    extraValid = false;
+                }
+
+                if (CaseForm.SymptomDate > DateTime.Now.AddDays(1))
+                {
+                    ModelState.AddModelError("CaseForm.Phone", "Symptom date is too far in the future");
+                    extraValid = false;
+                }
+
+                if (extraValid)
+                {
+                    var lastCase = _CaseService.AssignAndAdd(CaseForm.getCase());
+                    return RedirectToPage("Dashboard", new { lastCaseId = lastCase.CaseID });
+                }
+
+
             }
             return Page();
         }
-        
 
-        public int testerId { get; set; }
-        public Tester tester { get; set; }
-        public TestingCentre testingCentre { get; set; }
 
         [BindProperty]
         public CaseForm CaseForm { get; set; }
@@ -89,12 +98,18 @@ namespace ContactTracing15.Pages.Testing
     }
 
     public class CaseForm
-    {
+    { 
+
+        [HiddenInput]
+        public int TesterId { get; set; }
+        [HiddenInput]
+        public string TestingCentrePostcode { get; set; }
+
         [Required(ErrorMessage = "Please enter patient's forename"), Display(Name = "Forename")]
         public string Forename { get; set; }
         [Required(ErrorMessage = "Please enter patient's Surname"), Display(Name = "Surname")]
         public string Surname { get; set; }
-        [Phone, Required(ErrorMessage = "Please enter patient's preferred phone number"), Display(Name = "Phone Number")]
+        [Phone, Display(Name = "Phone Number")]
         public string Phone { get; set; }
 
 #nullable enable
@@ -102,7 +117,8 @@ namespace ContactTracing15.Pages.Testing
         public string? Phone2 { get; set; }
         [Required(ErrorMessage = "Please enter date when test was taken"), Display(Name = "Date of Test")]
         public DateTime? TestDate { get; set; }
-        [RegularExpression(@"([a-z]|[A-Z]){1,2}[0-9]{1,2}", ErrorMessage = "Please enter first half of Patient's Postcode, e.g AA01"), Display(Name = "Start of Postcode")]
+
+        [Required(ErrorMessage = "Please enter first half of Patient's Postcode, e.g AA01"), Display(Name = "Start of Postcode")]
         public string? Postcode { get; set; }
 
         [EmailAddress, Display(Name = "Email Address")]
@@ -110,7 +126,7 @@ namespace ContactTracing15.Pages.Testing
         [Display(Name = "Date Symptoms Started (if known)")]
         public DateTime? SymptomDate { get; set; }
 
-        public Case getCase(TestingCentre testingCentre, Tester tester)
+        public Case getCase()
         {
             Case _case = new Case();
             _case.Forename = this.Forename;
@@ -118,15 +134,14 @@ namespace ContactTracing15.Pages.Testing
             _case.Phone = this.Phone;
             _case.Phone2 = this.Phone2;
             _case.TestDate = this.TestDate == null ? DateTime.Now :(DateTime) this.TestDate;
-            _case.Postcode = this.Postcode != null ? this.Postcode : testingCentre.Postcode;
+            _case.Postcode = this.Postcode != null ? this.Postcode.ToUpper() : TestingCentrePostcode;
+            _case.Email = this.Email;
             _case.SymptomDate = this.SymptomDate;
 
-            _case.TesterID = tester.TesterID;
+            _case.TesterID = this.TesterId;
             _case.AddedDate = DateTime.Now;
             _case.Traced = false;
             return _case;
         }
-        
-
     }
 }
