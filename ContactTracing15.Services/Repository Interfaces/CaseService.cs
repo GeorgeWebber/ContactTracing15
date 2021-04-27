@@ -97,7 +97,6 @@ namespace ContactTracing15.Services
         }
 
 
-
         //TODO: return the total number of cases that have been successfully traced
         int ICaseService.TotalCasesReached()
         {
