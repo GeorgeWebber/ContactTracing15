@@ -10,12 +10,12 @@ namespace ContactTracing15.Services
 {
     public class UserService : IUserService
     {
-        readonly ITracerRepository _SQLTracerRepository;
-        readonly ITesterRepository _SQLTesterRepository;
-        public UserService(ITracerRepository SQLTracerRepository, ITesterRepository SQLTesterRepository)
+        readonly ITracerService _TracerService;
+        readonly ITesterService _TesterService;
+        public UserService(ITracerService tracerService, ITesterService testerService)
         {
-            _SQLTracerRepository = SQLTracerRepository;
-            _SQLTesterRepository = SQLTesterRepository;
+            _TracerService = tracerService;
+            _TesterService = testerService;
         }
 
         public User GetUserByUserName(string username, int usrType)
@@ -24,7 +24,7 @@ namespace ContactTracing15.Services
             {
                 try
                 {
-                    var tracer = _SQLTracerRepository.GetAllTracers().Single(x => x.Username == username);
+                    var tracer = _TracerService.GetTracer(username);
                     return new User
                     {
                         Type = UserType.Tracer,
@@ -38,6 +38,23 @@ namespace ContactTracing15.Services
                 }
                 
 
+            }
+            else if (usrType == 1)
+            {
+                try
+                {
+                    var tester = _TesterService.GetTester(username);
+                    return new User
+                    {
+                        Type = UserType.Tester,
+                        UserId = tester.TesterID,
+                        UserName = username
+                    };
+                }
+                catch (InvalidOperationException e)
+                {
+                    return null;
+                }
             }
             return new User
             {

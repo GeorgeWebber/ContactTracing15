@@ -40,12 +40,12 @@ namespace ContactTracing15.Services
 
         public IEnumerable<Case> GetCasesByDate(DateTime from_, DateTime to_)
         {
-            return context.Cases.FromSqlRaw<Case>(@"SELECT * FROM Cases WHERE AddedDate between {0} AND {1}", from_, to_).ToList();
+            return context.Cases.FromSqlRaw<Case>(@"SELECT FROM Cases WHERE AddedDate between {0} AND {1}", from_, to_).ToList();
         }
 
         public IEnumerable<String> GetpostcodesByDate(DateTime from_, DateTime to_)
         {
-            return (IEnumerable<string>)context.Cases.FromSqlRaw(@"SELECT Postcode FROM Cases WHERE AddedDate between {0} and {1}", from_, to_).ToList();
+            return (IEnumerable<string>)context.Cases.FromSqlRaw(@"SELECT * FROM Cases WHERE AddedDate between {0} and {1}", from_, to_).ToList();
         }
 
         public Case GetCase(int id)
