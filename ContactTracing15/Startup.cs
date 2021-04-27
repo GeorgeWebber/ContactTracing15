@@ -1,3 +1,4 @@
+using ContactTracing15.Data;
 using ContactTracing15.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,10 +47,14 @@ namespace ContactTracing15
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AppDB"));
             });
+            // Identity Database server context
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
-            // Get the database context and apply the migrations
-            var context = services.BuildServiceProvider().GetService<AppDbContext>();
-            context.Database.Migrate();
+            // Add default identity service
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
             services.AddRazorPages();
@@ -66,7 +71,6 @@ namespace ContactTracing15
             services.AddScoped<IContactService, ContactService>();
             services.AddScoped<ITesterService, TesterService>();
             services.AddScoped<ITestingCentreService, TestingCentreService>();
-            services.AddScoped<ITracingCentreService, TracingCentreService>();
 
             //Add Okta middleware configuration(Authentication)
             services.AddAuthentication(options =>
@@ -99,23 +103,6 @@ namespace ContactTracing15
 
             _googleApiKey = Configuration["googleApiKey"];
 
-
-            if (string.Equals(
-                Environment.GetEnvironmentVariable("ASPNETCORE_FORWARDEDHEADERS_ENABLED"),
-                "true", StringComparison.OrdinalIgnoreCase))
-            {
-                services.Configure<ForwardedHeadersOptions>(options =>
-                {
-                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
-                        ForwardedHeaders.XForwardedProto;
-                    // Only loopback proxies are allowed by default.
-                    // Clear that restriction because forwarders are enabled by explicit 
-                    // configuration.
-                    options.KnownNetworks.Clear();
-                    options.KnownProxies.Clear();
-                });
-            }
-
         }
 
         /// <summary>
@@ -138,11 +125,6 @@ namespace ContactTracing15
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedProto
-            });
 
             app.UseRouting();
 

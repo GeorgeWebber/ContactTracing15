@@ -48,17 +48,5 @@ namespace ContactTracing15.Services
         {
             return _contactRepository.Update(updatedContact);
         }
-
-        //TODO: return the total number of contacts that have been reached ever
-        int IContactService.TotalContactsReached()
-        {
-            return 0;
-        }
-
-        //TODO: Returns the average number of contacts given by each successfully traced case in the last 28 days
-        double IContactService.AverageContactsPerCaseLast28Days()
-        {
-            return 4.5;
-        }
     }
 }

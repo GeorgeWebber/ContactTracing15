@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using ContactTracing15.Services;
 using ContactTracing15.Models;
-using System.Linq;
 
 namespace ContactTracing15.Services
 {
@@ -32,10 +31,6 @@ namespace ContactTracing15.Services
         Tester ITesterService.GetTester(int id)
         {
             return _testerRepository.GetTester(id);
-        }
-        Tester ITesterService.GetTester(string username) //TODO replace with SQL
-        {
-            return _testerRepository.GetAllTesters().Single(x => x.Username == username);
         }
 
         void ITesterService.Save()

@@ -58,7 +58,7 @@ namespace ContactTracing15.Pages.Tracing
 
                     _caseListItems = new CaseListItems
                     {
-                        AssignedCases = assignedCases.ToList()
+                        AssignedCases = assignedCases
                     };
                 }
 

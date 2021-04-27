@@ -2,7 +2,6 @@
 
 @if (Model.HasAssignedCases)
 {
-    /*
     <ul>
         @foreach (var assignedCase in Model.AssignedCases.OrderByDescending(x => x.CaseRaised))
         {
@@ -11,38 +10,4 @@
             </li>
         }
     </ul>
-    */
-    <table class="table table-hover table-sm">
-        <thead style="background: #90ADB8">
-            <tr>
-                <th scope="col" style="text-align: center; font-size: 18px">Case Names</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var assignedCase in Model.AssignedCases.OrderByDescending(x => x.CaseRaised))
-            {
-                <tr @if (assignedCase.IsActive) { <text> style="background-color:red" </text> }>
-                    <td>
-                        <a asp-page="./Dashboard" , asp-route-caseid="@assignedCase.CaseID" class="btn btn-block btn-sm" style="background-color:transparent" >@Html.DisplayFor(m => assignedCase.Name)</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
 }
-else {
-<table class="table table-sm">
-    <thead style="background: #90ADB8">
-        <tr>
-            <th scope="col" style="text-align: center; font-size: 18px">Case Names</th>
-        </tr>
-    </thead>
-    <tbody>
-            <tr>
-                <td>
-                    You have no more assigned cases right now :)
-                </td>
-            </tr>
-    </tbody>
-</table>
-}  

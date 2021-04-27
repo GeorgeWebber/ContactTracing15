@@ -12,7 +12,7 @@ namespace ContactTracing15.Services
             {
                 var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
                 optionsBuilder.UseSqlServer(
-                  "Server=(localdb)\\mssqllocaldb;Database=TracingAppDB;Trusted_Connection=True;");
+                  "Server=(localdb)\\mssqllocaldb;Database=EFSample.Testing;Trusted_Connection=True;");
 
                 return new AppDbContext(optionsBuilder.Options);
             }

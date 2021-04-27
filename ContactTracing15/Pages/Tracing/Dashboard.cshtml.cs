@@ -37,12 +37,16 @@ namespace ContactTracing15.Pages.Tracing
         {
             if (dropCaseId != null && CaseListItems.AssignedCases.Any(x => x.CaseID == dropCaseId))
             {
-                caseService.Drop(dropCaseId.Value);
+                var caseToDrop = caseService.GetCase(dropCaseId.Value);
+                caseToDrop.TracerID = null;
+                caseService.Save();
                 return new RedirectToPageResult("Dashboard");
             }
             if (completeCaseId != null && CaseListItems.AssignedCases.Any(x => x.CaseID == completeCaseId))
             {
-                caseService.Complete(completeCaseId.Value);
+                var caseToComplete = caseService.GetCase(completeCaseId.Value);
+                caseToComplete.Traced = true;
+                caseService.Save();
                 return new RedirectToPageResult("Dashboard");
             }
 

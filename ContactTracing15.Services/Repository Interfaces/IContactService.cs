@@ -15,8 +15,5 @@ namespace ContactTracing15.Services
         Contact Delete(int id);
         IEnumerable<Contact> Search(string searchTerm);
         void Save();
-        int TotalContactsReached();
-        double AverageContactsPerCaseLast28Days();
-
     }
 }
