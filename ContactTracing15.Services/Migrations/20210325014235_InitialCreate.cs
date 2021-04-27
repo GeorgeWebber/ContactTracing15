@@ -89,6 +89,8 @@ namespace ContactTracing15.Services.Migrations
                     AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Postcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Traced = table.Column<bool>(type: "bit", nullable: false),
+                    DroppedNum = table.Column<int>(type: "int", nullable: false),
+                    Dropped = table.Column<bool>(type: "bit", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TracerID = table.Column<int>(type: "int", nullable: true),
@@ -125,6 +127,7 @@ namespace ContactTracing15.Services.Migrations
                     AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TracedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ContactedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>

@@ -34,6 +34,8 @@ namespace ContactTracing15.Models
 
         /// <value>Boolean value representing whether a case has given to a contact tracer or not</value>
         public bool Traced { get; set; }
+        public int DroppedNum { get; set; }
+        public bool Dropped { get; set; }
 
 #nullable enable
 
