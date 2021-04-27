@@ -16,7 +16,7 @@ namespace ContactTracing15.Services
         Tracer Add(Tracer newTracer);
         Tracer Update(Tracer updatedTracer);
         Tracer Delete(int id);
-        IEnumerable<Tracer> GetTracerWithLeastCases();
+        Tracer GetTracerWithLeastCases();
         IEnumerable<Tracer> Search(string searchTerm);
         void Save();
     }

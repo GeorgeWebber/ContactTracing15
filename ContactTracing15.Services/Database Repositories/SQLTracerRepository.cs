@@ -49,28 +49,29 @@ namespace ContactTracing15.Services
         public Tracer GetTracer(string name)
         {
             return context.Tracers
-              .FromSqlRaw<Tracer>(@"@TracerName int
-                                    as
-                                    Begin
+              .FromSqlRaw<Tracer>(@"Begin
                                         Select * from Tracers
-                                        where Username = @Tracername
+                                        where Username = {0}
                                     End", name)
               .ToList()
               .FirstOrDefault();
         }
-        public IEnumerable<Tracer> GetTracerWithLeastCases()
+
+        public Tracer GetTracerWithLeastCases()
         {
             return context.Tracers
-              .FromSqlRaw<Tracer>(@"select * from tracers where  TracerID in (
-                    select top (2) t.tracerid
+              .FromSqlRaw<Tracer>(@"select * from tracers where  TracerID = (
+                    select top (1) t.tracerid
                     from tracers t 
                     left join (select * from cases where (Traced = 0)) c
                     on c.tracerid = t.tracerID
                     group by t.tracerid
                     order by count(c.tracerid) asc)")
-              .ToList();
+
+              .ToList()
+              .FirstOrDefault();
         }
-        
+
         public IEnumerable<Tracer> Search(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm))

@@ -13,7 +13,7 @@ namespace ContactTracing15.Helper
         {
             if (postcode == null)
             {
-                return true;
+                return false;
             }
 
             bool result = false;
@@ -36,7 +36,7 @@ namespace ContactTracing15.Helper
         public static string FormatErrorMessage()
         {
             return String.Format(CultureInfo.CurrentCulture,
-              "That is not a registered UK postcode, please check and try again. Only give first half of postcode, e.g AA01");
+              "That is not a registered UK postcode, please check and try again");
         }
     }
 

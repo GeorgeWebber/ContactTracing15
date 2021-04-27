@@ -15,7 +15,7 @@ namespace ContactTracing15.Pages.Tracing
         public DashboardEditModel(
             ITracerService tracerService,
             IUserService userService,
-            IContactService contactService,
+            IContactRepository contactService,
             ICaseService caseService)
             :base(tracerService, userService)
         {
@@ -25,7 +25,7 @@ namespace ContactTracing15.Pages.Tracing
         }
 
         private readonly ICaseService _caseService;
-        private readonly IContactService _contactService;
+        private readonly IContactRepository _contactService;
 
         [BindProperty]
         public AddContactForm AddContactForm { get; set; }
@@ -34,7 +34,7 @@ namespace ContactTracing15.Pages.Tracing
 
         public bool HasCurrentAssignedCase => CurrentAssignedCase != null;
 
-        public IActionResult OnGet(int? caseId, int? editContactId)
+        public IActionResult OnGet(int? caseId)
         {
             if (!caseId.HasValue)
             {
@@ -44,7 +44,6 @@ namespace ContactTracing15.Pages.Tracing
             {
                 return Unauthorized();
             }
-            
 
             if (caseId.HasValue)
             {
@@ -60,7 +59,7 @@ namespace ContactTracing15.Pages.Tracing
                     };
                 }
             }
-            
+
             
             var parentCase = _caseService.GetCase(caseId.Value);
             if (parentCase == null)
@@ -68,61 +67,16 @@ namespace ContactTracing15.Pages.Tracing
                 return NotFound();
             }
             AddContactForm.CaseId = caseId.Value;
-            if (editContactId.HasValue)
-            {
-                var editContact = _contactService.GetContact(editContactId.Value);
-                if (editContact == null)
-                {
-                    return NotFound();
-                }
-                AddContactForm.ContactId = editContactId.Value;
-                AddContactForm.Forename = editContact.Forename;
-                AddContactForm.Surname = editContact.Surname;
-                AddContactForm.Phone = editContact.Phone;
-                AddContactForm.Email = editContact.Email;
-            }
             return Page();
             
         }
 
         public IActionResult OnPost()
         {
-            var currentCase = _caseService.GetCase(AddContactForm.CaseId);
-            if (currentCase != null)
-            {
-                CurrentAssignedCase = new CaseDetail
-                {
-                    Name = currentCase.GetFullName(),
-                    CaseID = currentCase.CaseID
-                };
-            }
             if (ModelState.IsValid)
             {
-                var extraValid = true;
-                if (AddContactForm.Email == null && AddContactForm.Phone == null)
-                {
-                    ModelState.AddModelError("AddContactForm.Email", "You must supply either an email address or phone number");
-                    ModelState.AddModelError("AddContactForm.Phone", "You must supply either an email address or phone number");
-                    extraValid = false;
-                }
-                if (extraValid)
-                {
-                    if (AddContactForm.ContactId.HasValue)
-                    {
-                        var editContact = _contactService.GetContact(AddContactForm.ContactId.Value);
-                        if (editContact == null || editContact.CaseID != currentCase.CaseID)
-                        {
-                            return new RedirectToPageResult("Dashboard", new { caseId = AddContactForm.CaseId });
-                        }
-                        _contactService.Update(AddContactForm.getContact(editContact));
-                        return new RedirectToPageResult("Dashboard", new { caseId = AddContactForm.CaseId });
-                    }
-                    else
-                    {
-                        _contactService.Add(AddContactForm.getContact());
-                        return new RedirectToPageResult("Dashboard", new { caseId = AddContactForm.CaseId });
-                    }
-                }
+                _contactService.Add(AddContactForm.getContact(AddContactForm.CaseId));
+                return new RedirectToPageResult("Dashboard", new { caseId = AddContactForm.CaseId });  
             }
             return Page();
         }
@@ -130,22 +84,20 @@ namespace ContactTracing15.Pages.Tracing
     public class AddContactForm
     {
         [HiddenInput]
-        public int? ContactId { get; set; }
-        [HiddenInput]
         public int CaseId { get; set; }
         [Required(ErrorMessage = "Please enter contact's forename"), Display(Name = "Forename")]
         public string Forename { get; set; }
         [Required(ErrorMessage = "Please enter contact's Surname"), Display(Name = "Surname")]
         public string Surname { get; set; }
 
-        [EmailAddress, Display(Name = "Email Address")]
+        [EmailAddress, Required(ErrorMessage = "Please enter email address for contact"), Display(Name = "Email Address")]
         public string Email { get; set; }
 
 #nullable enable
         [Phone, Display(Name = "Phone Number")]
         public string? Phone { get; set; }
 
-        public Contact getContact()
+        public Contact getContact(int parentCaseId)
         {
             Contact _contact = new Contact();
             _contact.Forename = this.Forename;
@@ -154,16 +106,8 @@ namespace ContactTracing15.Pages.Tracing
             _contact.Email = this.Email;
 
             _contact.AddedDate = DateTime.Now;
-            _contact.CaseID = this.CaseId;
-            return _contact;
-        }
-        public Contact getContact(Contact _contact)
-        {
-            _contact.Forename = this.Forename;
-            _contact.Surname = this.Surname;
-            _contact.Phone = this.Phone;
-            _contact.Email = this.Email;
-
+            _contact.TracedDate = DateTime.Now;
+            _contact.CaseID = parentCaseId;
             return _contact;
         }
 
