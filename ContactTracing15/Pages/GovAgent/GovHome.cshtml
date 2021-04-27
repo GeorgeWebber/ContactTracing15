@@ -6,6 +6,11 @@
 
 <style>
 
+    #statCardDeck {
+        margin: 0px;
+        padding: 20px;
+    }
+
     #tracingCentreTable {
         height: 50%;
         width: 100%;
@@ -13,67 +18,136 @@
         padding: 0px;
     }
 
+    #statCard {
+        display: table;
+        overflow: hidden;
+        width: 18rem;
+        height: 10rem;
+        
+    }
+
+    .pressableCard {
+        display: table;
+        overflow: hidden;
+        width: 18rem;
+        height: 10rem;
+    }
+
+    .nonPressCard {
+        background: C1D1D7;
+    }
+
+    .card-body {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .card-body:after {
+        content: "";
+        height: 80%;
+        width: 100%;
+    }
+
+    #subtitle {
+        display: table-cell;
+        vertical-align: sub;
+        border: 1px solid #f00;
+        text-align: center;
+    }
+
+    .row {
+        display: grid;
+        grid-auto-flow: column;
+        gap: 5%;
+    }
+
+    .col {
+        border: solid;
+    }
+    
+
 
 </style>
 
 
-
-<a class="btn btn-outline-secondary" asp-area="" asp-page="/GovAgent/HeatmapPage">View Heatmap</a>
-
-<p>Average trace time last 28 days: @Model.AverageTraceTimeLast28DaysString</p>
-<p>Average contacts per case last 28 days: @Model.AverageContactsPerCaseLast28Days</p>
-<p>Percentage of cases reached in the last 28 days: @Model.PercentageCasesReachedLast28Days %</p>
-<p>Total positive tests recorded: @Model.TotalCasesEver</p>
-<p>Total cases reached ever: @Model.TotalCasesReached</p>
-<p>Total contacts reached ever: @Model.TotalContactsReached</p>
-
-
-@if (Model.AllTracingCentreStats.Count() > 0)
-{
-    <table class="table table-hover table-sm" id="tracingCentreTable">
-        <thead style="background: #90ADB8">
-            <tr>
-                <th scope="col" style="text-align: center; font-size: 18px">Tracing Centre</th>
-                <th scope="col" style="text-align: center; font-size: 18px">Cases Reached</th>
-                <th scope="col" style="text-align: center; font-size: 18px">Cases Assigned</th>
-                <th scope="col" style="text-align: center; font-size: 18px">% Cases Reached</th>
-                <th scope="col" style="text-align: center; font-size: 18px">Average Trace Time (day:hour)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var centreStats in Model.AllTracingCentreStats.OrderByDescending(x => x.Name))
-            {
-            <tr>
-                <td>
-                    <a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.Name)</a>
-                </td>
-                <td><a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.CasesReachedLast28Days)</a></td>
-                <td><a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.CasesAssignedLast28Days)</a></td>
-                <td><a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.PercentageCasesReachedLast28Days)</a></td>
-                <td><a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.AverageTraceTimeLast28Days.Days) : @Html.DisplayFor(m => centreStats.AverageTraceTimeLast28Days.Hours)</a></td>
-            </tr>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".pressableCard").hover(
+            function () {
+                $(this).addClass('shadow-lg').css('cursor', 'pointer');
+            }, function () {
+                $(this).removeClass('shadow-lg');
             }
-        </tbody>
-    </table>
-}
-else
-{
-    <table class="table table-sm">
-        <thead style="background: #90ADB8">
-            <tr>
-                <th scope="col" style="text-align: center; font-size: 18px">Tracing Centre</th>
-                <th scope="col" style="text-align: center; font-size: 18px">Cases Reached</th>
-                <th scope="col" style="text-align: center; font-size: 18px">Cases Assigned</th>
-                <th scope="col" style="text-align: center; font-size: 18px">% Cases Reached</th>
-                <th scope="col" style="text-align: center; font-size: 18px">Average Trace Time (day:hour)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    There are no registered tracing centres to view.
-                </td>
-            </tr>
-        </tbody>
-    </table>
-}  
+        );
+    });
+</script>
+
+<h1>Dashboard</h1>
+
+<div class="row" id="statCardDeck">
+    <div class="card-deck">
+        <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
+            <div class="card-body">
+                <h3>View Heatmap</h3>
+                <p class="subtitle"></p>View a geographical heatmap of cases by time</p>
+                <a asp-page="/GovAgent/HeatmapPage" class="stretched-link"></a>
+            </div>
+        </div>
+        <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
+            <div class="card-body">
+                <h3>Centre Breakdown</h3>
+                <p class="subtitle">View summary stats for each tracing centre</p>
+                <a asp-page="/GovAgent/TracingCentreSummary" class="stretched-link"></a>
+            </div>
+        </div>
+        <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
+            <div class="card-body">
+                <h3>Download Data</h3>
+                <p class="subtitle">Download a csv file of contact tracing data</p>
+                <a asp-page="/GovAgent/GovHome" class="stretched-link"></a>
+            </div>
+        </div>
+
+
+        <div class="card nonPressCard" id="statCard" style="background:#e0e8eb">
+            <div class="card-body">
+                <h1>@Model.PercentageCasesReachedLast28Days %</h1>
+                <p class="subtitle">Percentage of cases traced (last 28 days)</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.AverageTraceTimeLast28DaysString</h1>
+                <p class="subtitle">Average time taken to trace a case (last 28 days)</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.AverageContactsPerCaseLast28Days</h1>
+                <p class="subtitle">Average # contacts per case (last 28 days)</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.TotalCasesEver</h1>
+                <p class="subtitle">Total positive tests recorded</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.TotalCasesReached</h1>
+                <p class="subtitle">Total cases successfully traced ever</p>
+            </div>
+        </div>
+        <div class="card nonPressCard" id="statCard" style="background: #e0e8eb">
+            <div class="card-body">
+                <h1>@Model.TotalContactsReached</h1>
+                <p class="subtitle">Total contacts reached</p>
+            </div>
+        </div>
+
+    </div>
+    
+</div>

@@ -1,0 +1,63 @@
+﻿@page
+@model ContactTracing15.Pages.GovAgent.TracingCentreSummaryModel
+@{
+}
+
+<style>
+    #tracingCentreTable {
+        height: 90%;
+        width: 100%;
+        margin: 50px;
+        padding: 50px;
+    }
+</style>
+
+<a class="btn btn-outline-secondary" id="return-button" asp-area="" asp-page="/GovAgent/GovHome">Return to dashboard</a>
+
+<h1>Tracing Centre Summary</h1>
+
+@if (Model.AllTracingCentreStats.Count() > 0)
+{
+    <table class="table table-hover table-sm" id="tracingCentreTable">
+        <thead style="background: #90ADB8">
+            <tr>
+                <th scope="col" style="text-align: center; font-size: 18px">Tracing Centre</th>
+                <th scope="col" style="text-align: center; font-size: 18px">Cases Reached</th>
+                <th scope="col" style="text-align: center; font-size: 18px">Cases Assigned</th>
+                <th scope="col" style="text-align: center; font-size: 18px">% Cases Reached</th>
+                <th scope="col" style="text-align: center; font-size: 18px">Average Trace Time (day:hour)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var centreStats in Model.AllTracingCentreStats.OrderByDescending(x => x.Name))
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.Name)</a>
+                    </td>
+                    <td><a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.CasesReachedLast28Days)</a></td>
+                    <td><a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.CasesAssignedLast28Days)</a></td>
+                    <td><a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.PercentageCasesReachedLast28Days)</a></td>
+                    <td><a class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => centreStats.AverageTraceTimeLast28Days.Days) : @Html.DisplayFor(m => centreStats.AverageTraceTimeLast28Days.Hours)</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table table-sm">
+        <thead style="background: #90ADB8">
+            <tr>
+                <th scope="col" style="text-align: center; font-size: 18px">Tracing Centres</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    There are no registered tracing centres to view.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}  

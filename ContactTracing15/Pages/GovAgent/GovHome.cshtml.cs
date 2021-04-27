@@ -21,7 +21,6 @@ namespace ContactTracing15.Pages.GovAgent
         private readonly IConfiguration _config;
         private readonly ICaseService _caseService;
         private readonly IContactService _contactService;
-        private readonly ITracingCentreService _tracingCentreService;
 
         public string AverageTraceTimeLast28DaysString { get; set; }
         public double PercentageCasesReachedLast28Days { get; set; }
@@ -30,16 +29,13 @@ namespace ContactTracing15.Pages.GovAgent
         public int TotalContactsReached { get; set; }
         public double AverageContactsPerCaseLast28Days { get; set; }
 
-        public IEnumerable<TracingCentreStats> AllTracingCentreStats;
 
 
-
-        public GovHomeModel(IConfiguration config, ICaseService caseService, IContactService contactService, ITracingCentreService tracingCentreService)
+        public GovHomeModel(IConfiguration config, ICaseService caseService, IContactService contactService)
         {
             _config = config;
             _caseService = caseService;
             _contactService = contactService;
-            _tracingCentreService = tracingCentreService;
             SetStats();
 
         }
@@ -54,7 +50,7 @@ namespace ContactTracing15.Pages.GovAgent
             TotalCasesEver = _caseService.TotalCasesEver();
             TotalContactsReached = _contactService.TotalContactsReached();
             AverageContactsPerCaseLast28Days = _contactService.AverageContactsPerCaseLast28Days();
-            AllTracingCentreStats = _tracingCentreService.GetAllTracingCentreStats();
+            
         }
 
         public string GetTimeString(TimeSpan time)
@@ -62,11 +58,11 @@ namespace ContactTracing15.Pages.GovAgent
             string timeString = "";
             if (time.Days > 0)
             {
-                timeString += time.Days + " days, " + time.Hours + " hours";
+                timeString += time.Days + " d " + time.Hours + " h";
             }
             else
             {
-                timeString += time.Hours + " hours, " + time.Minutes + " minutes";
+                timeString += time.Hours + " h " + time.Minutes + " m";
             }
             
             return timeString;
