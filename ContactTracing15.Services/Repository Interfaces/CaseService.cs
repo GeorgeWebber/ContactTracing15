@@ -9,12 +9,12 @@ namespace ContactTracing15.Services
     public class CaseService : ICaseService
     {
         private readonly ICaseRepository _caseRepository;
-        private readonly IContactRepository _contactRepository;
+        private readonly IContactService _contactService;
         private readonly ITracerService _tracerService;
-        public CaseService(ICaseRepository caseRepository, IContactRepository contactRepository, ITracerService tracerService)
+        public CaseService(ICaseRepository caseRepository, IContactService contactService, ITracerService tracerService)
         {
             _caseRepository = caseRepository;
-            _contactRepository = contactRepository;
+            _contactService = contactService;
             _tracerService = tracerService;
         }
 
@@ -52,9 +52,9 @@ namespace ContactTracing15.Services
         {
             return _caseRepository.Update(updatedCase);
         }
-        public IEnumerable<Contact> GetTracedContacts(int id)  //TODO reimplement this
+        IEnumerable<Contact> ICaseService.GetTracedContacts(int id)  //TODO reimplement this
         {
-            return _contactRepository.GetAllContacts().Where(x => x.CaseID == id).ToList();
+            return _contactService.GetAllContacts().Where(x => x.CaseID == id);
         }
 
         IEnumerable<string> ICaseService.GetPostcodesByRecentDays(DateTime from_, DateTime to_) //TODO reimplement this
@@ -70,30 +70,17 @@ namespace ContactTracing15.Services
             return _caseRepository.Add(newCase);
         }
 
-        Case ICaseService.Drop(int caseId, int tracerId)
+        Case ICaseService.Drop(int caseId)
         {
             var dropCase = _caseRepository.GetCase(caseId);
-            if (DateTime.Now.AddDays(-7) > dropCase.TestDate)
-            {
-                dropCase.TracerID = null;
-            }
-            else
-            {
-                dropCase.TracerID = _tracerService.GetNextTracer(tracerId).TracerID;
-            }
+            dropCase.TracerID = _tracerService.GetNextTracer().TracerID;
             return _caseRepository.Update(dropCase);
         }
 
-        Case ICaseService.Complete(int caseId, int tracerId)
+        Case ICaseService.Complete(int caseId)
         {
             var completeCase = _caseRepository.GetCase(caseId);
             completeCase.Traced = true;
-            foreach( Contact contact in GetTracedContacts(caseId))
-            {
-                var _contact = _contactRepository.GetContact(contact.ContactID);
-                _contact.TracedDate = DateTime.Now;
-                _contactRepository.Update(_contact);
-            }
             return _caseRepository.Update(completeCase);
         }
 

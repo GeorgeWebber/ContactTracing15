@@ -18,38 +18,31 @@ namespace ContactTracing15.Pages.Tracing
     public class DashboardModel : BaseDashboardModel // TODO create table of all cases assigned to a tracer with routing to details pages for each case (and form for adding contacts)
     {
         private readonly ICaseService caseService;
-        private readonly IUserService userService;
-        private readonly IContactService contactService;
 
         
         public DashboardModel(
             ICaseService caseService,
             ITracerService tracerService,
-            IUserService userService,
-            IContactService contactService)
+            IUserService userService)
             :base(tracerService, userService)
         {
             this.caseService = caseService;
-            this.userService = userService;
-            this.contactService = contactService;
         }
 
         public CaseDetail CurrentAssignedCase { get; set; }
 
         public bool HasCurrentAssignedCase => CurrentAssignedCase != null;
 
-        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId, int? deleteContactId)
+        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId)
         {
-            var claims = HttpContext.User.Claims;
-            var currentUser = userService.GetUserByUserName(claims.Single(x => x.Type == "preferred_username").Value, int.Parse(claims.Single(x => x.Type == "usrtype").Value));
             if (dropCaseId != null && CaseListItems.AssignedCases.Any(x => x.CaseID == dropCaseId))
             {
-                caseService.Drop(dropCaseId.Value, currentUser.UserId);
+                caseService.Drop(dropCaseId.Value);
                 return new RedirectToPageResult("Dashboard");
             }
             if (completeCaseId != null && CaseListItems.AssignedCases.Any(x => x.CaseID == completeCaseId))
             {
-                caseService.Complete(completeCaseId.Value, currentUser.UserId);
+                caseService.Complete(completeCaseId.Value);
                 return new RedirectToPageResult("Dashboard");
             }
 
@@ -57,16 +50,9 @@ namespace ContactTracing15.Pages.Tracing
             {
                 return Unauthorized();
             }
+
             if (caseId.HasValue)
             {
-                if (deleteContactId.HasValue)
-                {
-                    var deleteContact = contactService.GetContact(deleteContactId.Value);
-                    if (deleteContact != null)
-                    {
-                        contactService.Delete(deleteContact.ContactID);
-                    }
-                }
                 CaseListItems.AssignedCases.FirstOrDefault(x => x.CaseID == caseId).IsActive = true;
 
                 var currentCase = caseService.GetCase(caseId.Value);
@@ -91,8 +77,7 @@ namespace ContactTracing15.Pages.Tracing
             Name = contact.GetFullName(),
             EmailAddress = contact.Email,
             PhoneNumber = contact.Phone,
-            DateTraced = contact.AddedDate,
-            ContactId = contact.ContactID
+            DateTraced = contact.AddedDate
         };
     }
     public class ContactDetail
@@ -101,24 +86,6 @@ namespace ContactTracing15.Pages.Tracing
         public string EmailAddress { get; set; }
         public string? PhoneNumber { get; set; }
         public DateTime DateTraced { get; set; }
-        public int ContactId { get; set; }
-        public string Info { 
-            get{
-                if (EmailAddress != null && PhoneNumber != null)
-                {
-                    return $"{Name}: {EmailAddress}, {PhoneNumber}";
-                }
-                else if (EmailAddress == null)
-                {
-                    return $"{Name}: {PhoneNumber}";
-                }
-                else
-                {
-                    return $"{Name}: {EmailAddress}";
-                }
-
-            }
-        }
 
     }
     public class CaseDetail
