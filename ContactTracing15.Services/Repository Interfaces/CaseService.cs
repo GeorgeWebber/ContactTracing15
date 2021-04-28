@@ -11,11 +11,13 @@ namespace ContactTracing15.Services
         private readonly ICaseRepository _caseRepository;
         private readonly IContactRepository _contactRepository;
         private readonly ITracerService _tracerService;
-        public CaseService(ICaseRepository caseRepository, IContactRepository contactRepository, ITracerService tracerService)
+        private readonly IEmailService _emailService;
+        public CaseService(ICaseRepository caseRepository, IContactRepository contactRepository, ITracerService tracerService, IEmailService emailService)
         {
             _caseRepository = caseRepository;
             _contactRepository = contactRepository;
             _tracerService = tracerService;
+            _emailService = emailService;
         }
 
         Case ICaseService.Add(Case newCase)
@@ -95,6 +97,7 @@ namespace ContactTracing15.Services
                 var _contact = _contactRepository.GetContact(contact.ContactID);
                 _contact.TracedDate = DateTime.Now;
                 _contactRepository.Update(_contact);
+                if (contact.Email != null) { _emailService.ContactByEmail(contact); }
             }
             return _caseRepository.Update(completeCase);
         }
