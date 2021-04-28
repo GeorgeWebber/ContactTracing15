@@ -22,8 +22,8 @@ namespace ContactTracing15.Services
         IEnumerable<string> GetPostcodesByRecentDays(DateTime from_, DateTime to_);
 
         Case AssignAndAdd(Case newCase);
-        Case Drop(int caseId);
-        Case Complete(int caseId);
+        Case Drop(int caseId, int tracerId);
+        Case Complete(int caseId, int tracerId);
 
         TimeSpan AverageTraceTimeLast28Days();
 

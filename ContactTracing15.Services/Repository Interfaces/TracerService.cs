@@ -32,9 +32,14 @@ namespace ContactTracing15.Services
             return _tracerResitory.GetAllTracers();
         }
 
-        Tracer ITracerService.GetNextTracer()
+        Tracer ITracerService.GetNextTracer()  
         {
-            return _tracerResitory.GetTracerWithLeastCases();
+            return _tracerResitory.GetTracerWithLeastCases().First();
+        }
+        Tracer ITracerService.GetNextTracer(int id)
+        {
+            var tracer = _tracerResitory.GetTracerWithLeastCases().First(x => x.TracerID != id);
+            return tracer ?? _tracerResitory.GetTracer(id);
         }
 
         Tracer ITracerService.GetTracer(int id)
