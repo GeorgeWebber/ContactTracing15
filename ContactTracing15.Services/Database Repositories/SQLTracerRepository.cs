@@ -42,6 +42,7 @@ namespace ContactTracing15.Services
         {
             return context.Tracers
               .FromSqlRaw<Tracer>("spGetTracerById {0}", id)
+              .Include(p => p.Cases)
               .ToList()
               .FirstOrDefault();
         }
@@ -53,6 +54,7 @@ namespace ContactTracing15.Services
                                         Select * from Tracers
                                         where Username = {0}
                                     End", name)
+              .Include(p => p.Cases)
               .ToList()
               .FirstOrDefault();
         }

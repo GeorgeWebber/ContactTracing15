@@ -52,6 +52,7 @@ namespace ContactTracing15.Services
         {
             return context.Cases
               .FromSqlRaw<Case>("spGetCaseById {0}", id)
+              .Include(p => p.Contacts)
               .ToList()
               .FirstOrDefault();
         }

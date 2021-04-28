@@ -42,6 +42,7 @@ namespace ContactTracing15.Services
         {
             return context.TracingCentres
               .FromSqlRaw<TracingCentre>("spGetTracingCentreById {0}", id)
+              .Include(p => p.Tracers)
               .ToList()
               .FirstOrDefault();
         }

@@ -42,6 +42,7 @@ namespace ContactTracing15.Services
         {
             return context.TestingCentres
               .FromSqlRaw<TestingCentre>("spGetTestingCentreById {0}", id)
+              .Include(p => p.Testers)
               .ToList()
               .FirstOrDefault();
         }

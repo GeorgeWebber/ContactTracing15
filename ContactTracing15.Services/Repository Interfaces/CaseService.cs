@@ -104,7 +104,7 @@ namespace ContactTracing15.Services
 
         int ICaseService.TotalCasesEver()
         {
-            return _caseRepository.GetAllCases().ToList().Count();
+            return  _caseRepository.GetAllCases().ToList().Count();
         }
 
     }
