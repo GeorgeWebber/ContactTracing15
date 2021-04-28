@@ -138,6 +138,8 @@ namespace ContactTracing15.Pages.Testing
             _case.Email = this.Email;
             _case.SymptomDate = this.SymptomDate;
 
+            _case.Dropped = false;
+            _case.DroppedNum = 0;
             _case.TesterID = this.TesterId;
             _case.AddedDate = DateTime.Now;
             _case.Traced = false;
