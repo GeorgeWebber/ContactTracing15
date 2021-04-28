@@ -4,53 +4,51 @@
 <div class="lhs" style="background: #F2F2F2; border: 1px solid #cecece; float: left; width: 30%">
     @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
 </div>
-<div class="rhs" style = "background: #F2F2F2; border: 1px solid #cecece; float: right; width: 60%">
+<div class="rhs" style="background: #F2F2F2; border: 1px solid #cecece; float: right; width: 60%">
     <p>
         <form method="post">
             <input asp-for="AddContactForm.CaseId" value="@Model.AddContactForm.CaseId" />
-            <input asp-for="AddContactForm.ContactId" value="@Model.AddContactForm.ContactId" />
             <div class="row">
-                <div class="col-9">
+                <div class="col-10">
                     <ul class="PositiveFormList" data-role="listview">
-                        <li class="forename">
-                            <div class="form-group">
-                                <label asp-for="AddContactForm.Forename"></label>
-                                <input asp-for="AddContactForm.Forename" class="form-control form-control-sm" value="@Model.AddContactForm.Forename" />
-                                <span asp-validation-for="AddContactForm.Forename"></span>
+                        Please complete the form with the details of a contact.
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Name</span>
                             </div>
-                        </li>
-                        <li class="last-name">
-                            <div class="form-group">
-                                <label asp-for="AddContactForm.Surname"></label>
-                                <input asp-for="AddContactForm.Surname" class="form-control form-control-sm" value="@Model.AddContactForm.Surname" />
-                                <span asp-validation-for="AddContactForm.Surname"></span>
+
+                            <input asp-for="AddContactForm.Forename" class="form-control" placeholder="first name">
+                            <input asp-for="AddContactForm.Surname" class="form-control" placeholder="last name">
+                        </div>
+
+                        <span asp-validation-for="AddContactForm.Forename"></span>
+                        <span asp-validation-for="AddContactForm.Surname"></span>
+
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Email Address</span>
                             </div>
-                        </li>
-                        <li class="email">
-                            <div class="form-group">
-                                <label asp-for="AddContactForm.Email"></label>
-                                <input asp-for="AddContactForm.Email" class="form-control form-control-sm" value="@Model.AddContactForm.Email"  />
-                                <span asp-validation-for="AddContactForm.Email"></span>
+                            <input asp-for="AddContactForm.Email" class="form-control">
+                        </div>
+                        <span asp-validation-for="AddContactForm.Email"></span>
+
+                        <div class="input-group mb-3 ">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Phone Number</span>
                             </div>
-                        </li>
-                        <li class="phone-number">
-                            <div class="form-group">
-                                <label asp-for="AddContactForm.Phone"></label>
-                                <input asp-for="AddContactForm.Phone" class="form-control form-control-sm" value="@Model.AddContactForm.Phone" />
-                                <span asp-validation-for="AddContactForm.Phone"></span>
-                            </div>
-                        </li>
+
+                            <input asp-for="AddContactForm.Phone" class="form-control" />
+                        </div>
+                        <span asp-validation-for="AddContactForm.Phone"></span>
                     </ul>
-<p class="actions text-center">
-        <button class="btn btn-danger submit-button rounded-0">Submit</button>
+                </div>
+            </div>
+            <button class="btn btn-danger submit-button rounded-0">Submit</button>
+        </form>
     </p>
-</div>
-    </div>
-</form>
+    <p>
+        <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-sm btn-outline-secondary rounded-0" role="button">Back to details </a>
     </p>
-<p>
-          <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-sm btn-outline-secondary rounded-0" role="button">Back to details </a>
-</p>
 </div>
 
 
