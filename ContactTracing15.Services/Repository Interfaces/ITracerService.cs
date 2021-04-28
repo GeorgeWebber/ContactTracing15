@@ -17,6 +17,7 @@ namespace ContactTracing15.Services
         IEnumerable<Tracer> Search(string searchTerm);
         void Save();
         Tracer GetNextTracer();
+        Tracer GetNextTracer(int id);
         IEnumerable<Case> GetAssignedCases(int id);
 
     }

@@ -118,7 +118,7 @@ namespace ContactTracing15.Pages.Testing
         [Required(ErrorMessage = "Please enter date when test was taken"), Display(Name = "Date of Test")]
         public DateTime? TestDate { get; set; }
 
-        [Required(ErrorMessage = "Please enter first half of Patient's Postcode, e.g AA01"), Display(Name = "Start of Postcode")]
+        [Display(Name = "Start of Postcode")]
         public string? Postcode { get; set; }
 
         [EmailAddress, Display(Name = "Email Address")]
