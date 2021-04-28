@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Okta.AspNetCore;
+using System.Linq;
 
 public class AccountController : Controller
 {
@@ -11,7 +12,16 @@ public class AccountController : Controller
         {
             return Challenge(OktaDefaults.MvcAuthenticationScheme);
         }
+        switch (User.Claims.First(c => c.Type == "usrtype").Value)
+        {
+            case ("0"):
+                return new RedirectToPageResult("/Tracing/Dashboard");
+            case ("1"):
+                return new RedirectToPageResult("/Testing/Dashboard");
+            case "2":
+                return new RedirectToPageResult("/GovAgent/GovHome");
 
+        }
         return RedirectToAction("Index", "Home");
     }
 
