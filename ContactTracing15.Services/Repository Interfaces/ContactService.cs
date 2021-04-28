@@ -60,8 +60,8 @@ namespace ContactTracing15.Services
 
         double IContactService.AverageContactsPerCaseLast28Days()
         {
-            int contacts = _contactRepository.GetContactsByDate(DateTime.Now, DateTime.Now.AddDays(-28)).ToList().Count();
-            int cases = _caseRepository.GetCasesByDate(DateTime.Now, DateTime.Now.AddDays(-28)).Where(x => x.Traced).ToList().Count();
+            int contacts = _contactRepository.GetContactsByDate(DateTime.Now.AddDays(-28), DateTime.Now).ToList().Count();
+            int cases = _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now).Where(x => x.Traced).ToList().Count();
             if (cases == 0) { return 0; }
             return contacts / cases;
         }

@@ -17,7 +17,6 @@
         overflow: hidden;
         width: 18rem;
         height: 10rem;
-        
     }
 
     .wrap {
@@ -60,11 +59,15 @@
 
 <div class="col d-flex justify-content-center">
     <p> Hello, @Model.Details.Username</p>
+
+</div>
+<div class="col d-flex justify-content-center">
     @if (Model.Details.lastCaseName != null)
     {
         <p>Successfully added @Model.Details.lastCaseName</p>
     }
 </div>
+
 
 <div class="col d-flex justify-content-center">
     <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
