@@ -2,11 +2,76 @@
 @model ContactTracing15.Pages.Testing.TesterDashboardModel
 @{
 }
-<p> Hello, @Model.Details.Username</p>
-@if(Model.Details.lastCaseName != null)
-            {
-                <p>Successfully added @Model.Details.lastCaseName</p>
+
+<style>
+
+    #statCard {
+        display: table;
+        overflow: hidden;
+        width: 18rem;
+        height: 10rem;
+    }
+
+    .pressableCard {
+        display: table;
+        overflow: hidden;
+        width: 18rem;
+        height: 10rem;
+        
+    }
+
+    .wrap {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+        .card-body:after {
+            content: "";
+            height: 80%;
+            width: 100%;
+        }
+
+    #subtitle {
+        display: table-cell;
+        vertical-align: sub;
+        border: 1px solid #f00;
+        text-align: center;
+    }
+</style>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".pressableCard").hover(
+            function () {
+                $(this).addClass('shadow-lg').css('cursor', 'pointer');
+            }, function () {
+                $(this).removeClass('shadow-lg');
             }
-<p>
-    <a asp-page="./PositiveForm"> Add Positive Test Result</a>
-</p>
+        );
+    });
+</script>
+
+<div class="col d-flex justify-content-center">
+    <p> Hello, @Model.Details.Username</p>
+    @if (Model.Details.lastCaseName != null)
+    {
+        <p>Successfully added @Model.Details.lastCaseName</p>
+    }
+</div>
+
+<div class="col d-flex justify-content-center">
+    <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
+        <div class="card-body">
+            <h3>Add Positive Test Result</h3>
+            <a asp-page="./PositiveForm" class="stretched-link"></a>
+        </div>
+    </div>
+</div>
+
