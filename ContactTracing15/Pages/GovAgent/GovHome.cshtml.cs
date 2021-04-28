@@ -23,7 +23,7 @@ namespace ContactTracing15.Pages.GovAgent
         private readonly IContactService _contactService;
 
         public string AverageTraceTimeLast28DaysString { get; set; }
-        public double PercentageCasesReachedLast28Days { get; set; }
+        public string PercentageCasesReachedLast28Days { get; set; }
         public int TotalCasesReached { get; set; }
         public int TotalCasesEver { get; set; }
         public int TotalContactsReached { get; set; }
@@ -45,7 +45,7 @@ namespace ContactTracing15.Pages.GovAgent
             TimeSpan time = _caseService.AverageTraceTimeLast28Days();
             AverageTraceTimeLast28DaysString = GetTimeString(time);
 
-            PercentageCasesReachedLast28Days = _caseService.PercentageCasesReachedLast28Days();
+            PercentageCasesReachedLast28Days = _caseService.PercentageCasesReachedLast28Days().ToString("0.0"); ;
             TotalCasesReached = _caseService.TotalCasesReached();
             TotalCasesEver = _caseService.TotalCasesEver();
             TotalContactsReached = _contactService.TotalContactsReached();
