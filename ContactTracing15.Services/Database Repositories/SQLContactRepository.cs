@@ -69,7 +69,7 @@ namespace ContactTracing15.Services
         }
         public IEnumerable<Contact> GetContactsByDate(DateTime from_, DateTime to_)
         {
-            return context.Contacts.FromSqlRaw<Contact>(@"SELECT FROM Contacts WHERE AddedDate between {0} AND {1}", from_, to_).ToList();
+            return context.Contacts.FromSqlRaw<Contact>(@"SELECT * FROM Contacts WHERE AddedDate between {0} AND {1}", from_, to_).ToList();
         }
 
         public void Save()
