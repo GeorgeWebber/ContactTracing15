@@ -4,7 +4,21 @@
     @if (User.Identity.IsAuthenticated)
     {
         <li class="nav-item">
-            <a class="nav-link text-dark"> Hello, @User.Identity.Name, User Type: @User.Claims.First(c => c.Type == "usrtype").Value </a>
+            <a class="nav-link text-dark"> Hello, @User.Identity.Name</a>
+        </li>
+        <li class="nav-item">
+            @switch (User.Claims.First(c => c.Type == "usrtype").Value)
+            {
+                case ("0"):
+                    <a class="nav-link text-light" asp-area="" asp-page="/Tracing/Dashboard">Tracing dashboard</a>
+                    break;
+                case ("1"):
+                    <a class="nav-link text-light" asp-area="" asp-page="/Testing/Dashboard">Testing dashboard</a>
+                    break;
+                case ("2"):
+                    <a class="nav-link text-light" asp-area="" asp-page="/GovAgent/GovHome">Gov Agent info</a>
+                    break;
+            }
         </li>
         <li class="nav-item">
             <a onclick="document.getElementById('logout_form').submit();" style="cursor: pointer;" class="nav-link btn btn-link text-dark">
