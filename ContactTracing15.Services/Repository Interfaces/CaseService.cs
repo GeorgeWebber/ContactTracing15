@@ -91,6 +91,7 @@ namespace ContactTracing15.Services
         double ICaseService.PercentageCasesReachedLast28Days()
         {
             int cases = _caseRepository.GetCasesByDate(DateTime.Now, DateTime.Now.AddDays(-28)).ToList().Count();
+            if (cases == 0) { return 0; }
             int traced = _caseRepository.GetCasesByDate(DateTime.Now, DateTime.Now.AddDays(-28)).Where(x => x.Traced).ToList().Count();
             return traced / cases * 100;
         }
