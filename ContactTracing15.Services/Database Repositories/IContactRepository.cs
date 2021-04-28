@@ -16,6 +16,7 @@ namespace ContactTracing15.Services
         Contact Update(Contact updatedContact);
         Contact Delete(int id);
         IEnumerable<Contact> Search(string searchTerm);
+        IEnumerable<Contact> GetContactsByDate(DateTime from_, DateTime to_);
         void Save();
     }
 }

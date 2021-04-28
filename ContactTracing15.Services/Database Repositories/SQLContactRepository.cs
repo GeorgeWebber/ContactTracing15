@@ -41,7 +41,7 @@ namespace ContactTracing15.Services
         public Contact GetContact(int id)
         {
             return context.Contacts
-              .FromSqlRaw<Contact>("spGetContactById {0}", id)
+              .Where(x => x.ContactID == id)
               .ToList()
               .FirstOrDefault();
         }
@@ -66,6 +66,10 @@ namespace ContactTracing15.Services
             Contact.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             context.SaveChanges();
             return updatedContact;
+        }
+        public IEnumerable<Contact> GetContactsByDate(DateTime from_, DateTime to_)
+        {
+            return context.Contacts.FromSqlRaw<Contact>(@"SELECT * FROM Contacts WHERE AddedDate between {0} AND {1}", from_, to_).ToList();
         }
 
         public void Save()

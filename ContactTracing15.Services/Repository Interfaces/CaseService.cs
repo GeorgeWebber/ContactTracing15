@@ -52,16 +52,16 @@ namespace ContactTracing15.Services
         {
             return _caseRepository.Update(updatedCase);
         }
-        public IEnumerable<Contact> GetTracedContacts(int id)  //TODO reimplement this
+
+        public IEnumerable<Contact> GetTracedContacts(int id)
         {
-            return _contactRepository.GetAllContacts().Where(x => x.CaseID == id).ToList();
+            return _caseRepository.GetCase(id).Contacts;
         }
-
-        IEnumerable<string> ICaseService.GetPostcodesByRecentDays(DateTime from_, DateTime to_) //TODO reimplement this
+        
+        IEnumerable<string> ICaseService.GetPostcodesByRecentDays(DateTime from_, DateTime to_)
         {
-
             return _caseRepository.GetAllCases().Where(u => u.AddedDate > from_ && u.AddedDate < to_).Select(u => u.Postcode).ToList();
-            //return _caseRepository.GetpostcodesByDate(DateTime.Now.AddDays(-days), DateTime.Now);
+            //return _caseRepository.GetpostcodesByDate(from_, to_);
         }
 
         Case ICaseService.AssignAndAdd(Case newCase)
@@ -103,23 +103,23 @@ namespace ContactTracing15.Services
             return DateTime.Now - DateTime.Now.AddDays(-1);
         }
 
-        //TODO:  Returns the percentage of cases successfully traced in the last 28 days (perhaps factoring in dropped cases?)
         double ICaseService.PercentageCasesReachedLast28Days()
         {
-            return 50;
+            int cases = _caseRepository.GetCasesByDate(DateTime.Now, DateTime.Now.AddDays(-28)).ToList().Count();
+            if (cases == 0) { return 0; }
+            int traced = _caseRepository.GetCasesByDate(DateTime.Now, DateTime.Now.AddDays(-28)).Where(x => x.Traced).ToList().Count();
+            return traced / cases * 100;
         }
 
 
-        //TODO: return the total number of cases that have been successfully traced
         int ICaseService.TotalCasesReached()
         {
-            return 0;
+            return _caseRepository.GetAllCases().Where(x => x.Traced).ToList().Count();
         }
 
-        //TODO: return the total number of positive cases that have been reached ever
         int ICaseService.TotalCasesEver()
         {
-            return 0;
+            return  _caseRepository.GetAllCases().ToList().Count();
         }
 
     }

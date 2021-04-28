@@ -41,7 +41,15 @@ namespace ContactTracing15.Services
         public Tester GetTester(int id)
         {
             return context.Testers
-              .FromSqlRaw<Tester>("spGetTesterById {0}", id)
+              .Where(x => x.TesterID == id)
+              .ToList()
+              .FirstOrDefault();
+        }
+
+        public Tester GetTester(string name)
+        {
+            return context.Testers
+              .Where(x => x.Username ==name)
               .ToList()
               .FirstOrDefault();
         }

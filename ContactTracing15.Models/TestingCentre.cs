@@ -23,7 +23,7 @@ namespace ContactTracing15.Models
         public string Postcode { get; set; }
 
         ///<value></value>
-        public virtual ICollection<Tester> Testers { get; set; }
+        public virtual ICollection<Tester> Testers { get; set; } = new List<Tester>();
 
     }
 }

@@ -35,6 +35,7 @@ namespace ContactTracing15.Models
 
         /// <value>Date that the contact was traced(Nullable)</value>
         public DateTime? TracedDate { get; set; }
+        public DateTime? ContactedDate { get; set; }
 
         /// <value>Date that the personal data on this contact was removed from the database (Nullable)</value>
         public DateTime? RemovedDate { get; set; }

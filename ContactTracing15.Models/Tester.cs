@@ -23,6 +23,6 @@ namespace ContactTracing15.Models
         public TestingCentre TestingCentre { get; set; }
 
         ///<value></value>
-        public virtual ICollection<Case> Cases { get; set; }
+        public virtual ICollection<Case> Cases { get; set; } = new List<Case>();
     }
 }
