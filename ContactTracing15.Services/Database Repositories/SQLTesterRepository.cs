@@ -46,6 +46,17 @@ namespace ContactTracing15.Services
               .FirstOrDefault();
         }
 
+        public Tester GetTester(string name)
+        {
+            return context.Testers
+              .FromSqlRaw<Tester>(@"Begin
+                                        Select * from Testers
+                                        where Username = {0}
+                                    End", name)
+              .ToList()
+              .FirstOrDefault();
+        }
+
         public IEnumerable<Tester> Search(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm))

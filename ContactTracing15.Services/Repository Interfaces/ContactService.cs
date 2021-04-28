@@ -3,12 +3,15 @@ using ContactTracing15.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace ContactTracing15.Services
 { 
     public class ContactService : IContactService
     {
         private readonly IContactRepository _contactRepository;
+        private readonly ICaseRepository _caseRepository;
+        private readonly ITracerService _tracerService;
 
         public  ContactService(IContactRepository contactRepository)
         {
@@ -49,16 +52,16 @@ namespace ContactTracing15.Services
             return _contactRepository.Update(updatedContact);
         }
 
-        //TODO: return the total number of contacts that have been reached ever
         int IContactService.TotalContactsReached()
         {
-            return 0;
+            return _contactRepository.GetAllContacts().Where(x => x.ContactedDate != null).ToList().Count();
         }
 
-        //TODO: Returns the average number of contacts given by each successfully traced case in the last 28 days
         double IContactService.AverageContactsPerCaseLast28Days()
         {
-            return 4.5;
+            int contacts = _contactRepository.GetContactsByDate(DateTime.Now, DateTime.Now.AddDays(-28)).ToList().Count();
+            int cases = _caseRepository.GetCasesByDate(DateTime.Now, DateTime.Now.AddDays(-28)).Where(x => x.Traced).ToList().Count();
+            return contacts / cases;
         }
     }
 }

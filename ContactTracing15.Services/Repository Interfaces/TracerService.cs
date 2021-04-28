@@ -32,10 +32,9 @@ namespace ContactTracing15.Services
             return _tracerResitory.GetAllTracers();
         }
 
-        Tracer ITracerService.GetNextTracer()  //TODO, do this with SQL commands in the repository
+        Tracer ITracerService.GetNextTracer()
         {
             return _tracerResitory.GetTracerWithLeastCases();
-            //return _tracerResitory.GetTracer(1);
         }
 
         Tracer ITracerService.GetTracer(int id)
@@ -65,7 +64,7 @@ namespace ContactTracing15.Services
 
         IEnumerable<Case> ITracerService.GetAssignedCases(int id)  //TODO reimplement this
         {
-            return _caseRepository.GetAllCases().Where(x => (x.Traced == false && x.TracerID == id));
+            return _tracerResitory.GetTracer(id).Cases;
         }
     }
 }

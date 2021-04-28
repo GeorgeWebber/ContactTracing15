@@ -12,6 +12,7 @@ namespace ContactTracing15.Services
     {
         IEnumerable<Tester> GetAllTesters();
         Tester GetTester(int id);
+        Tester GetTester(string name);
         Tester Add(Tester newTester);
         Tester Update(Tester updatedTester);
         Tester Delete(int id);
