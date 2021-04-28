@@ -41,7 +41,7 @@ namespace ContactTracing15.Services
         public Contact GetContact(int id)
         {
             return context.Contacts
-              .FromSqlRaw<Contact>("spGetContactById {0}", id)
+              .Where(x => x.ContactID == id)
               .ToList()
               .FirstOrDefault();
         }

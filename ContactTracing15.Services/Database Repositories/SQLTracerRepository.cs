@@ -41,7 +41,8 @@ namespace ContactTracing15.Services
         public Tracer GetTracer(int id)
         {
             return context.Tracers
-              .FromSqlRaw<Tracer>("spGetTracerById {0}", id)
+              .Include(x => x.Cases)
+              .Where(x => x.TracerID == id)
               .ToList()
               .FirstOrDefault();
         }
@@ -49,10 +50,8 @@ namespace ContactTracing15.Services
         public Tracer GetTracer(string name)
         {
             return context.Tracers
-              .FromSqlRaw<Tracer>(@"Begin
-                                        Select * from Tracers
-                                        where Username = {0}
-                                    End", name)
+              .Include(x => x.Cases)
+              .Where(x => x.Username == name)
               .ToList()
               .FirstOrDefault();
         }

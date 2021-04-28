@@ -41,7 +41,7 @@ namespace ContactTracing15.Services
         public Tester GetTester(int id)
         {
             return context.Testers
-              .FromSqlRaw<Tester>("spGetTesterById {0}", id)
+              .Where(x => x.TesterID == id)
               .ToList()
               .FirstOrDefault();
         }
@@ -49,10 +49,7 @@ namespace ContactTracing15.Services
         public Tester GetTester(string name)
         {
             return context.Testers
-              .FromSqlRaw<Tester>(@"Begin
-                                        Select * from Testers
-                                        where Username = {0}
-                                    End", name)
+              .Where(x => x.Username ==name)
               .ToList()
               .FirstOrDefault();
         }

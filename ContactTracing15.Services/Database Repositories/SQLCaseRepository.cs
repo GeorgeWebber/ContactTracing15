@@ -51,7 +51,8 @@ namespace ContactTracing15.Services
         public Case GetCase(int id)
         {
             return context.Cases
-              .FromSqlRaw<Case>("spGetCaseById {0}", id)
+              .Include(x => x.Contacts)
+              .Where(x => x.CaseID == id)
               .ToList()
               .FirstOrDefault();
         }

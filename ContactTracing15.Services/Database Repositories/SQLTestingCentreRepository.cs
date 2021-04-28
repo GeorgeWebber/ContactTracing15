@@ -41,7 +41,7 @@ namespace ContactTracing15.Services
         public TestingCentre GetTestingCentre(int id)
         {
             return context.TestingCentres
-              .FromSqlRaw<TestingCentre>("spGetTestingCentreById {0}", id)
+              .Where(x => x.TestingCentreID == id)
               .ToList()
               .FirstOrDefault();
         }
