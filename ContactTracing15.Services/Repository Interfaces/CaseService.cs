@@ -73,13 +73,15 @@ namespace ContactTracing15.Services
         Case ICaseService.Drop(int caseId, int tracerId)
         {
             var dropCase = _caseRepository.GetCase(caseId);
-            if (DateTime.Now.AddDays(-7) > dropCase.TestDate)
+            if (DateTime.Now.AddDays(-7) > dropCase.TestDate || dropCase.DroppedNum >= 3)
             {
                 dropCase.TracerID = null;
+                dropCase.Dropped = true;
             }
             else
             {
                 dropCase.TracerID = _tracerService.GetNextTracer(tracerId).TracerID;
+                dropCase.DroppedNum++;
             }
             return _caseRepository.Update(dropCase);
         }
