@@ -63,7 +63,7 @@ namespace ContactTracing15.Services
             int contacts = _contactRepository.GetContactsByDate(DateTime.Now.AddDays(-28), DateTime.Now).ToList().Count();
             int cases = _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now).Where(x => x.Traced).ToList().Count();
             if (cases == 0) { return 0; }
-            return contacts / cases;
+            return (double) contacts / cases;
         }
     }
 }
