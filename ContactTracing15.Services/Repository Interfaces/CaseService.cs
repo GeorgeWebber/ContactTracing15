@@ -97,7 +97,8 @@ namespace ContactTracing15.Services
                 var _contact = _contactRepository.GetContact(contact.ContactID);
                 _contact.TracedDate = DateTime.Now;
                 _contactRepository.Update(_contact);
-                if (contact.Email != null) { _emailService.ContactByEmail(contact); }
+                if (contact.Email != null) { 
+                    _emailService.ContactByEmail(contact); }
             }
             return _caseRepository.Update(completeCase);
         }
