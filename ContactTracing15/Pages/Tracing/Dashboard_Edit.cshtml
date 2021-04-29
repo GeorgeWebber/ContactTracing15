@@ -1,5 +1,8 @@
 ﻿@page
 @model ContactTracing15.Pages.Tracing.DashboardEditModel
+@{ 
+    ViewData["Title"] = "Contact Tracer Dashboard";
+}
 
 <div class="lhs" style="background: #F2F2F2; border: 1px solid #cecece; float: left; width: 30%">
     @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
