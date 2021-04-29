@@ -33,8 +33,17 @@ namespace ContactTracing15.Services
             MailMessage mail = new MailMessage();
             //Setting From , To and CC
             mail.From = new MailAddress("groupdesignproject15@gmail.com");
-            mail.Subject = "YOU GOT A FREND WITH COVID";
-            mail.Body = "HAHA BRO ITS JUST A TEST";
+            mail.Subject = "IMPORTANT: Confirmed Covid-19 Contact";
+
+
+            string messageBody = String.Format("Dear {0} {1},", contact.Forename, contact.Surname);
+            messageBody += "\nWe regret to inform you that you have been listed as a close contact of someone who has subsequently tested positive for Covid-19.";
+            messageBody += "\nAs a result, you are required by law to self-isolate for 10 days. Further technical guidance is listed at ABCD.";
+            messageBody += "\nIf you think this message has been sent in error, please call XXX to speak to a trained contact tracer.";
+            messageBody += "\nYours sincerely,\nContactTracing15";
+            messageBody += "\n\nFurther details about how to contact us can be found at https://contacttracing15online.azurewebsites.net ";
+
+            mail.Body = messageBody;
             mail.To.Add(new MailAddress(contact.Email));
             smtpClient.Send(mail);
         }
