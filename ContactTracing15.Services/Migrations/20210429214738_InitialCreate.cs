@@ -88,14 +88,14 @@ namespace ContactTracing15.Services.Migrations
                     TestDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Postcode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Traced = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DroppedNum = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Dropped = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Traced = table.Column<bool>(type: "bit", nullable: false),
+                    DroppedNum = table.Column<int>(type: "int", nullable: false),
+                    Dropped = table.Column<bool>(type: "bit", nullable: false),
+                    TracedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TracerID = table.Column<int>(type: "int", nullable: true),
                     SymptomDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TracedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContactTracing15.Services.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210325014235_InitialCreate")]
+    [Migration("20210429214738_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,12 @@ namespace ContactTracing15.Services.Migrations
 
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("Dropped")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DroppedNum")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -64,6 +70,9 @@ namespace ContactTracing15.Services.Migrations
                     b.Property<bool>("Traced")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("TracedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("TracerID")
                         .HasColumnType("int");
 
@@ -88,6 +97,9 @@ namespace ContactTracing15.Services.Migrations
 
                     b.Property<int>("CaseID")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("ContactedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
