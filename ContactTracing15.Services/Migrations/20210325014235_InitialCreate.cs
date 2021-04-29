@@ -95,6 +95,7 @@ namespace ContactTracing15.Services.Migrations
                     Phone2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TracerID = table.Column<int>(type: "int", nullable: true),
                     SymptomDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TracedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RemovedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>

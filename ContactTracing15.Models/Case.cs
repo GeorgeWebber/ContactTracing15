@@ -39,6 +39,8 @@ namespace ContactTracing15.Models
 
 #nullable enable
 
+        public DateTime? TracedDate { get; set; }
+
         /// <value>(Nullable)</value>
         public string? Email { get; set; }
 
