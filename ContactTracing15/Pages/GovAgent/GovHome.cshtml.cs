@@ -84,19 +84,7 @@ namespace ContactTracing15.Pages.GovAgent
             {
                 return Page();
             }
-            
         }
-
-        public async Task<IActionResult> OnPostDownloadDatabase()
-        {
-            Console.WriteLine("downloading database");
-
-            FileContentResult download = StartExcelDownload();
-            return download;
-
-            return Page();
-        }
-
         public FileContentResult StartExcelDownload ()
         {
 
