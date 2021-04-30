@@ -1,8 +1,9 @@
 ﻿@page
 @model ContactTracing15.Pages.Tracing.DashboardModel
-@{ 
+@{
     ViewData["Title"] = "Contact Tracer Dashboard";
 }
+
 
 <div class="lhs" style="background: #F2F2F2; border: 1px solid #cecece; float: left; width: 30%">
     @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
@@ -29,9 +30,9 @@
                     Secondary Phone Number: @Html.DisplayFor(m => m.CurrentAssignedCase.PhoneNumber2)
                 </p>
             }
-            <p>
-                Added Contacts:
-                <u1>
+            <div>
+                <p>Added Contacts:</p>
+                <ul>
                     @foreach (var contact in Model.CurrentAssignedCase.contacts)
                     {
                     <li>
@@ -40,14 +41,54 @@
                         <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-deletecontactid="@contact.ContactId">delete</a>
                     </li>
                     }
-                </u1>
-            </p>
-            <p>
+                </ul>
+            </div>
+            <div style="margin:10px">
                 <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-danger rounded-0" role="button">Add a Contact </a>
-                <a asp-page="./Dashboard" asp-route-completecaseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-danger rounded-0" role="button"> Close Case </a>
-                <a asp-page="./Dashboard" asp-route-dropcaseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-danger rounded-0" role="button"> Drop Case</a>
-            </p>
+                <a class="btn btn-danger rounded-0" data-toggle="modal" href="#closeModal" role="button">Close case</a>
+                <a class="btn btn-danger rounded-0" data-toggle="modal" href="#dropModal" role="button">Drop case</a>
+            </div>
         </div>
+
+
+
+        <!-- Modals -->
+        <div id="closeModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" style="text-align: center;">Close Case?</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure? This action is irreversible and will result in the listed contacts of the case being automatically emailed.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-outline-secondary" data-dismiss="modal" role="button"> Cancel</a>
+                        <a asp-page="./Dashboard" asp-route-completecaseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-danger rounded-0" role="button"> Close case</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dropModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" style="text-align: center;">Drop Case?</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure? This action is irreversible and will result this case being dropped from your workload.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-outline-secondary" data-dismiss="modal" role="button"> Cancel</a>
+                        <a asp-page="./Dashboard" asp-route-dropcaseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-danger rounded-0" role="button"> Drop Case</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     }
     else
     {
@@ -57,5 +98,5 @@
             </p>
         </div>
     }
+</div>
 
-       
