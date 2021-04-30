@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using ClosedXML.Excel;
 using ContactTracing15.Models;
 using ContactTracing15.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -68,17 +71,55 @@ namespace ContactTracing15.Pages.GovAgent
             return timeString;
         }
 
-        public void OnGet()
+        public IActionResult OnGetDownload()
         {
+            Console.WriteLine("downloading database on get");
+
+            FileContentResult download = StartExcelDownload();
+            if (download != null)
+            {
+                return download;
+            }
+            else
+            {
+                return Page();
+            }
             
         }
 
         public async Task<IActionResult> OnPostDownloadDatabase()
         {
             Console.WriteLine("downloading database");
-         
+
+            FileContentResult download = StartExcelDownload();
+            return download;
+
             return Page();
         }
+
+        public FileContentResult StartExcelDownload ()
+        {
+
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            string fileName = "ContactTracingReport.xlsx";
+            try
+            {
+                using (var workbook = new XLWorkbook(@"ContactTracingReport.xlsx"))
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        return File(content, contentType, fileName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
 
     }
 }
