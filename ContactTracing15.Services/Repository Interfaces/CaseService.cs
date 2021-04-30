@@ -103,7 +103,6 @@ namespace ContactTracing15.Services
             return _caseRepository.Update(completeCase);
         }
 
-        //TODO:  Returns the average time taken to contact trace a case in the last 28 days
         TimeSpan ICaseService.AverageTraceTimeLast28Days()
         {
             var cases = _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now).Where(x => x.Traced == true);

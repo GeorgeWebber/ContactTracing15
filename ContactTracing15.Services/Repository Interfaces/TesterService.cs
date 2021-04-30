@@ -33,9 +33,9 @@ namespace ContactTracing15.Services
         {
             return _testerRepository.GetTester(id);
         }
-        Tester ITesterService.GetTester(string username) //TODO replace with SQL
+        Tester ITesterService.GetTester(string username)
         {
-            return _testerRepository.GetAllTesters().Single(x => x.Username == username);
+            return _testerRepository.GetTester(username);
         }
 
         void ITesterService.Save()
