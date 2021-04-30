@@ -73,9 +73,11 @@ namespace ContactTracing15.Pages.GovAgent
             
         }
 
-        public void DownloadDatabase()
+        public async Task<IActionResult> OnPostDownloadDatabase()
         {
             Console.WriteLine("downloading database");
+         
+            return Page();
         }
 
     }
