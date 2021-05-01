@@ -62,6 +62,7 @@ namespace ContactTracing15
             services.AddScoped<ITracerRepository, SQLTracerRepository>();
             services.AddScoped<ITesterRepository, SQLTesterRepository>();
             services.AddScoped<ITestingCentreRepository, SQLTestingCentreRepository>();
+            services.AddScoped<ITracingCentreRepository, SQLTracingCentreRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITracerService, TracerService>();
             services.AddScoped<ICaseService, CaseService>();

@@ -58,6 +58,10 @@ namespace ContactTracing15.Pages.GovAgent
 
         public string GetTimeString(TimeSpan time)
         {
+            if (time <= TimeSpan.FromTicks(0))
+            {
+                return "N/A";
+            }
             string timeString = "";
             if (time.Days > 0)
             {

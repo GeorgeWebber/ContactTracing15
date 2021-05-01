@@ -47,9 +47,10 @@ namespace ContactTracing15.Services
         {
             return _contactRepository.Search(searchTerm);
         }
-        public IEnumerable<Contact> GetOldContacts(DateTime threshold)   //TODO redo this with SQL query
+        public IEnumerable<Contact> GetOldContacts(DateTime threshold)   
         {
-            return _contactRepository.GetAllContacts().Where(x => x.RemovedDate == null && x.AddedDate <= threshold).ToList();
+            var low_bar = new DateTime(1000, 1, 1);
+            return _contactRepository.GetContactsByDate(low_bar, threshold).Where(x => x.RemovedDate == null).ToList();
         }
 
         public Contact RemovePersonalData(int id)  //TODO, perhaps do this with SQL if it's faster, otherwise this is fine as is
