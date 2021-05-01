@@ -62,7 +62,25 @@ namespace ContactTracing15.Services
         {
             return _caseRepository.GetCase(id).Contacts;
         }
+
+        public IEnumerable<Case> GetOldCases(DateTime threshold) //TODO redo this with SQL query
+        {
+            return _caseRepository.GetAllCases().Where(x => x.RemovedDate == null && x.AddedDate <= threshold).ToList();
+        }
         
+        public Case RemovePersonalData(int id) //TODO, perhaps do this with SQL if it's faster, otherwise this is fine as is
+        {
+            var _case = _caseRepository.GetCase(id);
+            _case.Forename = null;
+            _case.Surname = null;
+            _case.Email = null;
+            _case.Phone = null;
+            _case.Phone2 = null;
+            _case.TracerID = null;
+            _case.RemovedDate = DateTime.Now;
+            return _caseRepository.Update(_case);
+        }
+
         IEnumerable<string> ICaseService.GetPostcodesByRecentDays(DateTime from_, DateTime to_)
         {
             return _caseRepository.GetAllCases().Where(u => u.AddedDate > from_ && u.AddedDate < to_).Select(u => u.Postcode).ToList();
@@ -91,19 +109,27 @@ namespace ContactTracing15.Services
             return _caseRepository.Update(dropCase);
         }
 
-        Case ICaseService.Complete(int caseId, int tracerId)
+        bool ICaseService.Complete(int caseId, int tracerId)
         {
             var completeCase = _caseRepository.GetCase(caseId);
             completeCase.Traced = true;
-            foreach (Contact contact in GetTracedContacts(caseId))
+            var contacts = GetTracedContacts(caseId);
+            if (contacts.Any(x => x.Email == null && x.ContactedDate == null))
+            {
+                return false;
+            }
+            foreach (Contact contact in contacts)
             {
                 var _contact = _contactRepository.GetContact(contact.ContactID);
                 _contact.TracedDate = DateTime.Now;
-                _contactRepository.Update(_contact);
                 if (contact.Email != null) { 
-                    _emailService.ContactByEmail(contact); }
+                    _emailService.ContactByEmail(contact);
+                    _contact.ContactedDate = DateTime.Now;
+                }
+                _contactRepository.Update(_contact);
             }
-            return _caseRepository.Update(completeCase);
+            _caseRepository.Update(completeCase);
+            return true;
         }
 
         TimeSpan ICaseService.AverageTraceTimeLast28Days()

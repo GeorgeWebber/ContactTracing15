@@ -84,6 +84,9 @@
     });
 </script>
 
+
+
+
 <h1>Dashboard</h1>
 
 <div class="row" id="statCardDeck">
@@ -103,10 +106,12 @@
             </div>
         </div>
         <div class="card pressableCard" id="statCard" style="margin:10px; background: #90ADB8;">
+            
             <div class="card-body">
                 <h3>Download Data</h3>
                 <p class="subtitle">Download a csv file of contact tracing data</p>
-                <a asp-page="/GovAgent/GovHome" class="stretched-link"></a>
+                <a href="@Url.Page("GovHome", "Download")" class="stretched-link"></a>
+                
             </div>
         </div>
 
