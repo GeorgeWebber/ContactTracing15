@@ -63,9 +63,10 @@ namespace ContactTracing15.Services
             return _caseRepository.GetCase(id).Contacts;
         }
 
-        public IEnumerable<Case> GetOldCases(DateTime threshold) //TODO redo this with SQL query
+        public IEnumerable<Case> GetOldCases(DateTime threshold)
         {
-            return _caseRepository.GetAllCases().Where(x => x.RemovedDate == null && x.AddedDate <= threshold).ToList();
+            var low_bar = new DateTime(1000, 1, 1);
+            return _caseRepository.GetCasesByDate(low_bar, threshold).Where(x => x.RemovedDate == null).ToList();
         }
         
         public Case RemovePersonalData(int id) //TODO, perhaps do this with SQL if it's faster, otherwise this is fine as is
@@ -83,8 +84,7 @@ namespace ContactTracing15.Services
 
         IEnumerable<string> ICaseService.GetPostcodesByRecentDays(DateTime from_, DateTime to_)
         {
-            return _caseRepository.GetAllCases().Where(u => u.AddedDate > from_ && u.AddedDate < to_).Select(u => u.Postcode).ToList();
-            //return _caseRepository.GetpostcodesByDate(from_, to_);
+            return _caseRepository.GetCasesByDate(from_, to_).Select(u => u.Postcode);
         }
 
         Case ICaseService.AssignAndAdd(Case newCase)
