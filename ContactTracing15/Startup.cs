@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Cronos;
+
 
 namespace ContactTracing15
 {
@@ -69,6 +71,7 @@ namespace ContactTracing15
             services.AddScoped<ITracingCentreService, TracingCentreService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IPrivacyService, PrivacyService>();
+            services.AddHostedService<PrivacyService>();
 
             //Add Okta middleware configuration(Authentication)
             services.AddAuthentication(options =>
