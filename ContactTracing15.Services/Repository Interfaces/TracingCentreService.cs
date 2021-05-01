@@ -32,33 +32,24 @@ namespace ContactTracing15.Services
         {
             var TracingCentres = _tracingCentreRepository.GetAllTracingCentres().ToList();
 
-            List<TracingCentreStats> Stats = new List<TracingCentreStats>();
+            List<TracingCentreStats> AllStats = new List<TracingCentreStats>();
 
             foreach (TracingCentre centre in TracingCentres)
             {
-                var traceTime = 
+                var CasesAssignedLast28Days_ = _caseService.CasesAssignedToTracingCentreLast28Days(centre);
+                var CasesReachedLast28Days_ = _caseService.CasesTracedByTracingCentreLast28Days(centre);
                 TracingCentreStats stats = new TracingCentreStats
                 {
                     Name = centre.Name,
                     AverageTraceTimeLast28Days = new TimeSpan(2, 5, 2),
-                    CasesAssignedLast28Days = 5,
-                    CasesReachedLast28Days = 4,
-                    PercentageCasesReachedLast28Days = 80
+                    CasesAssignedLast28Days = CasesAssignedLast28Days_,
+                    CasesReachedLast28Days = CasesReachedLast28Days_,
+                    PercentageCasesReachedLast28Days = (double)CasesReachedLast28Days_ / CasesAssignedLast28Days_ * 100
                 };
+                AllStats.Add(stats);
             }
 
-            TracingCentreStats tracingCentreStats = new TracingCentreStats
-            {
-                Name = "A centre",
-                AverageTraceTimeLast28Days = new TimeSpan(2, 5, 2),
-                CasesAssignedLast28Days = 5,
-                CasesReachedLast28Days = 4,
-                PercentageCasesReachedLast28Days = 80
-            };
-
-            List<TracingCentreStats> exampleEnumerable = new List<TracingCentreStats>();
-            exampleEnumerable.Add(tracingCentreStats);
-            return exampleEnumerable;
+            return AllStats;
         }
     }
 }

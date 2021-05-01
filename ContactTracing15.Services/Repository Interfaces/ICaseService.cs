@@ -18,8 +18,14 @@ namespace ContactTracing15.Services
         void Save();
         IEnumerable<Contact> GetTracedContacts(int id);
 
+        void ExportAsExcel();
+
         // Returns an enumerable of postcodes of cases registered in the day range "today-daysFrom" to "today - daysTo"
         IEnumerable<string> GetPostcodesByRecentDays(DateTime from_, DateTime to_);
+
+        int CasesAssignedToTracingCentreLast28Days(TracingCentre centre);
+
+        int CasesTracedByTracingCentreLast28Days(TracingCentre centre)
 
         Case AssignAndAdd(Case newCase);
         Case Drop(int caseId, int tracerId);

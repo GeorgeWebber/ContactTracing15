@@ -12,6 +12,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="ExcelEngine" Version="1.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -23,7 +24,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1000" />
     <PackageReference Include="Okta.AspNetCore" Version="3.5.0" />
+    <PackageReference Include="System.Reactive.Windows.Forms" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

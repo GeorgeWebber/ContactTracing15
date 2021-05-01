@@ -1,8 +1,11 @@
 ﻿using ContactTracing15.Models;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Drawing;
 
 namespace ContactTracing15.Services
 {
@@ -119,6 +122,23 @@ namespace ContactTracing15.Services
             return  (double) traced / cases * 100;
         }
 
+        int ICaseService.CasesAssignedToTracingCentreLast28Days(TracingCentre centre)
+        {
+            return _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now)
+                .Where(x => x.Tracer.TracingCentre.TracingCentreID == centre.TracingCentreID)
+                .ToList()
+                .Count();
+        }
+
+        int ICaseService.CasesTracedByTracingCentreLast28Days(TracingCentre centre)
+        {
+            return _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now)
+                .Where(x => x.Traced)
+                .Where(x => x.Tracer.TracingCentre.TracingCentreID == centre.TracingCentreID)
+                .ToList()
+                .Count();
+        }
+
 
         int ICaseService.TotalCasesReached()
         {
@@ -129,6 +149,44 @@ namespace ContactTracing15.Services
         {
             return  _caseRepository.GetAllCases().ToList().Count();
         }
+
+        void ICaseService.ExportAsExcel()
+        {
+            string fileName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" +
+            "ExcelReport.xlsx";
+
+            Excel.Application xlsApp;
+            Excel.Workbook xlsWorkbook;
+            Excel.Worksheet xlsWorksheet;
+            object misValue = System.Reflection.Missing.Value;
+
+            try
+            {
+                FileInfo oldFile = new FileInfo(fileName);
+                if (oldFile.Exists)
+                {
+                    File.SetAttributes(oldFile.FullName, FileAttributes.Normal);
+                    oldFile.Delete();
+                }
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            xlsApp = new Excel.Application();
+            xlsWorkbook = xlsApp.Workbooks.Add(misValue);
+            xlsWorksheet = (Excel.Worksheet)xlsWorkbook.Sheets[1];
+
+            // Create the header for Excel file
+            xlsWorksheet.Cells[1, 1] = "Covid Cases Report";
+            Excel.Range range = xlsWorksheet.get_Range("A1", "E1");
+            range.Merge(1);
+            range.Borders.Color = Color.Black.ToArgb();
+            range.Interior.Color = Color.Yellow.ToArgb();
+
+        }
+
 
     }
 }
