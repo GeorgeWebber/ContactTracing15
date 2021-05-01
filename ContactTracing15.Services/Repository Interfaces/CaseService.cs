@@ -141,6 +141,17 @@ namespace ContactTracing15.Services
             return TimeSpan.FromTicks(total_ticks / num_cases);
         }
 
+        TimeSpan ICaseService.AverageTraceTimeOfCentreLast28Days(TracingCentre centre)
+        {
+            var cases = _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now)
+                .Where(x => x.Traced == true)
+                .Where(x => x.Tracer.TracingCentreID == centre.TracingCentreID);
+            var total_ticks = cases.Select(x => x.TracedDate.Value.Ticks - x.AddedDate.Ticks).Sum();
+            var num_cases = cases.ToList().Count();
+            if (num_cases == 0) { return TimeSpan.FromTicks(0); }
+            return TimeSpan.FromTicks(total_ticks / num_cases);
+        }
+
         double ICaseService.PercentageCasesReachedLast28Days()
         {
             int cases = _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now).ToList().Count();

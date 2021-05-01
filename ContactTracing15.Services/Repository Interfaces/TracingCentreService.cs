@@ -26,10 +26,13 @@ namespace ContactTracing15.Services
             {
                 var CasesAssignedLast28Days_ = _caseService.CasesAssignedToTracingCentreLast28Days(centre);
                 var CasesReachedLast28Days_ = _caseService.CasesTracedByTracingCentreLast28Days(centre);
+                var AverageTraceTimeLast28Days_ = _caseService.AverageTraceTimeOfCentreLast28Days(centre);
+
+
                 TracingCentreStats stats = new TracingCentreStats
                 {
                     Name = centre.Name,
-                    AverageTraceTimeLast28Days = new TimeSpan(2, 5, 2),
+                    AverageTraceTimeLast28Days = AverageTraceTimeLast28Days_,
                     CasesAssignedLast28Days = CasesAssignedLast28Days_,
                     CasesReachedLast28Days = CasesReachedLast28Days_,
                     PercentageCasesReachedLast28Days = (double)CasesReachedLast28Days_ / CasesAssignedLast28Days_ * 100

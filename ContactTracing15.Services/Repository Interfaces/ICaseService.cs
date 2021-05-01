@@ -34,6 +34,7 @@ namespace ContactTracing15.Services
         bool Complete(int caseId, int tracerId);
 
         TimeSpan AverageTraceTimeLast28Days();
+        TimeSpan AverageTraceTimeOfCentreLast28Days(TracingCentre centre);
 
         double PercentageCasesReachedLast28Days();
 
