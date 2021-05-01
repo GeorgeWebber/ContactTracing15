@@ -14,6 +14,8 @@ namespace ContactTracing15.Services
         Contact Update(Contact updatedContact);
         Contact Delete(int id);
         IEnumerable<Contact> Search(string searchTerm);
+        IEnumerable<Contact> GetOldContacts(DateTime threshold);
+        Contact RemovePersonalData(int id);
         void Save();
         int TotalContactsReached();
         double AverageContactsPerCaseLast28Days();

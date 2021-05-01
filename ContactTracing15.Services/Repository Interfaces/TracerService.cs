@@ -67,7 +67,7 @@ namespace ContactTracing15.Services
             return _tracerResitory.Update(updatedTracer);
         }
 
-        IEnumerable<Case> ITracerService.GetAssignedCases(int id)  //TODO reimplement this
+        IEnumerable<Case> ITracerService.GetAssignedCases(int id)
         {
             return _tracerResitory.GetTracer(id).Cases.Where(x => !x.Traced);
 

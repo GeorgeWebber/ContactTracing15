@@ -38,6 +38,8 @@ namespace ContactTracing15.Services
             return context.Cases;
         }
 
+       // public IEnumerable<>
+
         public IEnumerable<Case> GetCasesByDate(DateTime from_, DateTime to_)
         {
             return context.Cases.FromSqlRaw<Case>(@"SELECT * FROM Cases WHERE AddedDate between {0} AND {1}", from_, to_).ToList();

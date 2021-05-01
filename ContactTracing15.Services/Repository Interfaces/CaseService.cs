@@ -1,8 +1,11 @@
 ﻿using ContactTracing15.Models;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Drawing;
 
 namespace ContactTracing15.Services
 {
@@ -59,11 +62,29 @@ namespace ContactTracing15.Services
         {
             return _caseRepository.GetCase(id).Contacts;
         }
+
+        public IEnumerable<Case> GetOldCases(DateTime threshold)
+        {
+            var low_bar = new DateTime(1000, 1, 1);
+            return _caseRepository.GetCasesByDate(low_bar, threshold).Where(x => x.RemovedDate == null).ToList();
+        }
         
+        public Case RemovePersonalData(int id) //TODO, perhaps do this with SQL if it's faster, otherwise this is fine as is
+        {
+            var _case = _caseRepository.GetCase(id);
+            _case.Forename = null;
+            _case.Surname = null;
+            _case.Email = null;
+            _case.Phone = null;
+            _case.Phone2 = null;
+            _case.TracerID = null;
+            _case.RemovedDate = DateTime.Now;
+            return _caseRepository.Update(_case);
+        }
+
         IEnumerable<string> ICaseService.GetPostcodesByRecentDays(DateTime from_, DateTime to_)
         {
-            return _caseRepository.GetAllCases().Where(u => u.AddedDate > from_ && u.AddedDate < to_).Select(u => u.Postcode).ToList();
-            //return _caseRepository.GetpostcodesByDate(from_, to_);
+            return _caseRepository.GetCasesByDate(from_, to_).Select(u => u.Postcode);
         }
 
         Case ICaseService.AssignAndAdd(Case newCase)
@@ -88,22 +109,29 @@ namespace ContactTracing15.Services
             return _caseRepository.Update(dropCase);
         }
 
-        Case ICaseService.Complete(int caseId, int tracerId)
+        bool ICaseService.Complete(int caseId, int tracerId)
         {
             var completeCase = _caseRepository.GetCase(caseId);
             completeCase.Traced = true;
-            foreach (Contact contact in GetTracedContacts(caseId))
+            var contacts = GetTracedContacts(caseId);
+            if (contacts.Any(x => x.Email == null && x.ContactedDate == null))
+            {
+                return false;
+            }
+            foreach (Contact contact in contacts)
             {
                 var _contact = _contactRepository.GetContact(contact.ContactID);
                 _contact.TracedDate = DateTime.Now;
-                _contactRepository.Update(_contact);
                 if (contact.Email != null) { 
-                    _emailService.ContactByEmail(contact); }
+                    _emailService.ContactByEmail(contact);
+                    _contact.ContactedDate = DateTime.Now;
+                }
+                _contactRepository.Update(_contact);
             }
-            return _caseRepository.Update(completeCase);
+            _caseRepository.Update(completeCase);
+            return true;
         }
 
-        //TODO:  Returns the average time taken to contact trace a case in the last 28 days
         TimeSpan ICaseService.AverageTraceTimeLast28Days()
         {
             var cases = _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now).Where(x => x.Traced == true);
@@ -121,6 +149,23 @@ namespace ContactTracing15.Services
             return  (double) traced / cases * 100;
         }
 
+        int ICaseService.CasesAssignedToTracingCentreLast28Days(TracingCentre centre)
+        {
+            return _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now)
+                .Where(x => x.Tracer.TracingCentre.TracingCentreID == centre.TracingCentreID)
+                .ToList()
+                .Count();
+        }
+
+        int ICaseService.CasesTracedByTracingCentreLast28Days(TracingCentre centre)
+        {
+            return _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now)
+                .Where(x => x.Traced)
+                .Where(x => x.Tracer.TracingCentre.TracingCentreID == centre.TracingCentreID)
+                .ToList()
+                .Count();
+        }
+
 
         int ICaseService.TotalCasesReached()
         {
@@ -131,6 +176,44 @@ namespace ContactTracing15.Services
         {
             return  _caseRepository.GetAllCases().ToList().Count();
         }
+
+        void ICaseService.ExportAsExcel()
+        {
+            string fileName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" +
+            "ExcelReport.xlsx";
+
+            Excel.Application xlsApp;
+            Excel.Workbook xlsWorkbook;
+            Excel.Worksheet xlsWorksheet;
+            object misValue = System.Reflection.Missing.Value;
+
+            try
+            {
+                FileInfo oldFile = new FileInfo(fileName);
+                if (oldFile.Exists)
+                {
+                    File.SetAttributes(oldFile.FullName, FileAttributes.Normal);
+                    oldFile.Delete();
+                }
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+
+            xlsApp = new Excel.Application();
+            xlsWorkbook = xlsApp.Workbooks.Add(misValue);
+            xlsWorksheet = (Excel.Worksheet)xlsWorkbook.Sheets[1];
+
+            // Create the header for Excel file
+            xlsWorksheet.Cells[1, 1] = "Covid Cases Report";
+            Excel.Range range = xlsWorksheet.get_Range("A1", "E1");
+            range.Merge(1);
+            range.Borders.Color = Color.Black.ToArgb();
+            range.Interior.Color = Color.Yellow.ToArgb();
+
+        }
+
 
     }
 }

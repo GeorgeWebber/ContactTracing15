@@ -17,13 +17,21 @@ namespace ContactTracing15.Services
         IEnumerable<Case> Search(string searchTerm);
         void Save();
         IEnumerable<Contact> GetTracedContacts(int id);
+        IEnumerable<Case> GetOldCases(DateTime threshold);
+        Case RemovePersonalData(int id);
+
+        void ExportAsExcel();
 
         // Returns an enumerable of postcodes of cases registered in the day range "today-daysFrom" to "today - daysTo"
         IEnumerable<string> GetPostcodesByRecentDays(DateTime from_, DateTime to_);
 
+        int CasesAssignedToTracingCentreLast28Days(TracingCentre centre);
+
+        int CasesTracedByTracingCentreLast28Days(TracingCentre centre);
+
         Case AssignAndAdd(Case newCase);
         Case Drop(int caseId, int tracerId);
-        Case Complete(int caseId, int tracerId);
+        bool Complete(int caseId, int tracerId);
 
         TimeSpan AverageTraceTimeLast28Days();
 
@@ -32,5 +40,6 @@ namespace ContactTracing15.Services
         int TotalCasesReached();
 
         int TotalCasesEver();
+
     }
 }
