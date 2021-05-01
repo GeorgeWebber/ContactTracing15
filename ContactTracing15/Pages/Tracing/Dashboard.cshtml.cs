@@ -36,9 +36,11 @@ namespace ContactTracing15.Pages.Tracing
 
         public CaseDetail CurrentAssignedCase { get; set; }
 
+        public bool CloseFailed { get; set; }
+
         public bool HasCurrentAssignedCase => CurrentAssignedCase != null;
 
-        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId, int? deleteContactId, int? manualMarkContactId, bool? closeFailFlag)
+        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId, int? deleteContactId, int? manualMarkContactId)
         {
             var claims = HttpContext.User.Claims;
             var currentUser = userService.GetUserByUserName(claims.Single(x => x.Type == "preferred_username").Value, int.Parse(claims.Single(x => x.Type == "usrtype").Value));
@@ -56,7 +58,7 @@ namespace ContactTracing15.Pages.Tracing
                 }
                 else
                 {
-                    return new RedirectToPageResult("Dashboard", new {caseId = caseId, closeFailFlag = true});
+                    CloseFailed = true;
                 }
             }
 
