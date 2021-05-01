@@ -23,7 +23,7 @@ namespace ContactTracing15.Services
 
         Case AssignAndAdd(Case newCase);
         Case Drop(int caseId, int tracerId);
-        Case Complete(int caseId, int tracerId);
+        bool Complete(int caseId, int tracerId);
 
         TimeSpan AverageTraceTimeLast28Days();
 
