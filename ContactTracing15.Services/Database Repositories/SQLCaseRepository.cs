@@ -38,7 +38,7 @@ namespace ContactTracing15.Services
             return context.Cases;
         }
 
-        public IEnumerable<>
+       // public IEnumerable<>
 
         public IEnumerable<Case> GetCasesByDate(DateTime from_, DateTime to_)
         {

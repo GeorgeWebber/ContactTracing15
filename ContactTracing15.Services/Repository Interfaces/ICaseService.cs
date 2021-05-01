@@ -25,7 +25,7 @@ namespace ContactTracing15.Services
 
         int CasesAssignedToTracingCentreLast28Days(TracingCentre centre);
 
-        int CasesTracedByTracingCentreLast28Days(TracingCentre centre)
+        int CasesTracedByTracingCentreLast28Days(TracingCentre centre);
 
         Case AssignAndAdd(Case newCase);
         Case Drop(int caseId, int tracerId);
