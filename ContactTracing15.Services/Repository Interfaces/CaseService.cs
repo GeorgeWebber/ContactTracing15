@@ -73,6 +73,7 @@ namespace ContactTracing15.Services
             _case.Email = null;
             _case.Phone = null;
             _case.Phone2 = null;
+            _case.TracerID = null;
             _case.RemovedDate = DateTime.Now;
             return _caseRepository.Update(_case);
         }
