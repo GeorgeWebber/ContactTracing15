@@ -152,6 +152,7 @@ namespace ContactTracing15.Services
         int ICaseService.CasesAssignedToTracingCentreLast28Days(TracingCentre centre)
         {
             return _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now)
+                .Where(x => x.Tracer != null)
                 .Where(x => x.Tracer.TracingCentre.TracingCentreID == centre.TracingCentreID)
                 .ToList()
                 .Count();
