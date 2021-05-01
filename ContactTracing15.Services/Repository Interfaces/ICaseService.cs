@@ -17,6 +17,8 @@ namespace ContactTracing15.Services
         IEnumerable<Case> Search(string searchTerm);
         void Save();
         IEnumerable<Contact> GetTracedContacts(int id);
+        IEnumerable<Case> GetOldCases(DateTime threshold);
+        Case RemovePersonalData(int id);
 
         // Returns an enumerable of postcodes of cases registered in the day range "today-daysFrom" to "today - daysTo"
         IEnumerable<string> GetPostcodesByRecentDays(DateTime from_, DateTime to_);
@@ -32,5 +34,6 @@ namespace ContactTracing15.Services
         int TotalCasesReached();
 
         int TotalCasesEver();
+
     }
 }
