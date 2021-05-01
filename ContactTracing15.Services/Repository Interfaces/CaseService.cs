@@ -88,19 +88,27 @@ namespace ContactTracing15.Services
             return _caseRepository.Update(dropCase);
         }
 
-        Case ICaseService.Complete(int caseId, int tracerId)
+        bool ICaseService.Complete(int caseId, int tracerId)
         {
             var completeCase = _caseRepository.GetCase(caseId);
             completeCase.Traced = true;
-            foreach (Contact contact in GetTracedContacts(caseId))
+            var contacts = GetTracedContacts(caseId);
+            if (contacts.Any(x => x.Email == null && x.ContactedDate == null))
+            {
+                return false;
+            }
+            foreach (Contact contact in contacts)
             {
                 var _contact = _contactRepository.GetContact(contact.ContactID);
                 _contact.TracedDate = DateTime.Now;
-                _contactRepository.Update(_contact);
                 if (contact.Email != null) { 
-                    _emailService.ContactByEmail(contact); }
+                    _emailService.ContactByEmail(contact);
+                    _contact.ContactedDate = DateTime.Now;
+                }
+                _contactRepository.Update(_contact);
             }
-            return _caseRepository.Update(completeCase);
+            _caseRepository.Update(completeCase);
+            return true;
         }
 
         //TODO:  Returns the average time taken to contact trace a case in the last 28 days

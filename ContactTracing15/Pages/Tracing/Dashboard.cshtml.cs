@@ -38,7 +38,7 @@ namespace ContactTracing15.Pages.Tracing
 
         public bool HasCurrentAssignedCase => CurrentAssignedCase != null;
 
-        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId, int? deleteContactId)
+        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId, int? deleteContactId, int? manualMarkContactId, bool? closeFailFlag)
         {
             var claims = HttpContext.User.Claims;
             var currentUser = userService.GetUserByUserName(claims.Single(x => x.Type == "preferred_username").Value, int.Parse(claims.Single(x => x.Type == "usrtype").Value));
@@ -49,8 +49,32 @@ namespace ContactTracing15.Pages.Tracing
             }
             if (completeCaseId != null && CaseListItems.AssignedCases.Any(x => x.CaseID == completeCaseId))
             {
-                caseService.Complete(completeCaseId.Value, currentUser.UserId);
-                return new RedirectToPageResult("Dashboard");
+                var completeResult = caseService.Complete(completeCaseId.Value, currentUser.UserId);
+                if (completeResult)
+                {
+                    return new RedirectToPageResult("Dashboard");
+                }
+                else
+                {
+                    return new RedirectToPageResult("Dashboard", new {caseId = caseId, closeFailFlag = true});
+                }
+            }
+
+            if (manualMarkContactId.HasValue)
+            {
+                var manualMarkContact = contactService.GetContact(manualMarkContactId.Value);
+                if (manualMarkContact != null && CaseListItems.AssignedCases.Any(x => x.CaseID == manualMarkContact.CaseID))
+                {
+                    if (manualMarkContact.ContactedDate == null)
+                    {
+                        manualMarkContact.ContactedDate = DateTime.Now;
+                    }
+                    else
+                    {
+                        manualMarkContact.ContactedDate = null;
+                    }
+                    contactService.Update(manualMarkContact);
+                }
             }
 
             if (caseId.HasValue && !CaseListItems.AssignedCases.Any(x => x.CaseID == caseId))
@@ -58,12 +82,13 @@ namespace ContactTracing15.Pages.Tracing
                 return Unauthorized();
             }
 
+
             if (caseId.HasValue)
             {
                 if (deleteContactId.HasValue)
                 {
                     var deleteContact = contactService.GetContact(deleteContactId.Value);
-                    if (deleteContact != null)
+                    if (deleteContact != null && CaseListItems.AssignedCases.Any(x => x.CaseID == deleteContact.CaseID))
                     {
                         contactService.Delete(deleteContact.ContactID);
                     }
@@ -93,7 +118,8 @@ namespace ContactTracing15.Pages.Tracing
             EmailAddress = contact.Email,
             PhoneNumber = contact.Phone,
             DateTraced = contact.AddedDate,
-            ContactId = contact.ContactID
+            ContactId = contact.ContactID,
+            MarkUnmark = contact.ContactedDate == null ? "mark" : "unmark"
         };
     }
     public class ContactDetail
@@ -103,6 +129,7 @@ namespace ContactTracing15.Pages.Tracing
         public string? PhoneNumber { get; set; }
         public DateTime DateTraced { get; set; }
         public int ContactId { get; set; }
+        public string MarkUnmark { get; set; }
         public string Info
         {
             get
