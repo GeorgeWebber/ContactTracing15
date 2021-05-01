@@ -9,12 +9,7 @@
     @await Html.PartialAsync("_AssignedCases", Model.CaseListItems)
 </div>
 <div class="rhs">
-    @if (Model.CloseFailed) 
-    {
-        <div>
-            Please manually contact and mark all contacts without email addresses before closing case.
-        </div>
-    }
+
     @if (Model.HasCurrentAssignedCase)
     {
         <div class="container" style="background: #F2F2F2; border: 1px solid #cecece; float: right; width: 60%">
@@ -41,15 +36,21 @@
                 <ul>
                     @foreach (var contact in Model.CurrentAssignedCase.contacts)
                     {
-                    <li>
-                        @contact.Info
-                        <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-editcontactid="@contact.ContactId">edit </a>
-                        <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-deletecontactid="@contact.ContactId">delete</a>
-                        <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-manualmarkcontactid="@contact.ContactId"> @contact.MarkUnmark</a>
-                    </li>
+                        <li>
+                            @contact.Info
+                            <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-editcontactid="@contact.ContactId">edit </a>
+                            <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-deletecontactid="@contact.ContactId">delete</a>
+                            <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-manualmarkcontactid="@contact.ContactId"> @contact.MarkUnmark</a>
+                        </li>
                     }
                 </ul>
             </div>
+            @if (Model.CloseFailed)
+            {
+                <div>
+                    Please manually contact and mark all contacts without email addresses before closing case.
+                </div>
+            }
             <div style="margin:10px">
                 <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-danger rounded-0" role="button">Add a Contact </a>
                 <a class="btn btn-danger rounded-0" data-toggle="modal" href="#closeModal" role="button">Close case</a>
@@ -99,6 +100,12 @@
     }
     else
     {
+        @if (Model.CloseFailed)
+        {
+            <div>
+                Please manually contact and mark all contacts without email addresses before closing case.
+            </div>
+        }
         <div class="container" style="float: right; width: 60%">
             <p>
                 Click a case for details.
