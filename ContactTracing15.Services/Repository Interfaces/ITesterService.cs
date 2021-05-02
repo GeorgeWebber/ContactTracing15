@@ -13,6 +13,8 @@ namespace ContactTracing15.Services
         Tester GetTester(string username);
         Tester Add(Tester newTester);
         Tester Update(Tester updatedTester);
+
+        void ExportAsExcel(string folderPath);
         Tester Delete(int id);
         IEnumerable<Tester> Search(string searchTerm);
         void Save();

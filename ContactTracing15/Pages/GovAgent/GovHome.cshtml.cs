@@ -24,6 +24,10 @@ namespace ContactTracing15.Pages.GovAgent
         private readonly IConfiguration _config;
         private readonly ICaseService _caseService;
         private readonly IContactService _contactService;
+        private readonly ITracerService _tracerService;
+        private readonly ITesterService _testerService;
+        private readonly ITracingCentreService _tracingCentreService;
+        private readonly ITestingCentreService _testingCentreService;
 
         public string AverageTraceTimeLast28DaysString { get; set; }
         public string PercentageCasesReachedLast28Days { get; set; }
@@ -34,11 +38,16 @@ namespace ContactTracing15.Pages.GovAgent
 
 
 
-        public GovHomeModel(IConfiguration config, ICaseService caseService, IContactService contactService)
+        public GovHomeModel(IConfiguration config, ICaseService caseService, IContactService contactService, ITracerService tracerService, 
+            ITesterService testerService, ITracingCentreService tracingCentreService, ITestingCentreService testingCentreService)
         {
             _config = config;
             _caseService = caseService;
             _contactService = contactService;
+            _tracerService = tracerService;
+            _testerService = testerService;
+            _tracingCentreService = tracingCentreService;
+            _testingCentreService = testingCentreService;
             SetStats();
 
         }
@@ -80,6 +89,11 @@ namespace ContactTracing15.Pages.GovAgent
             Console.WriteLine("downloading database on get");
 
             _caseService.ExportAsExcel("D:\\EXCEL BACKUP\\");
+            _contactService.ExportAsExcel("D:\\EXCEL BACKUP\\");
+            _tracerService.ExportAsExcel("D:\\EXCEL BACKUP\\");
+            _testerService.ExportAsExcel("D:\\EXCEL BACKUP\\");
+            _tracingCentreService.ExportAsExcel("D:\\EXCEL BACKUP\\");
+            _testingCentreService.ExportAsExcel("D:\\EXCEL BACKUP\\");
 
             FileContentResult download = StartExcelDownload();
             if (download != null)

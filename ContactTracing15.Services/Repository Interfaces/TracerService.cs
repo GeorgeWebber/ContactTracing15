@@ -4,6 +4,10 @@ using System.Text;
 using ContactTracing15.Models;
 using ContactTracing15.Services;
 using System.Linq;
+using System.Data;
+using System.Reflection;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace ContactTracing15.Services
 {
@@ -71,6 +75,40 @@ namespace ContactTracing15.Services
         {
             return _tracerResitory.GetTracer(id).Cases.Where(x => !x.Traced);
 
+        }
+
+        void ITracerService.ExportAsExcel(string folderPath)
+        {
+            DataTable dt = new DataTable();
+
+
+            IEnumerable<Tracer> tracers = _tracerResitory.GetAllTracers();
+
+            dt.Columns.Add("Id", typeof(int));
+            dt.Columns.Add("Username", typeof(string));
+            dt.Columns.Add("Tracing Centre ID", typeof(int));
+
+
+
+            var i = 0;
+
+            foreach (Tracer _tracer in tracers)
+            {
+                dt.Rows.Add();
+                dt.Rows[i][0] = _tracer.TracerID;
+                dt.Rows[i][1] = _tracer.Username;
+                dt.Rows[i][2] = _tracer.TracingCentreID;
+                i++;
+            }
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt, "Tracers");
+                wb.SaveAs(folderPath + "ExcelExportTracers.xlsx");
+            }
         }
     }
 }

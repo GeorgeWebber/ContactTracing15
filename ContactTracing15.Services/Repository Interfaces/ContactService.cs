@@ -4,6 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Data;
+using System.Reflection;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace ContactTracing15.Services
 { 
@@ -80,6 +84,57 @@ namespace ContactTracing15.Services
             int cases = _caseRepository.GetCasesByDate(DateTime.Now.AddDays(-28), DateTime.Now).Where(x => x.Traced).ToList().Count();
             if (cases == 0) { return 0; }
             return (double) contacts / cases;
+        }
+
+        void IContactService.ExportAsExcel(string folderPath)
+        {
+            DataTable dt = new DataTable();
+
+
+            IEnumerable<Contact> contacts = _contactRepository.GetAllContacts();
+
+            dt.Columns.Add("Id", typeof(int));
+            dt.Columns.Add("CaseId", typeof(int));
+            dt.Columns.Add("Added Date", typeof(DateTime));
+            dt.Columns.Add("Traced Date", typeof(String));
+            dt.Columns.Add("Contacted date", typeof(String));
+            dt.Columns.Add("Removed date", typeof(String));
+
+
+
+            var i = 0;
+
+            foreach (Contact _contact in contacts)
+            {
+                dt.Rows.Add();
+                dt.Rows[i][0] = _contact.ContactID;
+                dt.Rows[i][1] = _contact.CaseID;
+                dt.Rows[i][2] = _contact.AddedDate;
+
+                if (_contact.TracedDate != null)
+                {
+                    dt.Rows[i][7] = _contact.TracedDate.ToString();
+                }
+                if (_contact.ContactedDate != null)
+                {
+                    dt.Rows[i][8] = _contact.ContactedDate.ToString();
+                }
+                if (_contact.RemovedDate != null)
+                {
+                    dt.Rows[i][9] = _contact.RemovedDate.ToString();
+                }
+                i++;
+            }
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt, "Contacts");
+                wb.SaveAs(folderPath + "ExcelExportContacts.xlsx");
+            }
+
         }
     }
 }

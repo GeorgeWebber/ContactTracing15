@@ -15,6 +15,8 @@ namespace ContactTracing15.Services
         Tracer Update(Tracer updatedTracer);
         Tracer Delete(int id);
         IEnumerable<Tracer> Search(string searchTerm);
+
+        void ExportAsExcel(string folderPath);
         void Save();
         Tracer GetNextTracer();
         Tracer GetNextTracer(int id);

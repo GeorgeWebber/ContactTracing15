@@ -13,6 +13,8 @@ namespace ContactTracing15.Services
         TestingCentre Add(TestingCentre newTestingCentre);
         TestingCentre Update(TestingCentre updatedTestingCentre);
         TestingCentre Delete(int id);
+
+        void ExportAsExcel(string folderPath);
         void Save();
     }
 }

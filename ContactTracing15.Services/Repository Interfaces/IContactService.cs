@@ -13,6 +13,7 @@ namespace ContactTracing15.Services
         Contact Add(Contact newContact);
         Contact Update(Contact updatedContact);
         Contact Delete(int id);
+        void ExportAsExcel(string folderPath);
         IEnumerable<Contact> Search(string searchTerm);
         IEnumerable<Contact> GetOldContacts(DateTime threshold);
         Contact RemovePersonalData(int id);

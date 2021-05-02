@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using ContactTracing15.Services;
 using ContactTracing15.Models;
+using System.Data;
+using System.Reflection;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace ContactTracing15.Services
 {
@@ -42,6 +46,40 @@ namespace ContactTracing15.Services
         TestingCentre ITestingCentreService.Update(TestingCentre updatedTestingCentre)
         {
             return _testingCentreRepository.Update(updatedTestingCentre);
+        }
+
+        void ITestingCentreService.ExportAsExcel(string folderPath)
+        {
+            DataTable dt = new DataTable();
+
+
+            IEnumerable<TestingCentre> testingCentres = _testingCentreRepository.GetAllTestingCentres();
+
+            dt.Columns.Add("Id", typeof(int));
+            dt.Columns.Add("Name", typeof(string));
+            dt.Columns.Add("Postcode", typeof(string));
+
+
+
+            var i = 0;
+
+            foreach (TestingCentre _testingtentre in testingCentres)
+            {
+                dt.Rows.Add();
+                dt.Rows[i][0] = _testingtentre.TestingCentreID;
+                dt.Rows[i][1] = _testingtentre.Name;
+                dt.Rows[i][2] = _testingtentre.Postcode;
+                i++;
+            }
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt, "Testing Centres");
+                wb.SaveAs(folderPath + "ExcelExportTestingCentres.xlsx");
+            }
         }
     }
 }

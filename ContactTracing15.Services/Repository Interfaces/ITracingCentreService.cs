@@ -8,5 +8,7 @@ namespace ContactTracing15.Services
     public interface ITracingCentreService
     {
         IEnumerable<TracingCentreStats> GetAllTracingCentreStats();
+
+        void ExportAsExcel(string folderPath);
     }
 }

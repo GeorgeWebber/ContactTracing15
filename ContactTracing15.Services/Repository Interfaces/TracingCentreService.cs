@@ -3,6 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Data;
+using System.Reflection;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace ContactTracing15.Services
 {
@@ -41,6 +45,40 @@ namespace ContactTracing15.Services
             }
 
             return AllStats;
+        }
+
+        void ITracingCentreService.ExportAsExcel(string folderPath)
+        {
+            DataTable dt = new DataTable();
+
+
+            IEnumerable<TracingCentre> tracingCentres = _tracingCentreRepository.GetAllTracingCentres();
+
+            dt.Columns.Add("Id", typeof(int));
+            dt.Columns.Add("Name", typeof(string));
+            dt.Columns.Add("Postcode", typeof(string));
+
+
+
+            var i = 0;
+
+            foreach (TracingCentre _tracingtentre in tracingCentres)
+            {
+                dt.Rows.Add();
+                dt.Rows[i][0] = _tracingtentre.TracingCentreID;
+                dt.Rows[i][1] = _tracingtentre.Name;
+                dt.Rows[i][2] = _tracingtentre.Postcode;
+                i++;
+            }
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt, "Tracing Centres");
+                wb.SaveAs(folderPath + "ExcelExportTracingCentres.xlsx");
+            }
         }
     }
 }

@@ -243,7 +243,7 @@ namespace ContactTracing15.Services
             using (XLWorkbook wb = new XLWorkbook())
             {
                 wb.Worksheets.Add(dt, "Cases");
-                wb.SaveAs(folderPath + "ExcelExport.xlsx");
+                wb.SaveAs(folderPath + "ExcelExportCases.xlsx");
             }
         }
 
