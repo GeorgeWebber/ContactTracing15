@@ -4,8 +4,9 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Drawing;
+using System.Data;
+using System.Reflection;
+using ClosedXML.Excel;
 
 namespace ContactTracing15.Services
 {
@@ -189,76 +190,61 @@ namespace ContactTracing15.Services
             return  _caseRepository.GetAllCases().ToList().Count();
         }
 
-        void ICaseService.ExportAsExcel(string fileName)
+        void ICaseService.ExportAsExcel(string folderPath)
         {
-            Excel.Application xlsApp;
-            Excel.Workbook xlsWorkbook;
-            Excel.Worksheet xlsWorksheet;
-            object misValue = System.Reflection.Missing.Value;
+            DataTable dt = new DataTable();
 
-            try
-            {
-                FileInfo oldFile = new FileInfo(fileName);
-                if (oldFile.Exists)
-                {
-                    File.SetAttributes(oldFile.FullName, FileAttributes.Normal);
-                    oldFile.Delete();
-                }
-            }
-            catch (Exception ex)
-            {
-                return;
-            }
-
-            xlsApp = new Excel.Application();
-            xlsWorkbook = xlsApp.Workbooks.Add(misValue);
-            xlsWorksheet = (Excel.Worksheet)xlsWorkbook.Sheets[1];
-
-            // Create the header for Excel file
-            xlsWorksheet.Cells[1, 1] = "Covid Cases Report";
-            Excel.Range range = xlsWorksheet.get_Range("A1", "E1");
-            range.Merge(1);
-            range.Borders.Color = Color.Black.ToArgb();
-            range.Interior.Color = Color.Yellow.ToArgb();
 
             IEnumerable<Case> cases = _caseRepository.GetAllCases();
 
-            xlsWorksheet.Cells[0, 0] = "Id";
-            xlsWorksheet.Cells[0, 1] = "Test Date";
-            xlsWorksheet.Cells[0, 2] = "Added to the database Date";
-            xlsWorksheet.Cells[0, 3] = "Postcode";
-            xlsWorksheet.Cells[0, 4] = "Was the case traced";
-            xlsWorksheet.Cells[0, 5] = "Number of times case was dropped by tracer";
-            xlsWorksheet.Cells[0, 6] = "Was the case dropped";
-            xlsWorksheet.Cells[0, 7] = "Traced Date";
-            xlsWorksheet.Cells[0, 8] = "Symptom date";
-            xlsWorksheet.Cells[0, 9] = "Removed from database date";
+            dt.Columns.Add("Id", typeof(int));
+            dt.Columns.Add("Test Date", typeof(DateTime));
+            dt.Columns.Add("Added Date", typeof(DateTime));
+            dt.Columns.Add("Postcode", typeof(string));
+            dt.Columns.Add("Traced?", typeof(bool));
+            dt.Columns.Add("Dropped times", typeof(int));
+            dt.Columns.Add("Dropped?", typeof(bool));
+            dt.Columns.Add("Traced Date", typeof(String));
+            dt.Columns.Add("Symptom date", typeof(String));
+            dt.Columns.Add("Removed date", typeof(String));
 
-            var i = 1;
+            
+
+            var i = 0;
+
             foreach (Case _case in cases)
             {
-                xlsWorksheet.Cells[i, 0] = _case.CaseID;
-                xlsWorksheet.Cells[i, 1] = _case.TestDate;
-                xlsWorksheet.Cells[i, 2] = _case.AddedDate;
-                xlsWorksheet.Cells[i, 3] = _case.Postcode;
-                xlsWorksheet.Cells[i, 4] = _case.Traced;
-                xlsWorksheet.Cells[i, 5] = _case.DroppedNum;
-                xlsWorksheet.Cells[i, 6] = _case.Dropped;
-                xlsWorksheet.Cells[i, 7] = _case.TracedDate;
-                xlsWorksheet.Cells[i, 8] = _case.SymptomDate;
-                xlsWorksheet.Cells[i, 9] = _case.RemovedDate;
+                dt.Rows.Add();
+                dt.Rows[i][ 0] = _case.CaseID;
+                dt.Rows[i][1] = _case.TestDate;
+                dt.Rows[i][2] = _case.AddedDate;
+                dt.Rows[i][3] = _case.Postcode;
+                dt.Rows[i][4] = _case.Traced;
+                dt.Rows[i][5] = _case.DroppedNum;
+                dt.Rows[i][6] = _case.Dropped;
+                if (_case.TracedDate != null)
+                {
+                    dt.Rows[i][7] = _case.TracedDate.ToString();
+                }
+                if (_case.SymptomDate != null)
+                {
+                    dt.Rows[i][8] = _case.SymptomDate.ToString();
+                }
+                if (_case.RemovedDate != null)
+                {
+                    dt.Rows[i][9] = _case.RemovedDate.ToString();
+                }
                 i++;
             }
-
-            range = xlsWorksheet.get_Range("A2", "K" + (i + 2).ToString());
-            range.Columns.AutoFit();
-
-            xlsWorkbook.SaveAs(fileName, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue,
-    misValue, misValue,
-    Excel.XlSaveAsAccessMode.xlExclusive, Excel.XlSaveConflictResolution.xlLocalSessionChanges,
-    misValue, misValue, misValue, misValue);
-            xlsWorkbook.Close(true, misValue, misValue);
-            xlsApp.Quit();
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt, "Cases");
+                wb.SaveAs(folderPath + "ExcelExport.xlsx");
+            }
         }
 
 

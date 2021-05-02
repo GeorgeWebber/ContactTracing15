@@ -20,7 +20,7 @@ namespace ContactTracing15.Services
         IEnumerable<Case> GetOldCases(DateTime threshold);
         Case RemovePersonalData(int id);
 
-        void ExportAsExcel(string FileName);
+        void ExportAsExcel(string FolderPath);
 
         // Returns an enumerable of postcodes of cases registered in the day range "today-daysFrom" to "today - daysTo"
         IEnumerable<string> GetPostcodesByRecentDays(DateTime from_, DateTime to_);
