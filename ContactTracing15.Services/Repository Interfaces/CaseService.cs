@@ -189,11 +189,8 @@ namespace ContactTracing15.Services
             return  _caseRepository.GetAllCases().ToList().Count();
         }
 
-        void ICaseService.ExportAsExcel()
+        void ICaseService.ExportAsExcel(string fileName)
         {
-            string fileName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\" +
-            "ExcelReport.xlsx";
-
             Excel.Application xlsApp;
             Excel.Workbook xlsWorkbook;
             Excel.Worksheet xlsWorksheet;
@@ -224,6 +221,44 @@ namespace ContactTracing15.Services
             range.Borders.Color = Color.Black.ToArgb();
             range.Interior.Color = Color.Yellow.ToArgb();
 
+            IEnumerable<Case> cases = _caseRepository.GetAllCases();
+
+            xlsWorksheet.Cells[0, 0] = "Id";
+            xlsWorksheet.Cells[0, 1] = "Test Date";
+            xlsWorksheet.Cells[0, 2] = "Added to the database Date";
+            xlsWorksheet.Cells[0, 3] = "Postcode";
+            xlsWorksheet.Cells[0, 4] = "Was the case traced";
+            xlsWorksheet.Cells[0, 5] = "Number of times case was dropped by tracer";
+            xlsWorksheet.Cells[0, 6] = "Was the case dropped";
+            xlsWorksheet.Cells[0, 7] = "Traced Date";
+            xlsWorksheet.Cells[0, 8] = "Symptom date";
+            xlsWorksheet.Cells[0, 9] = "Removed from database date";
+
+            var i = 1;
+            foreach (Case _case in cases)
+            {
+                xlsWorksheet.Cells[i, 0] = _case.CaseID;
+                xlsWorksheet.Cells[i, 1] = _case.TestDate;
+                xlsWorksheet.Cells[i, 2] = _case.AddedDate;
+                xlsWorksheet.Cells[i, 3] = _case.Postcode;
+                xlsWorksheet.Cells[i, 4] = _case.Traced;
+                xlsWorksheet.Cells[i, 5] = _case.DroppedNum;
+                xlsWorksheet.Cells[i, 6] = _case.Dropped;
+                xlsWorksheet.Cells[i, 7] = _case.TracedDate;
+                xlsWorksheet.Cells[i, 8] = _case.SymptomDate;
+                xlsWorksheet.Cells[i, 9] = _case.RemovedDate;
+                i++;
+            }
+
+            range = xlsWorksheet.get_Range("A2", "K" + (i + 2).ToString());
+            range.Columns.AutoFit();
+
+            xlsWorkbook.SaveAs(fileName, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue,
+    misValue, misValue,
+    Excel.XlSaveAsAccessMode.xlExclusive, Excel.XlSaveConflictResolution.xlLocalSessionChanges,
+    misValue, misValue, misValue, misValue);
+            xlsWorkbook.Close(true, misValue, misValue);
+            xlsApp.Quit();
         }
 
 

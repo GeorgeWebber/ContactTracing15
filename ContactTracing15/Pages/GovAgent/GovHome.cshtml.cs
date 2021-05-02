@@ -79,6 +79,8 @@ namespace ContactTracing15.Pages.GovAgent
         {
             Console.WriteLine("downloading database on get");
 
+            _caseService.ExportAsExcel("D:\\EXCEL BACKUP\\ExcelDatabaseBackup.xlsx");
+
             FileContentResult download = StartExcelDownload();
             if (download != null)
             {
