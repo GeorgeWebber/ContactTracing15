@@ -88,13 +88,6 @@ namespace ContactTracing15.Pages.GovAgent
         {
             Console.WriteLine("downloading database on get");
 
-            _caseService.ExportAsExcel("D:\\EXCEL BACKUP\\");
-            _contactService.ExportAsExcel("D:\\EXCEL BACKUP\\");
-            _tracerService.ExportAsExcel("D:\\EXCEL BACKUP\\");
-            _testerService.ExportAsExcel("D:\\EXCEL BACKUP\\");
-            _tracingCentreService.ExportAsExcel("D:\\EXCEL BACKUP\\");
-            _testingCentreService.ExportAsExcel("D:\\EXCEL BACKUP\\");
-
             FileContentResult download = StartExcelDownload();
             if (download != null)
             {

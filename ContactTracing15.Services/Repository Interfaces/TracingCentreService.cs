@@ -47,7 +47,7 @@ namespace ContactTracing15.Services
             return AllStats;
         }
 
-        void ITracingCentreService.ExportAsExcel(string folderPath)
+        DataTable ITracingCentreService.ExportAsExcel()
         {
             DataTable dt = new DataTable();
 
@@ -57,8 +57,6 @@ namespace ContactTracing15.Services
             dt.Columns.Add("Id", typeof(int));
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("Postcode", typeof(string));
-
-
 
             var i = 0;
 
@@ -70,15 +68,7 @@ namespace ContactTracing15.Services
                 dt.Rows[i][2] = _tracingtentre.Postcode;
                 i++;
             }
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dt, "Tracing Centres");
-                wb.SaveAs(folderPath + "ExcelExportTracingCentres.xlsx");
-            }
+            return dt;
         }
     }
 }

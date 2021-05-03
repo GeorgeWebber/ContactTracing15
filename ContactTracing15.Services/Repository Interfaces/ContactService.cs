@@ -86,7 +86,7 @@ namespace ContactTracing15.Services
             return (double) contacts / cases;
         }
 
-        void IContactService.ExportAsExcel(string folderPath)
+        DataTable IContactService.ExportAsExcel()
         {
             DataTable dt = new DataTable();
 
@@ -125,16 +125,7 @@ namespace ContactTracing15.Services
                 }
                 i++;
             }
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dt, "Contacts");
-                wb.SaveAs(folderPath + "ExcelExportContacts.xlsx");
-            }
-
+            return dt;
         }
     }
 }
