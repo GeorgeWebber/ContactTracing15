@@ -90,7 +90,6 @@ namespace ContactTracing15.Services
         public void GenerateSpreadsheet()
         {
 
-            //TODO: change code here to generate spreadsheet
             using (var scope = _service.CreateScope())
             {
                 var _testingCentreService = scope.ServiceProvider

@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 using ContactTracing15.Services;
 using Microsoft.AspNetCore.Http;
 
+
+/* A class to implement the authorization policy tests required to keep non-authorized site traffic away from protected pages. * 
+ */
+
 namespace ContactTracing15
 {
     public class UserTypeHandler : AuthorizationHandler<UserTypeRequirement>
     {
+
+        // Checks if the user's claimed user type matches the user type permitted to access the page in question
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, UserTypeRequirement requirement)
         {
 

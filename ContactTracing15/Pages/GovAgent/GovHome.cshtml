@@ -34,7 +34,7 @@
     }
 
     .nonPressCard {
-        background: C1D1D7;
+        background: #C1D1D7;
     }
 
     .card-body {
@@ -72,6 +72,8 @@
 
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<!-- Function to add shadows when buttons are hovered over-->
 <script>
     $(document).ready(function () {
         $(".pressableCard").hover(
@@ -109,7 +111,9 @@
             
             <div class="card-body">
                 <h3>Download Data</h3>
-                <p class="subtitle">Download a csv file of contact tracing data</p>
+                <p class="subtitle">Download an Excel file of contact tracing data</p>
+
+                <!-- Trigger a download of the Excel file -->
                 <a href="@Url.Page("GovHome", "Download")" class="stretched-link"></a>
                 
             </div>

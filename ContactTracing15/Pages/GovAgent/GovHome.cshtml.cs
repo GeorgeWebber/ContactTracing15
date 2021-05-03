@@ -15,6 +15,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 
+
+/*  Home page for government actors who would like to view contact tracing data for analysis
+ *  Displays summary statistics on the tracing process as well as linking to other analysis pages
+ */
+
+
 namespace ContactTracing15.Pages.GovAgent
 {
 
@@ -29,6 +35,7 @@ namespace ContactTracing15.Pages.GovAgent
         private readonly ITracingCentreService _tracingCentreService;
         private readonly ITestingCentreService _testingCentreService;
 
+        //Variables to store the values of key statistics for display on the gov dashboard
         public string AverageTraceTimeLast28DaysString { get; set; }
         public string PercentageCasesReachedLast28Days { get; set; }
         public int TotalCasesReached { get; set; }
@@ -37,7 +44,7 @@ namespace ContactTracing15.Pages.GovAgent
         public string AverageContactsPerCaseLast28Days { get; set; }
 
 
-
+        //Resolve dependencies and set initial statistic values
         public GovHomeModel(IConfiguration config, ICaseService caseService, IContactService contactService, ITracerService tracerService, 
             ITesterService testerService, ITracingCentreService tracingCentreService, ITestingCentreService testingCentreService)
         {
@@ -52,11 +59,11 @@ namespace ContactTracing15.Pages.GovAgent
 
         }
 
+        // Set the statistic variables to the correct values using the database access services
         public void SetStats()
         {
             TimeSpan time = _caseService.AverageTraceTimeLast28Days();
             AverageTraceTimeLast28DaysString = GetTimeString(time);
-
             PercentageCasesReachedLast28Days = _caseService.PercentageCasesReachedLast28Days().ToString("0.0");
             TotalCasesReached = _caseService.TotalCasesReached();
             TotalCasesEver = _caseService.TotalCasesEver();
@@ -65,6 +72,7 @@ namespace ContactTracing15.Pages.GovAgent
 
         }
 
+        // Convert a TimeSpan object into a reasonable string representation for viewing on the page
         public string GetTimeString(TimeSpan time)
         {
             if (time <= TimeSpan.FromTicks(0))
@@ -80,14 +88,12 @@ namespace ContactTracing15.Pages.GovAgent
             {
                 timeString += time.Hours + " h " + time.Minutes + " m";
             }
-            
             return timeString;
         }
 
+        // Trigger a download of the most recent version of the Excel analytics spreadsheet
         public IActionResult OnGetDownload()
         {
-            Console.WriteLine("downloading database on get");
-
             FileContentResult download = StartExcelDownload();
             if (download != null)
             {
@@ -98,6 +104,8 @@ namespace ContactTracing15.Pages.GovAgent
                 return Page();
             }
         }
+
+        // Start a file download and return the resultant file
         public FileContentResult StartExcelDownload ()
         {
 

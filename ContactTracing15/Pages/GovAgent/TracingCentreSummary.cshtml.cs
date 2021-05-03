@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+/*
+ * A page to display a table of summary statistics on how efficiently different tracing centres are operating
+ */
+
 namespace ContactTracing15.Pages.GovAgent
 {
     [Authorize(Policy = "GovAgentOnly")]
@@ -17,10 +21,7 @@ namespace ContactTracing15.Pages.GovAgent
 
         private readonly ITracingCentreService _tracingCentreService;
 
-        public void OnGet()
-        {
-        }
-
+        // Set up dependencies and get the relevant statistics to display
         public TracingCentreSummaryModel(ITracingCentreService tracingCentreService)
         {
             _tracingCentreService = tracingCentreService;

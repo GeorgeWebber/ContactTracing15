@@ -11,6 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 
+
+/*
+ * A page whose purpose is to display the heatmap of recent cases
+ * 
+ */
 namespace ContactTracing15.Pages.GovAgent
 {
     [Authorize(Policy = "GovAgentOnly")]
@@ -18,35 +23,23 @@ namespace ContactTracing15.Pages.GovAgent
     {
         private readonly IConfiguration _config;
         private readonly ICaseService _caseService;
+
+        // URL for google api calls
         public string googleUrl { get; }
+
+        // Arrays of latitude and longitude data for displaying on the heatmap
         public double[] Lats { get; set; }
         public double[] Longs { get; set; }
 
+
+        // Date variables that get bound to the values inputted by the user via the input form for dates
         [BindProperty, Required, Display(Name = "Date from")]
         public DateTime DateFrom { get; set; }
         [BindProperty, Required]
         public DateTime DateTo { get; set; }
 
-        public void OnGet()
-        {
-        }
 
-        public async Task<IActionResult> OnPostDateButton()
-        {
-            Console.WriteLine("Posting here");
-            Console.WriteLine(DateFrom);
-            SetUpLocationArrays();
-            if (ModelState.IsValid)
-            {
-                Console.WriteLine(DateFrom);
-                return Page();
-            }
-            return Page();
-        }
-
-
-
-
+        // Resolve dependencies and set up the heatmap initially
         public HeatmapPageModel(IConfiguration config, ICaseService caseService)
         {
             _config = config;
@@ -57,6 +50,21 @@ namespace ContactTracing15.Pages.GovAgent
             SetUpLocationArrays();
         }
 
+
+
+        // Function called when the date button is pressed to trigger input of the date fields
+        public async Task<IActionResult> OnPostDateButton()
+        {
+            SetUpLocationArrays();
+            if (ModelState.IsValid)
+            {
+                return Page();
+            }
+            return Page();
+        }
+           
+
+        // Get an array of postcodes of positive cases and convert this into a latitude and longitude array for display with the heatmap
         public void SetUpLocationArrays()
         {
             IEnumerable<string> Postcodes = _caseService.GetPostcodesByRecentDays(DateFrom, DateTo);
@@ -82,6 +90,7 @@ namespace ContactTracing15.Pages.GovAgent
             Array.Copy(longArray, Longs, i);
         }
 
+        // Get a latitude, longitude pair given a UK postcode (using google's geocoding api)
         public Tuple<double, double> GetLocation(string postcode)
         {
 
