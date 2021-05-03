@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using ContactTracing15.Models;
 using ContactTracing15.Services;
@@ -16,7 +17,7 @@ namespace ContactTracing15.Services
         Tracer Delete(int id);
         IEnumerable<Tracer> Search(string searchTerm);
 
-        void ExportAsExcel(string folderPath);
+        DataTable ExportAsExcel();
         void Save();
         Tracer GetNextTracer();
         Tracer GetNextTracer(int id);

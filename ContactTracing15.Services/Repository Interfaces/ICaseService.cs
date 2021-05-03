@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ContactTracing15.Models;
 using ContactTracing15.Services;
+using System.Data;
 
 namespace ContactTracing15.Services
 {
@@ -20,7 +21,7 @@ namespace ContactTracing15.Services
         IEnumerable<Case> GetOldCases(DateTime threshold);
         Case RemovePersonalData(int id);
 
-        void ExportAsExcel(string FolderPath);
+        DataTable ExportAsExcel();
 
         // Returns an enumerable of postcodes of cases registered in the day range "today-daysFrom" to "today - daysTo"
         IEnumerable<string> GetPostcodesByRecentDays(DateTime from_, DateTime to_);

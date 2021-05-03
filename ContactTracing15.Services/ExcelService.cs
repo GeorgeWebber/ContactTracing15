@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ClosedXML.Excel;
 using ContactTracing15.Models;
 using ContactTracing15.Services;
 using Cronos;
@@ -91,11 +93,41 @@ namespace ContactTracing15.Services
             //TODO: change code here to generate spreadsheet
             using (var scope = _service.CreateScope())
             {
+                var _testingCentreService = scope.ServiceProvider
+                    .GetRequiredService<ITestingCentreService>();
+                var _tracingCentreService = scope.ServiceProvider
+                    .GetRequiredService<ITracingCentreService>();
+
+                var _testerService = scope.ServiceProvider
+                    .GetRequiredService<ITesterService>();
+                var _tracerService = scope.ServiceProvider
+                    .GetRequiredService<ITracerService>();
+                
                 var _caseService = scope.ServiceProvider
                     .GetRequiredService<ICaseService>();
                 var _contactService = scope.ServiceProvider
                     .GetRequiredService<IContactService>();
-                var oldThreshold = DateTime.Now.AddDays(-14);
+
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+
+                    DataTable dt_tec = _testingCentreService.ExportAsExcel();
+                    DataTable dt_trc = _tracingCentreService.ExportAsExcel();
+                    DataTable dt_te = _testerService.ExportAsExcel();
+                    DataTable dt_tr = _tracerService.ExportAsExcel();
+                    DataTable dt_ca = _caseService.ExportAsExcel();
+                    DataTable dt_co = _contactService.ExportAsExcel();
+
+
+                    wb.Worksheets.Add(dt_tec, "Testing Centres");
+                    wb.Worksheets.Add(dt_trc, "Tracing Centres");
+                    wb.Worksheets.Add(dt_te, "Testers");
+                    wb.Worksheets.Add(dt_tr, "Tracers");
+                    wb.Worksheets.Add(dt_ca, "Cases");
+                    wb.Worksheets.Add(dt_co, "Contacts");
+                    
+                    wb.SaveAs("ContactTracingReport.xlsx");
+                }
             }
         }
 

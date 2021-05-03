@@ -57,7 +57,7 @@ namespace ContactTracing15.Services
             return _testerRepository.Update(updatedTester);
         }
 
-        void ITesterService.ExportAsExcel(string folderPath)
+        DataTable ITesterService.ExportAsExcel()
         {
             DataTable dt = new DataTable();
 
@@ -80,15 +80,7 @@ namespace ContactTracing15.Services
                 dt.Rows[i][2] = _tester.TestingCentreID;
                 i++;
             }
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dt, "Testers");
-                wb.SaveAs(folderPath + "ExcelExportTesters.xlsx");
-            }
+            return dt;
         }
     }
 }

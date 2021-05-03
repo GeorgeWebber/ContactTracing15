@@ -77,7 +77,7 @@ namespace ContactTracing15.Services
 
         }
 
-        void ITracerService.ExportAsExcel(string folderPath)
+        DataTable ITracerService.ExportAsExcel()
         {
             DataTable dt = new DataTable();
 
@@ -100,15 +100,7 @@ namespace ContactTracing15.Services
                 dt.Rows[i][2] = _tracer.TracingCentreID;
                 i++;
             }
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dt, "Tracers");
-                wb.SaveAs(folderPath + "ExcelExportTracers.xlsx");
-            }
+            return dt;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace ContactTracing15.Services
             return _testingCentreRepository.Update(updatedTestingCentre);
         }
 
-        void ITestingCentreService.ExportAsExcel(string folderPath)
+        DataTable ITestingCentreService.ExportAsExcel()
         {
             DataTable dt = new DataTable();
 
@@ -71,15 +71,7 @@ namespace ContactTracing15.Services
                 dt.Rows[i][2] = _testingtentre.Postcode;
                 i++;
             }
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dt, "Testing Centres");
-                wb.SaveAs(folderPath + "ExcelExportTestingCentres.xlsx");
-            }
+            return dt;
         }
     }
 }

@@ -190,7 +190,7 @@ namespace ContactTracing15.Services
             return  _caseRepository.GetAllCases().ToList().Count();
         }
 
-        void ICaseService.ExportAsExcel(string folderPath)
+        DataTable ICaseService.ExportAsExcel()
         {
             DataTable dt = new DataTable();
 
@@ -236,15 +236,8 @@ namespace ContactTracing15.Services
                 }
                 i++;
             }
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                wb.Worksheets.Add(dt, "Cases");
-                wb.SaveAs(folderPath + "ExcelExportCases.xlsx");
-            }
+
+            return dt;
         }
 
 

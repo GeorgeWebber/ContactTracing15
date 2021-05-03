@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ContactTracing15.Services;
 using ContactTracing15.Models;
+using System.Data;
 
 namespace ContactTracing15.Services
 {
@@ -14,7 +15,7 @@ namespace ContactTracing15.Services
         TestingCentre Update(TestingCentre updatedTestingCentre);
         TestingCentre Delete(int id);
 
-        void ExportAsExcel(string folderPath);
+        DataTable ExportAsExcel();
         void Save();
     }
 }
