@@ -4,78 +4,107 @@
     ViewData["Title"] = "Positive Case Form";
 }
 
-<a class="btn btn-outline-secondary" id="return-button" asp-area="" asp-page="./Dashboard" style="margin:10px;">Back</a>
+<div style="background:#F2F2F2">
+    <a class="btn btn-outline-secondary rounded-0" id="return-button" asp-area="" asp-page="./Dashboard" style="margin:10px;">Back</a>
 
-<form method="post">
-    <input asp-for="CaseForm.TesterId" />
-    <input asp-for="CaseForm.TestingCentrePostcode" />
-    <div class="row">
-        <div class="col-9">
-            <ul class="PositiveFormList" data-role="listview">
-                <li class="forename">
-                    <div class="form-group">
-                        <label asp-for="CaseForm.Forename"></label>
-                        <input asp-for="CaseForm.Forename" class="form-control form-control-sm" />
+    <form method="post">
+        <input asp-for="CaseForm.TesterId" />
+        <input asp-for="CaseForm.TestingCentrePostcode" />
+        <div class="row">
+            <div class="col-9">
+                <ul class="PositiveFormList" data-role="listview">
+                    <div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 200px; text-align: center">Name(*)</span>
+                            </div>
+
+                            <input asp-for="CaseForm.Forename" class="form-control form-control-sm" placeholder="first name">
+                            <input asp-for="CaseForm.Surname" class="form-control form-control-sm" placeholder="last name">
+                        </div>
+
                         <span asp-validation-for="CaseForm.Forename"></span>
-                    </div>
-                </li>
-                <li class="last-name">
-                    <div class="form-group">
-                        <label asp-for="CaseForm.Surname"></label>
-                        <input asp-for="CaseForm.Surname" class="form-control form-control-sm" />
                         <span asp-validation-for="CaseForm.Surname"></span>
                     </div>
-                </li>
-                <li class="email">
-                    <div class="form-group">
-                        <label asp-for="CaseForm.Email"></label>
-                        <input asp-for="CaseForm.Email" class="form-control form-control-sm" />
+                    <div></div>
+                    <div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 200px; text-align: center">Email</span>
+                            </div>
+
+                            <input asp-for="CaseForm.Email" class="form-control form-control-sm">
+                        </div>
+
                         <span asp-validation-for="CaseForm.Email"></span>
                     </div>
-                </li>
-                <li class="phone-number">
-                    <div class="form-group">
-                        <label asp-for="CaseForm.Phone"></label>
-                        <input asp-for="CaseForm.Phone" class="form-control form-control-sm" />
+                    <div></div>
+                    <div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 200px; text-align: center">Phone Number</span>
+                            </div>
+
+                            <input asp-for="CaseForm.Phone" class="form-control form-control-sm" />
+                        </div>
+
                         <span asp-validation-for="CaseForm.Phone"></span>
                     </div>
-                </li>
-                <li class="phone-number">
-                    <div class="form-group">
-                        <label asp-for="CaseForm.Phone2"></label>
-                        <input asp-for="CaseForm.Phone2" class="form-control form-control-sm" />
+                    <div></div>
+                    <div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 200px; text-align: center">Secondary Phone</span>
+                            </div>
+
+                            <input asp-for="CaseForm.Phone2" class="form-control form-control-sm" />
+                        </div>
+
                         <span asp-validation-for="CaseForm.Phone2"></span>
                     </div>
-                </li>
-                <li class="test-date">
-                    <div class="form-group">
-                        <label asp-for="CaseForm.TestDate"></label>
-                        <input type="date" asp-for="CaseForm.TestDate" class="form-control form-control-sm" />
+                    <div></div>
+                    <div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 200px; text-align: center">Test Date(*)</span>
+                            </div>
+
+                            <input type="date" asp-for="CaseForm.TestDate" class="form-control form-control-sm" />
+                        </div>
+
                         <span asp-validation-for="CaseForm.TestDate"></span>
                     </div>
-                </li>
-                <li class="symptom-date">
-                    <div class="form-group">
-                        <label asp-for="CaseForm.SymptomDate"></label>
-                        <input type="date" asp-for="CaseForm.SymptomDate" class="form-control form-control-sm" />
+                    <div></div>
+                    <div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="width: 200px; text-align: center">Symptoms Start Date</span>
+                            </div>
+
+                            <input type="date" asp-for="CaseForm.SymptomDate" class="form-control form-control-sm" />
+                        </div>
+
                         <span asp-validation-for="CaseForm.SymptomDate"></span>
                     </div>
-                </li>
-                <li class="postcode">
-                    <div class="form-group">
-                        <label asp-for="CaseForm.Postcode"></label>
-                        <input asp-for="CaseForm.Postcode" class="form-control form-control-sm" />
-                        <span asp-validation-for="CaseForm.Postcode"></span>
-                    </div>
-                </li>
+                    <div></div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="width: 200px; text-align: center">Truncated Postcode</span>
+                        </div>
 
-            </ul>
-            <p class="actions">
-                <button class="btn btn-danger submit-button">Submit</button>
-            </p>
+                        <input asp-for="CaseForm.Postcode" class="form-control form-control-sm" />
+                    </div>
+
+                    <span asp-validation-for="CaseForm.Postcode"></span>
+
+                </ul>
+                <p class="actions" style="margin:10px">
+                    <button class="btn btn-danger rounded-0 submit-button">Submit</button>
+                </p>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 
 @section scripts{
     <partial name="_ValidationScriptsPartial"></partial>

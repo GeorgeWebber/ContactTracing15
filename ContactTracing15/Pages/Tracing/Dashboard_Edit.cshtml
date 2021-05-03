@@ -18,7 +18,7 @@
                         Please complete the form with the details of a contact.
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Name</span>
+                                <span class="input-group-text">Name(*)</span>
                             </div>
 
                             <input asp-for="AddContactForm.Forename" class="form-control" placeholder="first name">
@@ -47,7 +47,9 @@
                     </ul>
                 </div>
             </div>
-            <button class="btn btn-danger submit-button rounded-0">Submit</button>
+            <div class="text-center">
+                <button class="btn btn-danger submit-button rounded-0">Submit</button>
+            </div>
         </form>
     </p>
     <p>
