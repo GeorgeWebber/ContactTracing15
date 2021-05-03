@@ -21,7 +21,7 @@
         <tbody>
             @foreach (var assignedCase in Model.AssignedCases.OrderByDescending(x => x.CaseRaised))
             {
-                <tr @if (assignedCase.IsActive) { <text> style="background-color:red" </text> }>
+                <tr @if (assignedCase.IsActive) { <text> style="background-color: #DEDEDE" </text> }>
                     <td>
                         <a asp-page="./Dashboard" , asp-route-caseid="@assignedCase.CaseID" class="btn btn-block btn-sm" style="background-color:transparent" >@Html.DisplayFor(m => assignedCase.Name)</a>
                     </td>

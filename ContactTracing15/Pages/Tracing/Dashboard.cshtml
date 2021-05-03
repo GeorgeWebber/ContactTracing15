@@ -38,9 +38,11 @@
                     {
                         <li>
                             @contact.Info
-                            <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-editcontactid="@contact.ContactId">edit </a>
-                            <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-deletecontactid="@contact.ContactId">delete</a>
-                            <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-manualmarkcontactid="@contact.ContactId"> @contact.MarkUnmark</a>
+                            <div class="btn-group" role="group">
+                                <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-editcontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE">edit </a>
+                                <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-deletecontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE">delete</a>
+                                <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-manualmarkcontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE"> @contact.MarkUnmark</a>
+                            </div>
                         </li>
                     }
                 </ul>
@@ -61,36 +63,36 @@
 
 
         <!-- Modals -->
-        <div id="closeModal" class="modal fade" role="dialog">
+        <div id="closeModal" class="modal fade rounded-0" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" style="background: #F2F2F2">
                         <h4 class="modal-title" style="text-align: center;">Close Case?</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <p>Are you sure? Only close a case if all of their contacts have been identified and had contact information listed. This action is irreversible.</p>
                     </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-outline-secondary" data-dismiss="modal" role="button"> Cancel</a>
+                    <div class="modal-footer" style="background: #F2F2F2">
+                        <a class="btn btn-outline-secondary rounded-0" data-dismiss="modal" role="button"> Cancel</a>
                         <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-completecaseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-danger rounded-0" role="button"> Close case</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="dropModal" class="modal fade" role="dialog">
+        <div id="dropModal" class="modal fade rounded-0" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" style="background: #F2F2F2">
                         <h4 class="modal-title" style="text-align: center;">Drop Case?</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure? Will assign this case to a different tracer, any contacts already listed will be kept. This action is irreversible.</p>
+                        <p>Are you sure? This case will be assigned to a different tracer, and any contacts already listed will be kept. This action is irreversible.</p>
                     </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-outline-secondary" data-dismiss="modal" role="button"> Cancel</a>
+                    <div class="modal-footer" style="background: #F2F2F2">
+                        <a class="btn btn-outline-secondary rounded-0" data-dismiss="modal" role="button"> Cancel</a>
                         <a asp-page="./Dashboard" asp-route-dropcaseid="@Model.CurrentAssignedCase.CaseID" class="btn btn-danger rounded-0" role="button"> Drop Case</a>
                     </div>
                 </div>
