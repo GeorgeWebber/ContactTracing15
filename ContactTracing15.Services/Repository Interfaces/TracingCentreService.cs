@@ -39,7 +39,7 @@ namespace ContactTracing15.Services
                     AverageTraceTimeLast28Days = AverageTraceTimeLast28Days_,
                     CasesAssignedLast28Days = CasesAssignedLast28Days_,
                     CasesReachedLast28Days = CasesReachedLast28Days_,
-                    PercentageCasesReachedLast28Days = (double)CasesReachedLast28Days_ / CasesAssignedLast28Days_ * 100
+                    PercentageCasesReachedLast28Days = Math.Round((double) CasesReachedLast28Days_ / CasesAssignedLast28Days_ * 100, 1)
                 };
                 AllStats.Add(stats);
             }

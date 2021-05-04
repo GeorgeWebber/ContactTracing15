@@ -18,11 +18,11 @@
                         Please complete the form with the details of a contact.
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Name(*)</span>
+                                <span class="input-group-text">Name *</span>
                             </div>
 
-                            <input asp-for="AddContactForm.Forename" class="form-control" placeholder="first name">
-                            <input asp-for="AddContactForm.Surname" class="form-control" placeholder="last name">
+                            <input asp-for="AddContactForm.Forename" class="form-control" placeholder="First name">
+                            <input asp-for="AddContactForm.Surname" class="form-control" placeholder="Last name">
                         </div>
 
                         <span asp-validation-for="AddContactForm.Forename"></span>
