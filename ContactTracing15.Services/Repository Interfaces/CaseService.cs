@@ -114,6 +114,7 @@ namespace ContactTracing15.Services
         {
             var completeCase = _caseRepository.GetCase(caseId);
             completeCase.Traced = true;
+            completeCase.TracedDate = DateTime.Now;
             var contacts = GetTracedContacts(caseId);
             if (contacts.Any(x => x.Email == null && x.ContactedDate == null))
             {
@@ -215,7 +216,7 @@ namespace ContactTracing15.Services
             foreach (Case _case in cases)
             {
                 dt.Rows.Add();
-                dt.Rows[i][ 0] = _case.CaseID;
+                dt.Rows[i][0] = _case.CaseID;
                 dt.Rows[i][1] = _case.TestDate;
                 dt.Rows[i][2] = _case.AddedDate;
                 dt.Rows[i][3] = _case.Postcode;

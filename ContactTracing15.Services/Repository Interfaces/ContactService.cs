@@ -15,7 +15,6 @@ namespace ContactTracing15.Services
     {
         private readonly IContactRepository _contactRepository;
         private readonly ICaseRepository _caseRepository;
-        private readonly ITracerService _tracerService;
 
         public  ContactService(IContactRepository contactRepository, ICaseRepository caseRepository)
         {
@@ -113,15 +112,15 @@ namespace ContactTracing15.Services
 
                 if (_contact.TracedDate != null)
                 {
-                    dt.Rows[i][7] = _contact.TracedDate.ToString();
+                    dt.Rows[i][3] = _contact.TracedDate.ToString();
                 }
                 if (_contact.ContactedDate != null)
                 {
-                    dt.Rows[i][8] = _contact.ContactedDate.ToString();
+                    dt.Rows[i][4] = _contact.ContactedDate.ToString();
                 }
                 if (_contact.RemovedDate != null)
                 {
-                    dt.Rows[i][9] = _contact.RemovedDate.ToString();
+                    dt.Rows[i][5] = _contact.RemovedDate.ToString();
                 }
                 i++;
             }
