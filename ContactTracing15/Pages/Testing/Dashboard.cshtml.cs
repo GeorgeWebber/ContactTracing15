@@ -35,7 +35,7 @@ namespace ContactTracing15.Pages.Testing
             if(lastCaseId != null)
             {
                 var lastCase = _CaseService.GetCase(lastCaseId.Value);
-                if(lastCase != null && lastCase.TesterID == CurrentUser.UserId)
+                if(lastCase != null && lastCase.TesterID == CurrentUser.UserId && lastCase.Forename != null)
                 {
                     Details.lastCaseName = lastCase.GetFullName();
                 }
