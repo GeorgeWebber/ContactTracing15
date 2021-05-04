@@ -35,14 +35,14 @@ namespace ContactTracing15.Services
 
         public IEnumerable<Case> GetAllCases()
         {
-            return context.Cases;
+            return context.Cases.Include(x => x.Tracer);
         }
 
        // public IEnumerable<>
 
         public IEnumerable<Case> GetCasesByDate(DateTime from_, DateTime to_)
         {
-            return context.Cases.FromSqlRaw<Case>(@"SELECT * FROM Cases WHERE AddedDate between {0} AND {1}", from_, to_).ToList();
+            return context.Cases.FromSqlRaw<Case>(@"SELECT * FROM Cases WHERE AddedDate between {0} AND {1}", from_, to_).Include(x => x.Tracer).Include(x => x.Tracer.TracingCentre).ToList();
         }
 
         public IEnumerable<String> GetpostcodesByDate(DateTime from_, DateTime to_)
@@ -54,6 +54,7 @@ namespace ContactTracing15.Services
         {
             return context.Cases
               .Include(x => x.Contacts)
+              .Include(x => x.Tracer)
               .Where(x => x.CaseID == id)
               .ToList()
               .FirstOrDefault();
