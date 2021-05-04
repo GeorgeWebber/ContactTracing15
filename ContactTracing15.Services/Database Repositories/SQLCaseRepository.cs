@@ -35,7 +35,7 @@ namespace ContactTracing15.Services
 
         public IEnumerable<Case> GetAllCases()
         {
-            return context.Cases.Include(x => x.Tracer);
+            return context.Cases;
         }
 
        // public IEnumerable<>
@@ -54,7 +54,6 @@ namespace ContactTracing15.Services
         {
             return context.Cases
               .Include(x => x.Contacts)
-              .Include(x => x.Tracer)
               .Where(x => x.CaseID == id)
               .ToList()
               .FirstOrDefault();
