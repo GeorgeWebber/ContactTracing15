@@ -54,6 +54,7 @@ namespace ContactTracing15.Services
         {
             return context.Cases
               .Include(x => x.Contacts)
+              .Include(x => x.Tracer)
               .Where(x => x.CaseID == id)
               .ToList()
               .FirstOrDefault();
