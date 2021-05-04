@@ -40,7 +40,7 @@ namespace ContactTracing15.Pages.Tracing
 
         public bool HasCurrentAssignedCase => CurrentAssignedCase != null;
 
-        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId, int? deleteContactId, int? manualMarkContactId)
+        public IActionResult OnGet(int? caseId, int? dropCaseId, int? completeCaseId, int? deleteContactId, int? manualMarkContactId, int? manualUnmarkContactId)
         {
             var claims = HttpContext.User.Claims;
             var currentUser = userService.GetUserByUserName(claims.Single(x => x.Type == "preferred_username").Value, int.Parse(claims.Single(x => x.Type == "usrtype").Value));
@@ -71,11 +71,16 @@ namespace ContactTracing15.Pages.Tracing
                     {
                         manualMarkContact.ContactedDate = DateTime.Now;
                     }
-                    else
-                    {
-                        manualMarkContact.ContactedDate = null;
-                    }
                     contactService.Update(manualMarkContact);
+                }
+            }
+            if (manualUnmarkContactId.HasValue)
+            {
+                var manualUnmarkContact = contactService.GetContact(manualUnmarkContactId.Value);
+                if (manualUnmarkContact != null && CaseListItems.AssignedCases.Any(x => x.CaseID == manualUnmarkContact.CaseID))
+                {
+                    manualUnmarkContact.ContactedDate = null;
+                    contactService.Update(manualUnmarkContact);
                 }
             }
 
@@ -121,7 +126,8 @@ namespace ContactTracing15.Pages.Tracing
             PhoneNumber = contact.Phone,
             DateTraced = contact.AddedDate,
             ContactId = contact.ContactID,
-            MarkUnmark = contact.ContactedDate == null ? "mark" : "unmark"
+            MarkUnmark = contact.ContactedDate == null ? "mark" : "unmark",
+            IsMarked = contact.ContactedDate != null
         };
     }
     public class ContactDetail
@@ -132,6 +138,7 @@ namespace ContactTracing15.Pages.Tracing
         public DateTime DateTraced { get; set; }
         public int ContactId { get; set; }
         public string MarkUnmark { get; set; }
+        public bool IsMarked { get; set; }
         public string Info
         {
             get
