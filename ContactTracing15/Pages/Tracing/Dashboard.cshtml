@@ -43,11 +43,18 @@
                         }
                         else {<div class="text-info">@contact.Info</div>} 
 
-                        <div class="btn-group" role="group">
-                            <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-editcontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE">edit </a>
-                            <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-deletecontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE">delete</a>
-                            <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-manualmarkcontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE"> @contact.MarkUnmark</a>
-                        </div>
+                    <div class="btn-group" role="group">
+                        <a asp-page="./Dashboard_Edit" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-editcontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE">edit </a>
+                        <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-deletecontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE">delete</a>
+                        @if (contact.IsMarked)
+                        {
+                            <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-manualunmarkcontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE"> unmark</a>
+                        }
+                        else
+                        {
+                            <a asp-page="./Dashboard" asp-route-caseid="@Model.CurrentAssignedCase.CaseID" asp-route-manualmarkcontactid="@contact.ContactId" class="btn btn-sm rounded-0" role="button" style="background: #DEDEDE"> mark</a>
+                        }
+                    </div>
                     </li>
                     }
                 </ul>
