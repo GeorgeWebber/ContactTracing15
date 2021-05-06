@@ -8,5 +8,6 @@ Task: Develop a system to faciliate the process of contact tracing.
 
 Sponsor: Bloomberg
 
+![image](https://user-images.githubusercontent.com/39885332/117299299-48730600-ae70-11eb-8e51-42b1d7db6229.png)
 
 
