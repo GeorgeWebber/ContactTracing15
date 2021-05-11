@@ -24,7 +24,7 @@ namespace ContactTracing15.Services
 
         public void ContactByEmail(Contact contact)
         {
-            //TODO send email to contact
+            /*
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.UseDefaultCredentials = false;
             smtpClient.Credentials = new System.Net.NetworkCredential("groupdesignproject15@gmail.com", _config["emailPassword"]);
@@ -48,6 +48,7 @@ namespace ContactTracing15.Services
             mail.Body = messageBody;
             mail.To.Add(new MailAddress(contact.Email));
             smtpClient.Send(mail);
+            */
         }
     }
 }
