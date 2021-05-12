@@ -90,7 +90,7 @@ namespace ContactTracing15.Services
 
         Case ICaseService.AssignAndAdd(Case newCase)
         {
-            newCase.TracerID = _tracerService.GetNextTracer().TracerID;
+            newCase.TracerID = _tracerService.GetNextTracer(1).TracerID;
             return _caseRepository.Add(newCase);
         }
 
