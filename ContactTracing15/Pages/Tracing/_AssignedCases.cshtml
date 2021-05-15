@@ -1,18 +1,45 @@
 ﻿@model CaseListItems
 
+<style>
+
+    .header-fixed {
+        width: 100%
+    }
+
+        .header-fixed > thead,
+        .header-fixed > tbody,
+        .header-fixed > thead > tr,
+        .header-fixed > tbody > tr,
+        .header-fixed > thead > tr > th,
+        .header-fixed > tbody > tr > td {
+            display: block;
+        }
+
+            .header-fixed > tbody > tr:after,
+            .header-fixed > thead > tr:after {
+                content: ' ';
+                display: block;
+                visibility: hidden;
+                clear: both;
+            }
+
+        .header-fixed > tbody {
+            overflow-y: auto;
+            max-height: 50vh;
+        }
+
+            .header-fixed > tbody > tr > td,
+            .header-fixed > thead > tr > th {
+                width: 100%;
+                float: left;
+            }
+</style>
+
 @if (Model.HasAssignedCases)
 {
-    /*
-    <ul>
-        @foreach (var assignedCase in Model.AssignedCases.OrderByDescending(x => x.CaseRaised))
-        {
-            <li @if (assignedCase.IsActive) { <text> style="background-color:red" </text> }>
-                <a asp-page="./Dashboard" , asp-route-caseid="@assignedCase.CaseID">@Html.DisplayFor(m => assignedCase.Name)</a>
-            </li>
-        }
-    </ul>
-    */
-    <table class="table table-hover table-sm">
+
+
+    <table class="table table-hover table-sm header-fixed">
         <thead style="background: #90ADB8">
             <tr>
                 <th scope="col" style="text-align: center; font-size: 18px">Open Cases</th>
@@ -23,26 +50,28 @@
             {
                 <tr @if (assignedCase.IsActive) { <text> style="background-color: #DEDEDE" </text> }>
                     <td>
-                        <a asp-page="./Dashboard" , asp-route-caseid="@assignedCase.CaseID" class="btn btn-block btn-sm" style="background-color:transparent" >@Html.DisplayFor(m => assignedCase.Name)</a>
+                        <a asp-page="./Dashboard" , asp-route-caseid="@assignedCase.CaseID" class="btn btn-block btn-sm" style="background-color:transparent">@Html.DisplayFor(m => assignedCase.Name)</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
 }
-else {
-<table class="table table-sm">
-    <thead style="background: #90ADB8">
-        <tr>
-            <th scope="col" style="text-align: center; font-size: 18px">Open Cases</th>
-        </tr>
-    </thead>
-    <tbody>
+else
+{
+    <table class="table table-sm">
+        <thead style="background: #90ADB8">
+            <tr>
+                <th scope="col" style="text-align: center; font-size: 18px">Open Cases</th>
+            </tr>
+        </thead>
+        <tbody>
             <tr>
                 <td>
                     You have no more assigned cases right now :)
                 </td>
             </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
 }  
