@@ -8,7 +8,7 @@ Task: Develop a system to faciliate the process of contact tracing.
 
 Sponsor: Bloomberg
 
-Our demonstration video is under the heading Group 15 [here](http://www.cs.ox.ac.uk/teaching/courses/2020-2021/gdp/videos.html).
+Our 5 minute demonstration video is viewable [here](https://www.youtube.com/watch?v=ZFu94VMFYyE).
 
 ![image](https://user-images.githubusercontent.com/39885332/117299299-48730600-ae70-11eb-8e51-42b1d7db6229.png)
 
